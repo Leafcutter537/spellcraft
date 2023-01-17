@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c618e8ea494cb614f910d5c41e8a6cbc, type: 3}
+  m_Name: RuneStrengthDatabase
+  m_EditorClassIdentifier: 
+  runeStrengthCoefficients:
+  - a: 30
+    b: 1.8
+    c: 0.6
+  - a: 20
+    b: 2.1
+    c: 0.8
