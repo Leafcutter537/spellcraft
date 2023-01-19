@@ -10,6 +10,7 @@ public class SpellData
 {
     public ScrollData scrollData;
     public List<RuneData> runeData;
+    public string spellName;
     
     public SpellData(ScrollData scrollData, List<RuneData> runeData)
     {

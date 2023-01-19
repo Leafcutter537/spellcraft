@@ -95,4 +95,12 @@ public class InventoryController : ScriptableObject
         }
         return false;
     }
+    public void EquipSpell(Spell spell)
+    {
+        equippedSpells.Add(spell);
+    }
+    public void UnequipSpell(Spell spell)
+    {
+        equippedSpells.Remove(spell);
+    }
 }

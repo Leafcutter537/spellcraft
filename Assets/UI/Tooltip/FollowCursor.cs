@@ -9,6 +9,11 @@ public class FollowCursor : MonoBehaviour
     [SerializeField] private Canvas canvas;
     public bool isHidden;
 
+    private void Awake()
+    {
+        canvas = GetComponentInParent<Canvas>();
+    }
+
     void Update()
     {
         if (!isHidden)

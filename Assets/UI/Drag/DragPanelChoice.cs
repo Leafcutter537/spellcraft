@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragPanelChoice : SelectPanelChoice, IBeginDragHandler, IEndDragHandler, IDragHandler
+public abstract class DragPanelChoice : SelectPanelChoice, IBeginDragHandler, IEndDragHandler, IDragHandler
 { 
     [Header("Events")]
     [SerializeField] protected StartDragEvent startDragEvent;
@@ -48,10 +48,12 @@ public class DragPanelChoice : SelectPanelChoice, IBeginDragHandler, IEndDragHan
         {
             if (!ReferenceEquals(sender, this))
             {
-
+                TransferItem(sender, args);
             }
         }
     }
+
+    protected abstract void TransferItem(object sender, EventParameters args);
 
     public void OnDrag(PointerEventData eventData)
     {

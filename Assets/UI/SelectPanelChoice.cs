@@ -15,21 +15,22 @@ public class SelectPanelChoice : MonoBehaviour, IPointerEnterHandler, IPointerCl
         OnSelect,
         Always
     }
-
+    [Header("References")]
     public SelectPanel selectPanel;
     public Image panelImage;
+    [Header("Events")]
+    [SerializeField] protected EnterTooltipEvent enterTooltipEvent;
+    [SerializeField] protected ExitTooltipEvent exitTooltipEvent;
+    [Header("Information Display")]
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] protected TextMeshProUGUI descriptionText;
     [SerializeField] private InfoDisplay infoDisplay;
-
-    [SerializeField] protected EnterTooltipEvent enterTooltipEvent;
-    [SerializeField] protected ExitTooltipEvent exitTooltipEvent;
-
     public ShowBehavior showIcon;
     public ShowBehavior showTitle;
     public ShowBehavior showDescription;
     public ShowBehavior showInfo;
+    public bool selectable;
 
 
     public SelectChoice selectChoice;
@@ -53,7 +54,8 @@ public class SelectPanelChoice : MonoBehaviour, IPointerEnterHandler, IPointerCl
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
-        SelectThis();
+        if (selectable)
+            SelectThis();
     }
 
     // Call this when something other than the SelectPanel is triggering a selection.

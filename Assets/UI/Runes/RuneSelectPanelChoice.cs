@@ -16,7 +16,7 @@ public class RuneSelectPanelChoice : DragPanelChoice
     {
         if (spellCreatedEvent)
         {
-            spellCreatedEvent.RemoveListener(OnSpellCreatedEvent);
+            spellCreatedEvent.RemoveListener(OnSpellCreated);
         }
         base.OnDisable();
     }
@@ -24,12 +24,9 @@ public class RuneSelectPanelChoice : DragPanelChoice
     {
         if (spellCreatedEvent)
         {
-            spellCreatedEvent.AddListener(OnSpellCreatedEvent);
+            spellCreatedEvent.AddListener(OnSpellCreated);
         }
         base.OnEnable();
-    }
-    public override void OnPointerClick(PointerEventData eventData)
-    {
     }
     public override void OnPointerEnter(PointerEventData eventData)
     {
@@ -39,29 +36,15 @@ public class RuneSelectPanelChoice : DragPanelChoice
             enterTooltipEvent.Raise(this, new RuneEventParameters(selectChoice as Rune));
         }
     }
-    public override void OnBeginDrag(PointerEventData eventData)
-    {
-        if (selectChoice != null)
-        {
-            ClearIcon();
-            startDragEvent.Raise(this, new RuneEventParameters(selectChoice as Rune));
-        }
-    }
-    protected override void OnEndDragEvent(object sender, EventParameters args)
-    {
-        if (isHoveringThis)
-        {
-            if (!ReferenceEquals(sender, this))
-            {
-                if (sender is RuneSelectPanelChoice senderPanel)
-                    senderPanel.TransferRune(this);
-            }
-        }
-    }
-    private void OnSpellCreatedEvent(object sender, EventParameters args)
+    private void OnSpellCreated(object sender, EventParameters args)
     {
         SetChoice(null);
         runeInScrollChangedEvent.Raise(this, null);
+    }
+    protected override void TransferItem(object sender, EventParameters args)
+    {
+        if (sender is RuneSelectPanelChoice senderPanel)
+            senderPanel.TransferRune(this);
     }
     public void TransferRune(RuneSelectPanelChoice recipient)
     {
@@ -88,4 +71,5 @@ public class RuneSelectPanelChoice : DragPanelChoice
     {
         return selectPanel == null;
     }
+
 }

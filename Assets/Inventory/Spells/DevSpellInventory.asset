@@ -12,3 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d3783ba6afe8bd44888e5a9e06707b1, type: 3}
   m_Name: DevSpellInventory
   m_EditorClassIdentifier: 
+  firstSpellList:
+  - scrollData:
+      numPerLevel: 010000000200000001000000
+      connections: 000000000100000001000000020000000200000003000000
+    runeData:
+    - rank: 1
+      quality: 30
+      runeType: 0
+      category: 0
+      secondaryCategory: 0
+    - rank: 1
+      quality: 30
+      runeType: 1
+      category: 2
+      secondaryCategory: 0
+    - rank: 1
+      quality: 30
+      runeType: 1
+      category: 2
+      secondaryCategory: 0
+    - rank: 1
+      quality: 30
+      runeType: 1
+      category: 2
+      secondaryCategory: 0
+    spellName: Bolt
+  secondSpellList: []

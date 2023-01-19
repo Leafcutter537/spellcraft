@@ -32,21 +32,34 @@ public class FollowCursorHiddenController : MonoBehaviour
     {
         if (isDragging)
         {
-            dragImage.isHidden = false;
-            tooltip.isHidden = true;
+            SetDragImageHidden(false);
+            SetTooltipHidden(true);
         }
         else if (isHovering)
         {
-            dragImage.isHidden = true;
-            tooltip.isHidden = false;
+            SetDragImageHidden(true);
+            SetTooltipHidden(false);
         }
         else
         {
-            dragImage.isHidden = true;
-            tooltip.isHidden = true;
+            SetDragImageHidden(true);
+            SetTooltipHidden(true);
         }
     }
-
+    private void SetTooltipHidden(bool isHidden)
+    {
+        if (tooltip != null)
+        {
+            tooltip.isHidden = isHidden;
+        }
+    }
+    private void SetDragImageHidden(bool isHidden)
+    {
+        if (dragImage != null)
+        {
+            dragImage.isHidden = isHidden;
+        }
+    }
     private void OnEnterTooltip(object sender, EventParameters args)
     {
         isHovering = true;

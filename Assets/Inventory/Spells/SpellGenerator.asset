@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: SpellGenerator
   m_EditorClassIdentifier: 
   runeGenerator: {fileID: 11400000, guid: 0be3e9fccc85c46408204aaa2d078626, type: 2}
+  defaultSpellIcon: {fileID: 21300000, guid: d44ee38057c4a8642bba17fd0b9f1e65, type: 3}

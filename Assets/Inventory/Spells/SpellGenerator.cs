@@ -11,6 +11,7 @@ using UnityEngine;
 public class SpellGenerator : ScriptableObject
 {
     [SerializeField] private RuneGenerator runeGenerator;
+    [SerializeField] private Sprite defaultSpellIcon;
 
     public List<Spell> CreateSpells(List<SpellData> spellData)
     {
@@ -43,7 +44,10 @@ public class SpellGenerator : ScriptableObject
             }
         }
         */
-        return new Spell(spellData, spellEffects, manaCost);
+        Spell returnSpell = new Spell(spellData, spellEffects, manaCost);
+        returnSpell.title = spellData.spellName;
+        returnSpell.icon = GetSpellIcon(spellData);
+        return returnSpell;
     }
     private RuneSlotModification[] GetEnhancementModfiications(List<Rune> runes, ScrollData scrollData)
     {
@@ -113,5 +117,10 @@ public class SpellGenerator : ScriptableObject
             }
         }
         return returnList;
+    }
+
+    private Sprite GetSpellIcon(SpellData spellDataer)
+    {
+        return defaultSpellIcon;
     }
 }
