@@ -15,11 +15,13 @@ namespace Assets.Inventory.Runes
         public RuneCategory category;
         public RuneSecondaryCategory secondaryCategory;
 
-        public RuneData(int rank, int quality, RuneType runeType)
+        public RuneData(int rank, int quality, RuneType runeType, RuneCategory category, RuneSecondaryCategory secondaryCategory)
         {
             this.rank = rank;
             this.quality = quality;
             this.runeType = runeType;
+            this.category = category;
+            this.secondaryCategory = secondaryCategory;
         }
 
         public RuneData(RuneData runeData)
@@ -27,6 +29,8 @@ namespace Assets.Inventory.Runes
             rank = runeData.rank;
             quality = runeData.quality;
             runeType = runeData.runeType;
+            category = runeData.category;
+            secondaryCategory = runeData.secondaryCategory;
         }
 
         public string GetRuneName()
@@ -38,7 +42,11 @@ namespace Assets.Inventory.Runes
     public enum RuneType
     {
         Projectile,
-        StrengthenAdjacent
+        StrengthenAdjacent,
+        Shield,
+        Counterspell,
+        FireStrengthenAdjacent,
+        FrostStrengthenAdjacent
     }
     public enum RuneCategory
     {

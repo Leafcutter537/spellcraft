@@ -5,16 +5,21 @@ using Assets.Inventory.Runes;
 using Assets.Inventory.Scrolls;
 using UnityEngine;
 
-[Serializable]
-public class SpellData
+namespace Assets.Inventory.Spells
 {
-    public ScrollData scrollData;
-    public List<RuneData> runeData;
-    public string spellName;
-    
-    public SpellData(ScrollData scrollData, List<RuneData> runeData)
+    [Serializable]
+    public class SpellData
     {
-        this.scrollData = scrollData; 
-        this.runeData = runeData;
+        public ScrollData scrollData;
+        public List<RuneData> runeData;
+        public string spellName;
+
+        public SpellData(ScrollData scrollData, List<RuneData> runeData)
+        {
+            this.scrollData = scrollData;
+            this.runeData = runeData;
+        }
     }
+
+
 }

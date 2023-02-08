@@ -15,6 +15,10 @@ MonoBehaviour:
   symbolSprites:
   - {fileID: 21300000, guid: e90ed700dfa0e82408e2f641147ee209, type: 3}
   - {fileID: 21300000, guid: 58902fd7961281c49ae5c6d8603bc58a, type: 3}
+  - {fileID: 21300000, guid: 1d0eaaa17b36e6f4fa6c34109cbb022c, type: 3}
+  - {fileID: 21300000, guid: 58902fd7961281c49ae5c6d8603bc58a, type: 3}
+  - {fileID: 21300000, guid: 58902fd7961281c49ae5c6d8603bc58a, type: 3}
+  - {fileID: 21300000, guid: 58902fd7961281c49ae5c6d8603bc58a, type: 3}
   rankShapeSprites:
   - {fileID: 21300000, guid: 881b7e9a25ebeb44e800049ab8dd8f5f, type: 3}
   - {fileID: 21300000, guid: 9553f445d3f68ac4f8551dbeeec9e85c, type: 3}

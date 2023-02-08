@@ -15,3 +15,9 @@ MonoBehaviour:
   runeDescriptions:
   - Create a projectile of strength [STRENGTH] along the chosen path.
   - Increases the strength of connected primary and secondary runes by [STRENGTH]%.
+  - Creates a shield of strength [STRENGTH] on the chosen path.
+  - Increases the strength of connected primary and secondary runes by [STRENGTH]%.
+  - Any connected projectile and shield effects will have the Fire Element. Also,
+    increases the strength of connected primary and secondary runes by [STRENGTH]%.
+  - Any connected projectile and shield effects will have the Frost Element. Also,
+    increases the strength of connected primary and secondary runes by [STRENGTH]%.

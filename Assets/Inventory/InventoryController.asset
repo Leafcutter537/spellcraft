@@ -16,4 +16,5 @@ MonoBehaviour:
   devRuneInventoryIndex: 0
   loadDevSpellInventory: 1
   devSpellInventoryIndex: 0
+  runeGenerator: {fileID: 11400000, guid: 0be3e9fccc85c46408204aaa2d078626, type: 2}
   holdRuneEvent: {fileID: 11400000, guid: a9b2ce34d1ca0754b89ba12ff1c77dca, type: 2}

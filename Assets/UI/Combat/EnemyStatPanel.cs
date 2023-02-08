@@ -1,17 +1,20 @@
-
-using TMPro;
+using Assets.Combat;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class EnemyStatPanel : MonoBehaviour
+public class EnemyStatPanel : StatPanel
 {
-    [SerializeField] private TextMeshProUGUI enemyName;
-    [SerializeField] private TextMeshProUGUI healthText;
+    [Header("Enemy References")]
     [SerializeField] private EnemyInstance enemyInstance;
+    [SerializeField] private EnemyDetailsPanel enemyDetailsPanel;
 
-    public void ShowEnemyInfo()
+    public override void ShowStatInfo()
     {
-        enemyName.text = enemyInstance.enemyStats.enemyName;
-        healthText.text = "Health: " + enemyInstance.currentHealth + " / " + enemyInstance.enemyStats.maxHP;
+        ShowStatInfo(enemyInstance.characterName, enemyInstance.currentHP, enemyInstance.maxHP,
+            enemyInstance.currentMP, enemyInstance.maxMP);
+    }
+    public void ShowEnemyDetails()
+    {
+        enemyDetailsPanel.gameObject.SetActive(true);
+        enemyDetailsPanel.ShowEnemyDetails(enemyInstance.enemyStats);
     }
 }

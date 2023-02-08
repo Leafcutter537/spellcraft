@@ -58,6 +58,7 @@ public class ScrollDisplay : MonoBehaviour
             float x = displayCenter.position.x + (i - (num - 1.0f) / 2.0f) * (runeDisplayWidth + runeDisplayPadding);
             GameObject runeInScrollDisplay = Instantiate(runeInScrollDisplayPrefab, new Vector2(x, centery), Quaternion.identity);
             RuneSelectPanelChoice runeSlot = runeInScrollDisplay.GetComponent<RuneSelectPanelChoice>();
+            runeSlot.spellPreview = spellPreview;
             runeSlots.Add(runeSlot);
         }
     }

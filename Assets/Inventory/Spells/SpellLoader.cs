@@ -3,27 +3,35 @@ using System.Collections.Generic;
 using Assets.Inventory.Runes;
 using UnityEngine;
 
-public class SpellLoader : MonoBehaviour
+namespace Assets.Inventory.Spells
 {
-    [SerializeField] private InventoryController inventoryController;
-    [SerializeField] private SpellGenerator spellGenerator;
-    [SerializeField] private DevSpellInventory devSpellInventory;
-    private static bool hasLoadedDevInventory;
-    private void Awake()
+    public class SpellLoader : MonoBehaviour
     {
-        if (inventoryController.loadDevSpellInventory == true & !hasLoadedDevInventory)
+        [SerializeField] private InventoryController inventoryController;
+        [SerializeField] private SpellGenerator spellGenerator;
+        [SerializeField] private DevSpellInventory devSpellInventory;
+        private static bool hasLoadedDevInventory;
+        private void Awake()
         {
-            switch (inventoryController.devSpellInventoryIndex)
+            if (inventoryController.loadDevSpellInventory == true & !hasLoadedDevInventory & Application.isEditor)
             {
-                case 0:
-                    inventoryController.spells = spellGenerator.CreateSpells(devSpellInventory.firstSpellList);
-                    break;
-                case 1:
-                    inventoryController.spells = spellGenerator.CreateSpells(devSpellInventory.secondSpellList);
-                    break;
+                switch (inventoryController.devSpellInventoryIndex)
+                {
+                    case 0:
+                        inventoryController.spells = spellGenerator.CreateSpells(devSpellInventory.firstSpellList);
+                        break;
+                    case 1:
+                        inventoryController.spells = spellGenerator.CreateSpells(devSpellInventory.secondSpellList);
+                        break;
+                }
+                inventoryController.equippedSpells = new List<PlayerSpell>();
+                int maxIndex = Mathf.Min(inventoryController.spells.Count, 3);
+                for (int i = 0; i < maxIndex; i++)
+                {
+                    inventoryController.EquipSpell(inventoryController.spells[i]);
+                }
+                hasLoadedDevInventory = true;
             }
-            inventoryController.equippedSpells = new List<Spell>();
-            hasLoadedDevInventory = true;
         }
     }
 }

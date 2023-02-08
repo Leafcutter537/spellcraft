@@ -12,15 +12,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float timeToMove;
     private float timeSinceMoveInitiated;
     private bool isMoving;
-    public Vector3Int currentLocation;
-    private Vector3Int targetLocation;
+    public Vector2Int currentLocation;
+    private Vector2Int targetLocation;
     [Header("Event References")]
     [SerializeField] private LeaveCellEvent leaveCellEvent;
+    [Header("Serialized Object References")]
+    [SerializeField] private ProgressTracker progressTracker;
 
-    private void Awake()
+    private void Start()
     {
         timeSinceMoveInitiated = timeToMove;
-        currentLocation = new Vector3Int(0, 0, 0);
+        SetLocation(progressTracker.playerPosition);
     }
 
     private void Update()
@@ -29,8 +31,8 @@ public class PlayerMovement : MonoBehaviour
         {
             if (timeSinceMoveInitiated < timeToMove)
             {
-                Vector2 currentLocationWorld = worldTilemap.CellToWorld(currentLocation);
-                Vector2 targetLocationWorld = worldTilemap.CellToWorld(targetLocation);
+                Vector2 currentLocationWorld = worldTilemap.CellToWorld((Vector3Int) currentLocation);
+                Vector2 targetLocationWorld = worldTilemap.CellToWorld((Vector3Int) targetLocation);
                 Vector2 diffVector = targetLocationWorld - currentLocationWorld;
                 transform.position = currentLocationWorld + diffVector * (timeSinceMoveInitiated) / timeToMove;
                 timeSinceMoveInitiated += Time.deltaTime;
@@ -45,21 +47,21 @@ public class PlayerMovement : MonoBehaviour
     }
     public void MoveUp()
     {
-        if (!isMoving) { MoveToDisplacement(new Vector3Int(0, 1)); }
+        if (!isMoving) { MoveToDisplacement(new Vector2Int(0, 1)); }
     }
     public void MoveDown()
     {
-        if (!isMoving) { MoveToDisplacement(new Vector3Int(0, -1)); }
+        if (!isMoving) { MoveToDisplacement(new Vector2Int(0, -1)); }
     }
     public void MoveLeft()
     {
-        if (!isMoving) { MoveToDisplacement(new Vector3Int(-1, 0)); }
+        if (!isMoving) { MoveToDisplacement(new Vector2Int(-1, 0)); }
     }
     public void MoveRight()
     {
-        if (!isMoving) { MoveToDisplacement(new Vector3Int(1, 0)); }
+        if (!isMoving) { MoveToDisplacement(new Vector2Int(1, 0)); }
     }
-    private void MoveToDisplacement(Vector3Int displacementVector)
+    private void MoveToDisplacement(Vector2Int displacementVector)
     {
         if (!worldMap.IsCellBlocked(currentLocation + displacementVector))
         {
@@ -67,7 +69,14 @@ public class PlayerMovement : MonoBehaviour
             timeSinceMoveInitiated = 0;
             isMoving = true;
             leaveCellEvent.Raise(this, null);
+            progressTracker.playerPosition = targetLocation;
         }
+    }
+
+    private void SetLocation(Vector2Int newLocation)
+    {
+        transform.position = new Vector3(newLocation.x, newLocation.y);
+        currentLocation = newLocation;
     }
 }
 

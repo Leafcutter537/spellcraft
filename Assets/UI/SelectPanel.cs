@@ -8,7 +8,7 @@ public abstract class SelectPanel : MonoBehaviour
     [Header("Selection")]
     protected List<SelectPanelChoice> selectPanelChoices;
     public List<SelectChoice> itemList;
-    private int selectedIndex;
+    protected int selectedIndex;
     private int inventoryIndex;
     [Header("Visuals")]
     [SerializeField] protected Color defaultColor;

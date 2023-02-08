@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.EventSystem;
+using Assets.Inventory.Spells;
 using UnityEngine;
 
 public class EquippedSpellSelectPanelChoice : DragPanelChoice
@@ -13,7 +14,7 @@ public class EquippedSpellSelectPanelChoice : DragPanelChoice
         {
             if (sendingPanel.selectChoice != null)
             {
-                inventoryController.EquipSpell(sendingPanel.selectChoice as Spell);
+                inventoryController.EquipSpell(sendingPanel.selectChoice as PlayerSpell);
                 equipSpellEvent.Raise(this, null);
             }
         }

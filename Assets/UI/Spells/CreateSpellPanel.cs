@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Inventory.Spells;
 using TMPro;
 
 public class CreateSpellPanel : MonoBehaviour
@@ -34,7 +35,7 @@ public class CreateSpellPanel : MonoBehaviour
     }
     public void ConfirmCreateSpell()
     {
-        Spell spell = spellPreview.previewedSpell;
+        PlayerSpell spell = spellPreview.previewedSpell;
         spell.title = nameInputField.text;
         inventoryController.spells.Add(spell);
         spellCreatedEvent.Raise(this, null);

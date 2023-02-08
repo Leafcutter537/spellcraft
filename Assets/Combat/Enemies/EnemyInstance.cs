@@ -2,18 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyInstance : MonoBehaviour
+
+namespace Assets.Combat
 {
-    [SerializeField] private CurrentEnemy currentEnemy;
-    public int currentHealth;
-    public EnemyStats enemyStats;
-    [SerializeField] private EnemyStatPanel enemyStatPanel;
-
-    private void Awake()
+    public class EnemyInstance : CharacterInstance
     {
-        enemyStats = currentEnemy.enemyStats;
-        currentHealth = enemyStats.maxHP;
-        enemyStatPanel.ShowEnemyInfo();
-    }
+        [SerializeField] private CurrentEnemy currentEnemy;
+        public EnemyStats enemyStats;
+        public int enemyID;
+        [SerializeField] private EnemyAI enemyAI;
 
+        private void Awake()
+        {
+            characterName = currentEnemy.enemyStats.enemyName;
+            enemyStats = currentEnemy.enemyStats;
+            currentHP = enemyStats.maxHP;
+            currentMP = enemyStats.maxMP;
+            maxHP = enemyStats.maxHP;
+            maxMP = enemyStats.maxMP;
+            enemyID = enemyStats.enemyID;
+            enemyAI.SetSpells(currentEnemy.enemyStats.spells);
+            statPanel.ShowStatInfo();
+        }
+
+        public void StartTurn()
+        {
+            enemyAI.ResetSpellIndex();
+        }
+        public bool PerformNextSpell()
+        {
+            return enemyAI.PerformNextSpell();
+        }
+    }
 }

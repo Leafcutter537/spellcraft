@@ -5,21 +5,32 @@ using UnityEngine;
 
 public class FollowCursorHiddenController : MonoBehaviour
 {
+    [Header("Event References")]
     [SerializeField] private EnterTooltipEvent enterTooltipEvent;
     [SerializeField] private ExitTooltipEvent exitTooltipEvent;
     [SerializeField] private StartDragEvent startDragEvent;
     [SerializeField] private EndDragEvent endDragEvent;
+    [SerializeField] private TooltipWarningEvent tooltipWarningEvent;
+    [Header("Monobehavior References")]
     [SerializeField] private FollowCursor tooltip;
     [SerializeField] private FollowCursor dragImage;
+    [SerializeField] private FollowCursor warning;
     private bool isHovering;
     private bool isDragging;
-
+    [Header("Tooltip Warnings")]
+    [SerializeField] private float warningDuration;
+    private float timeSinceWarning;
+    private void Awake()
+    {
+        timeSinceWarning = 1000f;
+    }
     private void OnEnable()
     {
         enterTooltipEvent.AddListener(OnEnterTooltip);
         exitTooltipEvent.AddListener(OnExitTooltip);
         endDragEvent.AddListener(OnEndDragEvent);
         startDragEvent.AddListener(OnStartDragEvent);
+        tooltipWarningEvent.AddListener(OnTooltipWarning);
     }
     private void OnDisable()
     {
@@ -27,9 +38,19 @@ public class FollowCursorHiddenController : MonoBehaviour
         exitTooltipEvent.RemoveListener(OnExitTooltip);
         endDragEvent.RemoveListener(OnEndDragEvent);
         startDragEvent.RemoveListener(OnStartDragEvent);
+        tooltipWarningEvent.RemoveListener(OnTooltipWarning);
     }
     private void Update()
     {
+        if (timeSinceWarning < warningDuration)
+        {
+            timeSinceWarning += Time.deltaTime;
+            SetWarningHidden(false);
+            SetTooltipHidden(true);
+            SetDragImageHidden(true);
+            return;
+        }
+        SetWarningHidden(true);
         if (isDragging)
         {
             SetDragImageHidden(false);
@@ -60,6 +81,13 @@ public class FollowCursorHiddenController : MonoBehaviour
             dragImage.isHidden = isHidden;
         }
     }
+    private void SetWarningHidden(bool isHidden)
+    {
+        if (warning != null)
+        {
+            warning.isHidden = isHidden;
+        }
+    }
     private void OnEnterTooltip(object sender, EventParameters args)
     {
         isHovering = true;
@@ -75,5 +103,9 @@ public class FollowCursorHiddenController : MonoBehaviour
     private void OnEndDragEvent(object sender, EventParameters args)
     {
         isDragging = false;
+    }
+    private void OnTooltipWarning(object sender, EventParameters args)
+    {
+        timeSinceWarning = 0;
     }
 }

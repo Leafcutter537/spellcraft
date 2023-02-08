@@ -14,13 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstRuneList:
   - rank: 1
-    quality: 30
+    quality: 15
     runeType: 0
     category: 0
     secondaryCategory: 0
-  - rank: 2
-    quality: 50
+  - rank: 1
+    quality: 15
     runeType: 1
     category: 2
+    secondaryCategory: 4
+  - rank: 1
+    quality: 15
+    runeType: 2
+    category: 0
     secondaryCategory: 0
+  - rank: 1
+    quality: 15
+    runeType: 1
+    category: 2
+    secondaryCategory: 4
+  - rank: 1
+    quality: 15
+    runeType: 4
+    category: 2
+    secondaryCategory: 4
+  - rank: 1
+    quality: 15
+    runeType: 5
+    category: 2
+    secondaryCategory: 4
   secondRuneList: []

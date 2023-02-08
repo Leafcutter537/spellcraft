@@ -12,7 +12,7 @@ namespace Assets.Combat.SpellEffects
     public enum Element
     {
         Basic,
-        Flame,
+        Fire,
         Frost,
         Light,
         Dark

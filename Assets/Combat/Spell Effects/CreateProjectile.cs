@@ -9,9 +9,9 @@ namespace Assets.Combat.SpellEffects
     public class CreateProjectile : SpellEffect
     {
         public int path;
-        public float strength;
+        public int strength;
         public Element element;
-        public CreateProjectile(int path, float strength, Element element)
+        public CreateProjectile(int path, int strength, Element element)
         {
             this.path = path;
             this.strength = strength;
@@ -28,12 +28,12 @@ namespace Assets.Combat.SpellEffects
                     pathDescription = " along the chosen path.";
                     break;
                 case 1:
-                    direction = path < 0 ? "left" : "right";
-                    pathDescription = " one path to the " + direction + ".";
+                    direction = path < 0 ? "below" : "above";
+                    pathDescription = " one path " + direction + " the chosen path.";
                     break;
                 case 2:
-                    direction = path < 0 ? "left" : "right";
-                    pathDescription = "two paths to the " + direction + ".";
+                    direction = path < 0 ? "below" : "above";
+                    pathDescription = " two paths " + direction + " the chosen path.";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("Invalid path value in CreateProjectile.");

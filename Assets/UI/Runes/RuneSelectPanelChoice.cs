@@ -11,6 +11,7 @@ public class RuneSelectPanelChoice : DragPanelChoice
     [SerializeField] private InventoryController inventoryController;
     [SerializeField] private RuneInScrollChangedEvent runeInScrollChangedEvent;
     [SerializeField] private SpellCreatedEvent spellCreatedEvent;
+    public SpellPreview spellPreview;
 
     protected override void OnDisable()
     {
@@ -36,6 +37,7 @@ public class RuneSelectPanelChoice : DragPanelChoice
             enterTooltipEvent.Raise(this, new RuneEventParameters(selectChoice as Rune));
         }
     }
+
     private void OnSpellCreated(object sender, EventParameters args)
     {
         SetChoice(null);
@@ -48,9 +50,13 @@ public class RuneSelectPanelChoice : DragPanelChoice
     }
     public void TransferRune(RuneSelectPanelChoice recipient)
     {
+        if (selectChoice == null)
+            return;
         SelectChoice recipientSelectChoice = recipient.selectChoice;
         if (recipient.IsInScroll())
         {
+            if (!spellPreview.IsRuneSwapValid(this, recipient))
+                return;
             recipient.SetChoice(selectChoice);
             if (!IsInScroll())
             {

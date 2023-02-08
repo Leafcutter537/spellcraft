@@ -9,6 +9,8 @@ public class Obstacle : MonoBehaviour
 
     private void Start()
     {
-        worldMap.SubscribeObstacle(this);
+        worldMap.AddObstacle(this);
     }
+
+
 }

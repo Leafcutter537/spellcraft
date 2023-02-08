@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b36d4e0abf752f4b84d657d3c27977b, type: 3}
+  m_Name: RewardDatabase
+  m_EditorClassIdentifier: 
+  enemyIDs: 000000000100000002000000
+  rewardData:
+  - runeRewards: []
+  - runeRewards:
+    - rank: 1
+      quality: 15
+      runeType: 1
+      category: 2
+      secondaryCategory: 4
+    - rank: 1
+      quality: 15
+      runeType: 1
+      category: 2
+      secondaryCategory: 4
+    - rank: 1
+      quality: 15
+      runeType: 2
+      category: 0
+      secondaryCategory: 2
+  - runeRewards:
+    - rank: 1
+      quality: 15
+      runeType: 1
+      category: 2
+      secondaryCategory: 4
+    - rank: 1
+      quality: 15
+      runeType: 1
+      category: 2
+      secondaryCategory: 4
+    - rank: 1
+      quality: 15
+      runeType: 2
+      category: 0
+      secondaryCategory: 2

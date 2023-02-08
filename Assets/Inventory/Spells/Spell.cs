@@ -3,25 +3,36 @@ using System.Collections.Generic;
 using Assets.Combat.SpellEffects;
 using UnityEngine;
 
-public class Spell : SelectChoice
+namespace Assets.Inventory.Spells
 {
-    public SpellData spellData;
-    public List<SpellEffect> spellEffects;
-    public float manaCost;
-
-    public Spell(SpellData spellData, List<SpellEffect> spellEffects, float manaCost)
+    public class Spell : SelectChoice
     {
-        this.spellData = spellData;
-        this.spellEffects = spellEffects;
-        this.manaCost = manaCost;
-    }
-    public override string GetDescription()
-    {
-        string returnString = "";
-        foreach (SpellEffect spellEffect in spellEffects)
+        public List<SpellEffect> spellEffects;
+        public int manaCost;
+        public TargetType targetType;
+        public Spell(List<SpellEffect> spellEffects, int manaCost, TargetType targetType)
         {
-            returnString += spellEffect.GetDescription() + "\n\n";
+            this.spellEffects = spellEffects;
+            this.manaCost = manaCost;
+            this.targetType = targetType;
         }
-        return returnString;
+        public override string GetDescription()
+        {
+            string returnString = "";
+            foreach (SpellEffect spellEffect in spellEffects)
+            {
+                returnString += spellEffect.GetDescription() + "\n\n";
+            }
+            return returnString;
+        }
+    }
+
+    public enum TargetType
+    {
+        NoPrimary,
+        Projectile,
+        Shield,
+        Counterspell,
+        Heal
     }
 }

@@ -10,44 +10,42 @@ public class WorldMap : MonoBehaviour
     [SerializeField] private List<TileBase> blockingTiles;
     [SerializeField] private Tilemap tilemap;
     // Object and interactable info
-    private List<Obstacle> obstacles;
+    private Dictionary<Vector2Int, Obstacle> obstacles;
     private List<Interactable> interactables;
 
     private void Awake()
     {
-        obstacles = new List<Obstacle>();
+        obstacles = new Dictionary<Vector2Int, Obstacle>();
         interactables = new List<Interactable>();
     }
-    public void SubscribeObstacle(Obstacle obstacle)
+    public void AddObstacle(Obstacle obstacle)
     {
-        obstacles.Add(obstacle);
+        obstacles.Add(obstacle.cellCoordinates, obstacle);
     }
     public void SubscribeInteractable(Interactable interactable)
     {
         interactables.Add(interactable);
     }
-    public bool IsCellBlocked(Vector3Int cellCoordinates)
+    public bool IsCellBlocked(Vector2Int cellCoordinates)
     {
-        TileBase tile = tilemap.GetTile(cellCoordinates);
+        TileBase tile = tilemap.GetTile((Vector3Int)cellCoordinates);
         if (blockingTiles.Contains(tile))
             return true;
         return CheckObstacles(cellCoordinates);
     }
-    private bool CheckObstacles(Vector3Int cellCoordinates)
+    private bool CheckObstacles(Vector2Int cellCoordinates)
     {
-        Vector2Int cellCoords = new Vector2Int(cellCoordinates.x, cellCoordinates.y);
-        foreach (Obstacle obstacle in obstacles)
+        if (obstacles.TryGetValue(cellCoordinates, out Obstacle obstacle))
         {
-            if (obstacle.cellCoordinates == cellCoords)
-                return true;
+            return (obstacle != null);
         }
         return false;
     }
-    public void ArrivateAtCell(Vector3Int cellCoordinates)
+    public void ArrivateAtCell(Vector2Int cellCoordinates)
     {
         CheckInteractables(cellCoordinates);
     }
-    private void CheckInteractables(Vector3Int cellCoordinates)
+    private void CheckInteractables(Vector2Int cellCoordinates)
     {
         foreach (Interactable interactable in interactables)
         {

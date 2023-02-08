@@ -9,7 +9,7 @@ public class RuneLoader : MonoBehaviour
     private static bool hasLoadedDevInventory;
     private void Awake()
     {
-        if (inventoryController.loadDevRuneInventory == true & !hasLoadedDevInventory)
+        if (inventoryController.loadDevRuneInventory == true & !hasLoadedDevInventory & Application.isEditor)
         {
             switch (inventoryController.devRuneInventoryIndex)
             {
