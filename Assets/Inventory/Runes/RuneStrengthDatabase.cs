@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Inventory.Runes
 {
-    [CreateAssetMenu(fileName = nameof(RuneStrengthDatabase), menuName = "ScriptableObjects/RuneStrengthDatabase")]
+    [CreateAssetMenu(fileName = nameof(RuneStrengthDatabase), menuName = "ScriptableObjects/Runes/RuneStrengthDatabase")]
     public class RuneStrengthDatabase : ScriptableObject
     {
         public List<RuneStrengthCoefficient> runeStrengthCoefficients;

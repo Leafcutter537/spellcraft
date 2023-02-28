@@ -12,38 +12,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b36d4e0abf752f4b84d657d3c27977b, type: 3}
   m_Name: RewardDatabase
   m_EditorClassIdentifier: 
-  enemyIDs: 000000000100000002000000
+  enemyIDs: 0000000001000000020000000300000004000000
   rewardData:
   - runeRewards: []
+    equipmentRewards: []
+    currencyRewards:
+    - quantity: 20
+      currencyType: 0
+    scrollUnlocks: []
   - runeRewards:
     - rank: 1
       quality: 15
       runeType: 1
       category: 2
       secondaryCategory: 4
+      currencyType: 0
     - rank: 1
       quality: 15
       runeType: 1
       category: 2
       secondaryCategory: 4
+      currencyType: 0
     - rank: 1
       quality: 15
       runeType: 2
       category: 0
       secondaryCategory: 2
-  - runeRewards:
-    - rank: 1
-      quality: 15
-      runeType: 1
-      category: 2
-      secondaryCategory: 4
-    - rank: 1
-      quality: 15
-      runeType: 1
-      category: 2
-      secondaryCategory: 4
-    - rank: 1
-      quality: 15
-      runeType: 2
-      category: 0
-      secondaryCategory: 2
+      currencyType: 0
+    equipmentRewards: []
+    currencyRewards:
+    - quantity: 25
+      currencyType: 0
+    scrollUnlocks: []
+  - runeRewards: []
+    equipmentRewards: []
+    currencyRewards:
+    - quantity: 30
+      currencyType: 0
+    scrollUnlocks: []
+  - runeRewards: []
+    equipmentRewards:
+    - equipmentSet: 0
+      equipmentSlot: 0
+      currentLevel: 1
+      progressToNextLevel: 0
+    currencyRewards:
+    - quantity: 35
+      currencyType: 0
+    scrollUnlocks: []
+  - runeRewards: []
+    equipmentRewards: []
+    currencyRewards:
+    - quantity: 50
+      currencyType: 0
+    scrollUnlocks:
+    - cost:
+        quantity: 40
+        currencyType: 0
+      scrollName: Snake
+      numPerLevel: 010000000200000001000000
+      connections: 000000000100000001000000020000000200000003000000

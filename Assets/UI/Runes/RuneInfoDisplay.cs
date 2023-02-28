@@ -19,7 +19,7 @@ public class RuneInfoDisplay : MonoBehaviour
         descriptionText.text = rune.GetDescription();
         qualityText.text = "Quality: " + rune.runeData.quality;
         if (Mathf.Abs(rune.manaCost) > 0.001f)
-            manaCostText.text = "Mana Cost: " + rune.manaCost;
+            manaCostText.text = "Mana Cost: " + Rune.GetStringOfRuneValue(rune.manaCost);
         else
             manaCostText.text = "";
     }
@@ -33,10 +33,12 @@ public class RuneInfoDisplay : MonoBehaviour
     }
     private void OnEnterTooltip(object sender, EventParameters args)
     {
-        RuneEventParameters runeEventParams = args as RuneEventParameters;
-        if (runeEventParams != null)
+        SelectPanelChoice selectPanelChoice = sender as SelectPanelChoice;
+        if (selectPanelChoice == null)
+            return;
+        if (selectPanelChoice.selectChoice is Rune rune)
         {
-            DisplayRuneInfo(runeEventParams.rune);
+            DisplayRuneInfo(rune);
         }
     }
 }

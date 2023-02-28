@@ -25,6 +25,15 @@ namespace Assets.Inventory.Spells
             }
             return returnString;
         }
+        public string GetDescription(StatBundle statBundle)
+        {
+            string returnString = "";
+            foreach (SpellEffect spellEffect in spellEffects)
+            {
+                returnString += spellEffect.GetDescription(statBundle) + "\n\n";
+            }
+            return returnString;
+        }
     }
 
     public enum TargetType
@@ -33,6 +42,8 @@ namespace Assets.Inventory.Spells
         Projectile,
         Shield,
         Counterspell,
-        Heal
+        Heal,
+        Buff,
+        Self
     }
 }

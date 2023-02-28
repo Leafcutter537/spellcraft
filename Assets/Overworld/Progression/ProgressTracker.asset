@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 444eca06798f48541b24aa4d52b62411, type: 3}
   m_Name: ProgressTracker
   m_EditorClassIdentifier: 
+  playerPosition: {x: 19, y: 16}
   loadDevProgress: 1

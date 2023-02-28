@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = nameof(ProgressTracker), menuName = "ScriptableObjects/ProgressTracker")]
+[CreateAssetMenu(fileName = nameof(ProgressTracker), menuName = "ScriptableObjects/Progression/ProgressTracker")]
 public class ProgressTracker : ScriptableObject
 {
     public Dictionary<int, bool> defeatedEnemies;
@@ -10,6 +10,6 @@ public class ProgressTracker : ScriptableObject
 
     public void AddDefeatedEnemy(int enemyID)
     {
-        defeatedEnemies.Add(enemyID, true);
+        defeatedEnemies.TryAdd(enemyID, true);
     }
 }

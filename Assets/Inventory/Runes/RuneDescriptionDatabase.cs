@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Inventory.Runes
 {
-    [CreateAssetMenu(fileName = nameof(RuneDescriptionDatabase), menuName = "ScriptableObjects/RuneDescriptionDatabase")]
+    [CreateAssetMenu(fileName = nameof(RuneDescriptionDatabase), menuName = "ScriptableObjects/Runes/RuneDescriptionDatabase")]
     public class RuneDescriptionDatabase : ScriptableObject
     {
         public List<string> runeDescriptions;

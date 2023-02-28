@@ -20,5 +20,6 @@ public class EnemySpellSelectPanel : SelectPanel
     {
         List<Spell> listEnemySpells = enemySpellGenerator.CreateSpellList(enemySpells);
         itemList = listEnemySpells.Cast<SelectChoice>().ToList();
+        RefreshInventory();
     }
 }

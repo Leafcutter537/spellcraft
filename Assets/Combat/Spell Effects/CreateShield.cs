@@ -21,6 +21,10 @@ namespace Assets.Combat.SpellEffects
 
         public override string GetDescription()
         {
+            return GetDescription(null);
+        }
+        public override string GetDescription(StatBundle bundle)
+        {
             string pathDescription;
             string direction;
             switch (path)
@@ -39,7 +43,12 @@ namespace Assets.Combat.SpellEffects
                 default:
                     throw new ArgumentOutOfRangeException("Invalid path value in CreateProjectile.");
             }
-            return "Creates a " + element.ToString() + " shield of strength " + strength + pathDescription + " Lasts " + duration + " turns.";
+            string bonusString = "";
+            if (bundle != null)
+            {
+                bonusString = " (+" + bundle.shieldPower + ")";
+            }
+            return "Creates a " + element.ToString() + " shield of strength " + strength + bonusString + pathDescription + " Lasts " + duration + " turns.";
         }
     }
 }

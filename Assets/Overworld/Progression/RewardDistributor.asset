@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f40a00a1b31d0a74a8766781d323f503, type: 3}
+  m_Name: RewardDistributor
+  m_EditorClassIdentifier: 
+  inventoryController: {fileID: 11400000, guid: ba8c4f93e0524844cb171dddc17884af, type: 2}
+  storeStock: {fileID: 11400000, guid: 4153974d95738cb4fbb5dd2aee841989, type: 2}
+  scrollStock: {fileID: 11400000, guid: 5ae519ff618845e45b9311d0f451c6e7, type: 2}

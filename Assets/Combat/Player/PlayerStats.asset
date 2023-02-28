@@ -13,5 +13,10 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   playerName: Leafcutter
+  inventoryController: {fileID: 11400000, guid: ba8c4f93e0524844cb171dddc17884af, type: 2}
   baseHP: 60
   baseMP: 60
+  baseResilience: 0
+  baseProjectilePower: 0
+  baseShieldPower: 0
+  baseHealPower: 0

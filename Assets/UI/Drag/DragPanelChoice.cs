@@ -34,13 +34,19 @@ public abstract class DragPanelChoice : SelectPanelChoice, IBeginDragHandler, IE
     }
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        ClearIcon();
-        startDragEvent.Raise(this, null);
+        if (selectChoice != null)
+        {
+            ClearIcon();
+            startDragEvent.Raise(this, null);
+        }
     }
     public virtual void OnEndDrag(PointerEventData eventData)
     {
-        UpdateIcon();
-        endDragEvent.Raise(this, null);
+        if (selectChoice != null)
+        {
+            UpdateIcon();
+            endDragEvent.Raise(this, null);
+        }
     }
     protected virtual void OnEndDragEvent(object sender, EventParameters args)
     {

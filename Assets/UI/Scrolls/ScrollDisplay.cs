@@ -16,7 +16,9 @@ public class ScrollDisplay : MonoBehaviour
     private float runeDisplayWidth;
     private float runeDisplayHeight;
     [SerializeField] private float lineThickness;
-    [Header("References")]
+    [Header("Serialized Object References")]
+    [SerializeField] private ScrollStock scrollStock;
+    [Header("References In Scene")]
     [SerializeField] private SpellPreview spellPreview;
     [Header("Instantiated Game Objects")]
     private List<RuneSelectPanelChoice> runeSlots;
@@ -26,18 +28,47 @@ public class ScrollDisplay : MonoBehaviour
     {
         runeDisplayHeight = runeInScrollDisplayPrefab.GetComponent<RectTransform>().rect.height;
         runeDisplayWidth = runeInScrollDisplayPrefab.GetComponent<RectTransform>().rect.width;
+    }
+
+    public void ChooseScroll(ScrollData scrollData)
+    {
+        this.scrollData = scrollData;
+        ClearScrollDisplay();
+        CreateScrollDisplay();
+    }
+
+    private void ClearScrollDisplay()
+    {
+        if (runeSlots != null)
+        {
+            foreach (RuneSelectPanelChoice runeSlot in runeSlots)
+            {
+                Destroy(runeSlot.gameObject);
+            }
+        }
+        if (connections != null)
+        {
+            foreach (GameObject connection in connections)
+            {
+                Destroy(connection.gameObject);
+            }
+        }
         runeSlots = new List<RuneSelectPanelChoice>();
         connections = new List<GameObject>();
+    }
+
+    private void CreateScrollDisplay()
+    {
         CreateAllRuneDisplays();
         CreateConnectionLines();
         LinkSpellPreviewToDisplayedScroll();
         foreach (GameObject connection in connections)
         {
-            connection.transform.SetParent(transform, true);
+            connection.transform.SetParent(displayCenter, true);
         }
         foreach (RuneSelectPanelChoice runeSlot in runeSlots)
         {
-            runeSlot.transform.SetParent(transform, true);
+            runeSlot.transform.SetParent(displayCenter, true);
         }
     }
 

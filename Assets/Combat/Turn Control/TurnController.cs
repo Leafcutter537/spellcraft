@@ -30,6 +30,7 @@ public class TurnController : MonoBehaviour
     private void Start()
     {
         isPlayerTurn = true;
+        turnStage = TurnStage.CharacterActing;
         UpdateTurnLabel();
     }
     private void OnEnable()

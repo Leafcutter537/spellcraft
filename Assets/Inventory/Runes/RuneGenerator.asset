@@ -15,4 +15,6 @@ MonoBehaviour:
   runeSpriteDatabase: {fileID: 11400000, guid: 8a1fdeb1a428ed747b147d23b0e89fa9, type: 2}
   runeStrengthDatabase: {fileID: 11400000, guid: f6e31c9b98d02b449974a7cc86d3f116, type: 2}
   runeManaCostDatabase: {fileID: 11400000, guid: 6526df15d9d3a944ab4732b10a14376f, type: 2}
+  runeValueDatabase: {fileID: 11400000, guid: f174ff962410e394bab8797f3ed7710d, type: 2}
   runeDescriptionDatabase: {fileID: 11400000, guid: 6a3cc5a37db8a2a498192cf955e62306, type: 2}
+  currencyDatabase: {fileID: 11400000, guid: bccd61c1da5852c4183cedf91beff0be, type: 2}

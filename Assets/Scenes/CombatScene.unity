@@ -234,7 +234,7 @@ MonoBehaviour:
   playerInstance: {fileID: 1867193068}
   enemyInstance: {fileID: 133626863}
   pathController: {fileID: 1183871874}
-  timeBetweenActions: 0.02
+  timeBetweenActions: 0.05
   isPlayerTurn: 0
   combatIsEnded: 0
   turnStage: 0
@@ -503,6 +503,7 @@ MonoBehaviour:
     enemyID: 0
     maxHP: 0
     maxMP: 0
+    resilience: 0
     spells: []
   enemyID: 0
   enemyAI: {fileID: 133626864}
@@ -2408,6 +2409,9 @@ MonoBehaviour:
   defaultColor: {r: 0.6313726, g: 0.6313726, b: 0.6313726, a: 1}
   selectedColor: {r: 0.5176471, g: 0.9529412, b: 0.94509804, a: 1}
   blankSprite: {fileID: 21300000, guid: 3f5334a5759fb86418ad8c517a848ab5, type: 3}
+  pageUpButton: {fileID: 0}
+  pageDownButton: {fileID: 0}
+  pageText: {fileID: 0}
   inventoryController: {fileID: 11400000, guid: ba8c4f93e0524844cb171dddc17884af, type: 2}
   defaultHeight: 150
   shrunkHeight: 53.333
@@ -8367,9 +8371,8 @@ MonoBehaviour:
   mainText: {fileID: 663027698}
   detailText: {fileID: 496774027}
   rewardDatabase: {fileID: 11400000, guid: 38c0e09ed4a430948aae2e08cc04b8a4, type: 2}
-  inventoryController: {fileID: 11400000, guid: ba8c4f93e0524844cb171dddc17884af, type: 2}
+  distributor: {fileID: 11400000, guid: 903a7b57f540b6849ac1f4a265430e0f, type: 2}
   enemyInstance: {fileID: 133626863}
-  runeGenerator: {fileID: 11400000, guid: 0be3e9fccc85c46408204aaa2d078626, type: 2}
 --- !u!1001 &2089915793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8377,6 +8380,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 301550730}
     m_Modifications:
+    - target: {fileID: 4537110212268841021, guid: 5e298127529140a46b6bd0eb73fa6304, type: 3}
+      propertyPath: characterInstance
+      value: 
+      objectReference: {fileID: 1867193068}
     - target: {fileID: 7345887567030924475, guid: 5e298127529140a46b6bd0eb73fa6304, type: 3}
       propertyPath: m_fontSize
       value: 18

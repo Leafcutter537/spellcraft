@@ -12,35 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51acfc21c6b7e7e4b8267683e5ccb63f, type: 3}
   m_Name: DevRuneInventory
   m_EditorClassIdentifier: 
-  firstRuneList:
-  - rank: 1
-    quality: 15
-    runeType: 0
-    category: 0
-    secondaryCategory: 0
-  - rank: 1
-    quality: 15
-    runeType: 1
-    category: 2
-    secondaryCategory: 4
-  - rank: 1
-    quality: 15
-    runeType: 2
-    category: 0
-    secondaryCategory: 0
-  - rank: 1
-    quality: 15
-    runeType: 1
-    category: 2
-    secondaryCategory: 4
-  - rank: 1
-    quality: 15
-    runeType: 4
-    category: 2
-    secondaryCategory: 4
-  - rank: 1
-    quality: 15
-    runeType: 5
-    category: 2
-    secondaryCategory: 4
+  firstRuneList: []
   secondRuneList: []

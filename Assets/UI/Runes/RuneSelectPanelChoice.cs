@@ -78,4 +78,12 @@ public class RuneSelectPanelChoice : DragPanelChoice
         return selectPanel == null;
     }
 
+    private void OnDestroy()
+    {
+        if (selectChoice != null)
+        {
+            inventoryController.UnholdRune(selectChoice as Rune);
+        }
+    }
+
 }

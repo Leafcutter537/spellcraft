@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DevProgress
   m_EditorClassIdentifier: 
   firstDefeatEnemies: []
-  playerPosition: {x: 4, y: 4}
+  playerPosition: {x: 19, y: 16}

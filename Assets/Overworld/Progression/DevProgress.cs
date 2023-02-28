@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = nameof(DevProgress), menuName = "ScriptableObjects/DevProgress")]
+[CreateAssetMenu(fileName = nameof(DevProgress), menuName = "ScriptableObjects/Progression/DevProgress")]
 public class DevProgress : ScriptableObject
 {
     public List<DefeatedEnemy> firstDefeatEnemies;

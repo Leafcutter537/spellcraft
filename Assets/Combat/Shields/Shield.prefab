@@ -100,4 +100,8 @@ MonoBehaviour:
   combatLogMessageEvent: {fileID: 11400000, guid: 800820e1c00dd78469e98923ec446848, type: 2}
   turnsRemaining: 0
   strength: 0
-  element: 0
+  spriteRenderer: {fileID: 4602605062186025520}
+  fireColor: {r: 0.9150943, g: 0.26596677, b: 0.06388391, a: 1}
+  frostColor: {r: 0.4017088, g: 0.84904504, b: 0.9811321, a: 1}
+  pathName: 
+  ownerName: 

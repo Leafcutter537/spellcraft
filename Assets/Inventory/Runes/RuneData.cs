@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Currency;
 using UnityEngine;
 
 
@@ -13,15 +14,17 @@ namespace Assets.Inventory.Runes
         public int quality;
         public RuneType runeType;
         public RuneCategory category;
-        public RuneSecondaryCategory secondaryCategory;
+        public RequiredPrimary requiredPrimary;
+        public CurrencyType currencyType;
 
-        public RuneData(int rank, int quality, RuneType runeType, RuneCategory category, RuneSecondaryCategory secondaryCategory)
+        public RuneData(int rank, int quality, CurrencyType currencyType, RuneType runeType, RuneCategory category, RequiredPrimary requiredPrimary)
         {
             this.rank = rank;
             this.quality = quality;
             this.runeType = runeType;
             this.category = category;
-            this.secondaryCategory = secondaryCategory;
+            this.requiredPrimary = requiredPrimary;
+            this.currencyType = currencyType;
         }
 
         public RuneData(RuneData runeData)
@@ -30,7 +33,8 @@ namespace Assets.Inventory.Runes
             quality = runeData.quality;
             runeType = runeData.runeType;
             category = runeData.category;
-            secondaryCategory = runeData.secondaryCategory;
+            requiredPrimary = runeData.requiredPrimary;
+            currencyType = runeData.currencyType;
         }
 
         public string GetRuneName()
@@ -45,6 +49,7 @@ namespace Assets.Inventory.Runes
         StrengthenAdjacent,
         Shield,
         Counterspell,
+        Heal,
         FireStrengthenAdjacent,
         FrostStrengthenAdjacent
     }
@@ -54,13 +59,11 @@ namespace Assets.Inventory.Runes
         Secondary,
         Enhancement
     }
-    public enum RuneSecondaryCategory
+    public enum RequiredPrimary
     {
         None,
         Projectile,
-        Shield,
-        Counterspell,
-        Any
+        Shield
     }
 
 }

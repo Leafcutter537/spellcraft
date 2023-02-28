@@ -11,7 +11,16 @@ namespace Assets.Combat
     {
         // Projectile Stats
         [HideInInspector] public int strength;
-        [HideInInspector] public Element element;
+        private Element _element;
+        [HideInInspector] public Element element
+        {
+            get { return _element; }
+            set 
+            { 
+                _element = value;
+                UpdateVisuals();
+            }
+        }
         [HideInInspector] public int turnsToArrive;
         // Scene References
         [HideInInspector] public CharacterInstance target;
@@ -24,6 +33,10 @@ namespace Assets.Combat
         private bool isMoving;
         [SerializeField] private float speed;
         private bool arrivesAtTargetThisTurn;
+        [Header("Element Visuals")]
+        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private Color fireColor;
+        [SerializeField] private Color frostColor;
         [Header("Movement Event References")]
         [SerializeField] private StartCombatAnimationEvent startCombatAnimationEvent;
         [SerializeField] private EndCombatAnimationEvent endCombatAnimationEvent;
@@ -98,6 +111,27 @@ namespace Assets.Combat
             string turnsString = turnsToArrive == 1 ? " turn." : " turns.";
             turnsString = turnsToArrive.ToString() + turnsString;
             return direction + elementString + " projectile of strength " + strength.ToString() + "; arrives in " + turnsString;
+        }
+
+        public int PredictEnemyShieldEffectiveness(int shieldStrength, Element shieldElement, int shieldDuration)
+        {
+            if (shieldDuration < turnsToArrive)
+                return 0;
+            NegatedDamage negatedDamage = Shield.GetNegatedDamage(shieldStrength, this.strength, shieldElement, this.element);
+            return negatedDamage.projectileStrengthLoss;
+        }
+
+        public void UpdateVisuals()
+        {
+            switch (element)
+            {
+                case (Element.Fire):
+                    spriteRenderer.color = fireColor;
+                    break;
+                case (Element.Frost):
+                    spriteRenderer.color = frostColor;
+                    break;
+            }
         }
     }
 }

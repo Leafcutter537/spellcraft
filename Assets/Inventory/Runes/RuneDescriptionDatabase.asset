@@ -17,6 +17,7 @@ MonoBehaviour:
   - Increases the strength of connected primary and secondary runes by [STRENGTH]%.
   - Creates a shield of strength [STRENGTH] on the chosen path.
   - Increases the strength of connected primary and secondary runes by [STRENGTH]%.
+  - Restores [STRENGTH] health to the caster.
   - Any connected projectile and shield effects will have the Fire Element. Also,
     increases the strength of connected primary and secondary runes by [STRENGTH]%.
   - Any connected projectile and shield effects will have the Frost Element. Also,

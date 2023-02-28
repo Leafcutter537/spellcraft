@@ -169,22 +169,22 @@ namespace Assets.Combat
                 }
             }
         }
-        public void CreateProjectile(Path path, CreateProjectile createProjectile, bool isPlayerOwned)
+        public void CreateProjectile(Path path, CreateProjectile createProjectile, int projectilePower, bool isPlayerOwned)
         {
             int targetIndex = GetPathIndex(path);
             int thisProjectileIndex = targetIndex + createProjectile.path;
             if (thisProjectileIndex >= 0 & thisProjectileIndex < paths.Count)
             {
-                paths[thisProjectileIndex].CreateProjectile(createProjectile, isPlayerOwned);
+                paths[thisProjectileIndex].CreateProjectile(createProjectile, projectilePower, isPlayerOwned);
             }
         }
-        public void CreateShield(Path path, CreateShield createShield, bool isPlayerOwned)
+        public void CreateShield(Path path, CreateShield createShield, int shieldPower, bool isPlayerOwned)
         {
             int targetIndex = GetPathIndex(path);
             int thisShieldIndex = targetIndex + createShield.path;
             if (thisShieldIndex >= 0 & thisShieldIndex < paths.Count)
             {
-                paths[thisShieldIndex].CreateShield(createShield, isPlayerOwned);
+                paths[thisShieldIndex].CreateShield(createShield, shieldPower, isPlayerOwned);
             }
         }
         private void ClearGhostEffects()

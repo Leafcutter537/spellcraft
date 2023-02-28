@@ -22,12 +22,13 @@ namespace Assets.Combat
 
         private void Awake()
         {
-            maxHP = playerStats.GetHP();
-            maxMP = playerStats.GetMP();
+            maxHP = playerStats.GetCombatStat(CombatStat.HP);
+            maxMP = playerStats.GetCombatStat(CombatStat.MP);
             currentHP = maxHP;
             currentMP = maxMP;
             characterName = playerStats.playerName;
             statPanel.ShowStatInfo();
+            baseStats = playerStats.GetStatBundle();
         }
         private void OnEnable()
         {

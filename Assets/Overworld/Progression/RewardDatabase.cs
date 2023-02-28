@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Progression
 {
-    [CreateAssetMenu(fileName = nameof(RewardDatabase), menuName = "ScriptableObjects/RewardDatabase")]
+    [CreateAssetMenu(fileName = nameof(RewardDatabase), menuName = "ScriptableObjects/Progression/RewardDatabase")]
     public class RewardDatabase : ScriptableObject
     {
         public Dictionary<int, RewardData> rewards;

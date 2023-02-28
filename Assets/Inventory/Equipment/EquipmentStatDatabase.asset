@@ -1,0 +1,165 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe542778fb88f794ab6bc1d9a8a682f3, type: 3}
+  m_Name: EquipmentStatDatabase
+  m_EditorClassIdentifier: 
+  equipmentStatData:
+  - equipmentName: Initiate's Hood
+    sprite: {fileID: 21300000, guid: e685151f1cf4cd9479033769692930b1, type: 3}
+    baseMana: 4
+    baseHealth: 12
+    baseResilience: 0
+    baseProjectilePower: 0
+    baseShieldPower: 0
+    baseHealPower: 0
+    manaGrowth: 1
+    healthGrowth: 3
+    resilienceGrowth: 0
+    projectilePowerGrowth: 0
+    shieldPowerGrowth: 0
+    healPowerGrowth: 0
+    maxLevel: 0
+  - equipmentName: Initiate's Robe
+    sprite: {fileID: 21300000, guid: 0756cf0c767f2814b9cfc8ef85a436db, type: 3}
+    baseMana: 4
+    baseHealth: 0
+    baseResilience: 4
+    baseProjectilePower: 0
+    baseShieldPower: 0
+    baseHealPower: 0
+    manaGrowth: 1
+    healthGrowth: 0
+    resilienceGrowth: 1
+    projectilePowerGrowth: 0
+    shieldPowerGrowth: 0
+    healPowerGrowth: 0
+    maxLevel: 0
+  - equipmentName: Initiate's Leggings
+    sprite: {fileID: 21300000, guid: 39d05c3aa2ade4342a96302dbf531584, type: 3}
+    baseMana: 4
+    baseHealth: 0
+    baseResilience: 0
+    baseProjectilePower: 4
+    baseShieldPower: 0
+    baseHealPower: 0
+    manaGrowth: 1
+    healthGrowth: 0
+    resilienceGrowth: 0
+    projectilePowerGrowth: 1
+    shieldPowerGrowth: 0
+    healPowerGrowth: 0
+    maxLevel: 0
+  - equipmentName: Initiate's Boots
+    sprite: {fileID: 21300000, guid: db449623731c40d47949fd8e56da7a47, type: 3}
+    baseMana: 4
+    baseHealth: 0
+    baseResilience: 0
+    baseProjectilePower: 0
+    baseShieldPower: 4
+    baseHealPower: 0
+    manaGrowth: 1
+    healthGrowth: 0
+    resilienceGrowth: 0
+    projectilePowerGrowth: 0
+    shieldPowerGrowth: 1
+    healPowerGrowth: 0
+    maxLevel: 0
+  - equipmentName: Initiate's Gloves
+    sprite: {fileID: 21300000, guid: eed02f6dea1e7ff44a37075d931f3371, type: 3}
+    baseMana: 4
+    baseHealth: 0
+    baseResilience: 0
+    baseProjectilePower: 0
+    baseShieldPower: 0
+    baseHealPower: 4
+    manaGrowth: 1
+    healthGrowth: 0
+    resilienceGrowth: 0
+    projectilePowerGrowth: 0
+    shieldPowerGrowth: 0
+    healPowerGrowth: 1
+    maxLevel: 0
+  - equipmentName: Invoker's Hood
+    sprite: {fileID: 21300000, guid: 6ed0d9c079a91a74ab1e6254a74be3c9, type: 3}
+    baseMana: 0
+    baseHealth: 0
+    baseResilience: 0
+    baseProjectilePower: 0
+    baseShieldPower: 0
+    baseHealPower: 0
+    manaGrowth: 0
+    healthGrowth: 0
+    resilienceGrowth: 0
+    projectilePowerGrowth: 0
+    shieldPowerGrowth: 0
+    healPowerGrowth: 0
+    maxLevel: 0
+  - equipmentName: Invoker's Robe
+    sprite: {fileID: 21300000, guid: 55818dbe2ed2a5f47b5e5de86eafe7ee, type: 3}
+    baseMana: 0
+    baseHealth: 0
+    baseResilience: 0
+    baseProjectilePower: 0
+    baseShieldPower: 0
+    baseHealPower: 0
+    manaGrowth: 0
+    healthGrowth: 0
+    resilienceGrowth: 0
+    projectilePowerGrowth: 0
+    shieldPowerGrowth: 0
+    healPowerGrowth: 0
+    maxLevel: 0
+  - equipmentName: Invoker's Leggings
+    sprite: {fileID: 21300000, guid: ac87a8cd519825a489e183a2d811d75e, type: 3}
+    baseMana: 0
+    baseHealth: 0
+    baseResilience: 0
+    baseProjectilePower: 0
+    baseShieldPower: 0
+    baseHealPower: 0
+    manaGrowth: 0
+    healthGrowth: 0
+    resilienceGrowth: 0
+    projectilePowerGrowth: 0
+    shieldPowerGrowth: 0
+    healPowerGrowth: 0
+    maxLevel: 0
+  - equipmentName: Invoker's Boots
+    sprite: {fileID: 21300000, guid: cc275a2b60e667b41b82b75b92c2babc, type: 3}
+    baseMana: 0
+    baseHealth: 0
+    baseResilience: 0
+    baseProjectilePower: 0
+    baseShieldPower: 0
+    baseHealPower: 0
+    manaGrowth: 0
+    healthGrowth: 0
+    resilienceGrowth: 0
+    projectilePowerGrowth: 0
+    shieldPowerGrowth: 0
+    healPowerGrowth: 0
+    maxLevel: 0
+  - equipmentName: Invoker's Gloves
+    sprite: {fileID: 21300000, guid: 5fc3c7aba0dd9bb4597b6a59db6d9a14, type: 3}
+    baseMana: 0
+    baseHealth: 0
+    baseResilience: 0
+    baseProjectilePower: 0
+    baseShieldPower: 0
+    baseHealPower: 0
+    manaGrowth: 0
+    healthGrowth: 0
+    resilienceGrowth: 0
+    projectilePowerGrowth: 0
+    shieldPowerGrowth: 0
+    healPowerGrowth: 0
+    maxLevel: 0

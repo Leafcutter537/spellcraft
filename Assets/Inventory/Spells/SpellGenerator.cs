@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Assets.Inventory.Spells
 {
-    [CreateAssetMenu(fileName = nameof(SpellGenerator), menuName = "ScriptableObjects/SpellGenerator")]
+    [CreateAssetMenu(fileName = nameof(SpellGenerator), menuName = "ScriptableObjects/Spells/SpellGenerator")]
     public class SpellGenerator : ScriptableObject
     {
         [SerializeField] private RuneGenerator runeGenerator;
@@ -118,15 +118,17 @@ namespace Assets.Inventory.Spells
             {
                 if (runes[i] != null)
                 {
+                    int spellStrength = (int)Mathf.Round(runes[i].strength * (1 + modifications[i].strengthPercentage / 100f));
                     switch (runes[i].runeData.runeType)
                     {
                         case RuneType.Projectile:
-                            int projectileStrength = (int)Mathf.Round(runes[i].strength * (1 + modifications[i].strengthPercentage / 100f));
-                            returnList.Add(new CreateProjectile(0, projectileStrength, modifications[i].elementChange));
+                            returnList.Add(new CreateProjectile(0, spellStrength, modifications[i].elementChange));
                             break;
                         case RuneType.Shield:
-                            int shieldStrength = (int)Mathf.Round(runes[i].strength * (1 + modifications[i].strengthPercentage / 100f));
-                            returnList.Add(new CreateShield(0, shieldStrength, modifications[i].elementChange, 2));
+                            returnList.Add(new CreateShield(0, spellStrength, modifications[i].elementChange, 1));
+                            break;
+                        case RuneType.Heal:
+                            returnList.Add(new Heal(spellStrength));
                             break;
                     }
                 }
@@ -156,7 +158,7 @@ namespace Assets.Inventory.Spells
                     }
                 }
             }
-            return TargetType.NoPrimary;
+            return TargetType.Self;
         }
 
         public bool IsRuneEntryValid(List<RuneData> runeDataList, ScrollData scrollData)

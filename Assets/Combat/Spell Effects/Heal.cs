@@ -14,7 +14,16 @@ namespace Assets.Combat.SpellEffects
 
         public override string GetDescription()
         {
-            return "Restores " + strength + " health to the caster.";
+            return GetDescription(null);
+        }
+        public override string GetDescription(StatBundle bundle)
+        {
+            string bonusString = "";
+            if (bundle != null)
+            {
+                bonusString = " (+" + bundle.healPower + ")"; 
+            }
+            return "Restores " + strength +  bonusString + " health to the caster.";
         }
     }
 }

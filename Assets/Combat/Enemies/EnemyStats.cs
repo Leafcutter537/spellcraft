@@ -4,12 +4,21 @@ using System.Collections.Generic;
 using Assets.Combat.Enemy;
 using UnityEngine;
 
-[Serializable]
-public class EnemyStats
+namespace Assets.Combat
 {
-    public string enemyName;
-    public int enemyID;
-    public int maxHP;
-    public int maxMP;
-    public List<EnemySpellData> spells;
+    [Serializable]
+    public class EnemyStats
+    {
+        public string enemyName;
+        public int enemyID;
+        public int maxHP;
+        public int maxMP;
+        public int resilience;
+        public List<EnemySpellData> spells;
+
+        public StatBundle GetStatBundle()
+        {
+            return new StatBundle(maxHP, maxMP, resilience, 0, 0, 0);
+        }
+    }
 }

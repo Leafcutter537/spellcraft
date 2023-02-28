@@ -1,7 +1,7 @@
 using Assets.EventSystem;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = nameof(EndCombatAnimationEvent), menuName = "Events/EndCombatAnimationEvent")]
+[CreateAssetMenu(fileName = nameof(EndCombatAnimationEvent), menuName = "Events/Combat/EndCombatAnimationEvent")]
 public class EndCombatAnimationEvent : BaseEvent<CombatLogEventParameters>
 {
 }

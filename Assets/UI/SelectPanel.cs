@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,10 @@ public abstract class SelectPanel : MonoBehaviour
     [SerializeField] protected Color defaultColor;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Sprite blankSprite;
+    [Header("Page Selection")]
+    [SerializeField] private Button pageUpButton;
+    [SerializeField] private Button pageDownButton;
+    [SerializeField] private TextMeshProUGUI pageText;
 
 
     protected virtual void Awake()
@@ -21,7 +26,7 @@ public abstract class SelectPanel : MonoBehaviour
         selectedIndex = -1;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         RefreshInventory();
     }
@@ -78,6 +83,7 @@ public abstract class SelectPanel : MonoBehaviour
     public void RefreshInventory()
     {
         GetInventory();
+        inventoryIndex = 0;
         AssignSelectChoices();
     }
 
@@ -99,6 +105,16 @@ public abstract class SelectPanel : MonoBehaviour
         {
             selectPanelChoices[j].SetChoice(null);
             j++;
+        }
+        if (pageUpButton != null)
+            pageUpButton.interactable = (inventoryIndex + selectPanelChoices.Count < itemList.Count);
+        if (pageDownButton != null)
+            pageDownButton.interactable = (inventoryIndex - selectPanelChoices.Count >= 0);
+        if (pageText != null)
+        {
+            int numPages = (int)((itemList.Count-1) / selectPanelChoices.Count) + 1;
+            int currentPage = (int)(inventoryIndex / selectPanelChoices.Count) + 1;
+            pageText.text = "Page " + currentPage + " of " + numPages;
         }
 
     }

@@ -8,23 +8,40 @@ namespace Assets.Combat
     public class Shield : MonoBehaviour
     {
         [SerializeField] private CombatLogMessageEvent combatLogMessageEvent;
-        public int turnsRemaining;
-        public int strength;
-        public Element element;
-        public string pathName;
-        public string ownerName;
-        public int PredictDamageNegated(int strength, Element element)
+        // Shield Stats
+        [HideInInspector] public int turnsRemaining;
+        [HideInInspector] public int strength;
+        private Element _element;
+        [HideInInspector]
+        public Element element
         {
-            return Mathf.Min(this.strength, strength);
+            get { return _element; }
+            set
+            {
+                _element = value;
+                UpdateVisuals();
+            }
+        }
+        [Header("Element Visuals")]
+        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private Color fireColor;
+        [SerializeField] private Color frostColor;
+        // Names
+        [HideInInspector] public string pathName;
+        [HideInInspector] public string ownerName;
+        public int PredictDamageNegated(int projectileStrength, Element projectileElement)
+        {
+            NegatedDamage negatedDamage = GetNegatedDamage(this.strength, projectileStrength, this.element, projectileElement);
+            return negatedDamage.projectileStrengthLoss;
         }
         public int NegateDamage(Projectile projectile)
         {
-            int damageNegated = Mathf.Min(projectile.strength, this.strength);
-            this.strength -= damageNegated;
+            NegatedDamage negatedDamage = GetNegatedDamage(this.strength, projectile.strength, this.element, projectile.element);
+            this.strength -= negatedDamage.shieldStrengthLoss;
             string messagedEnd = this.strength > 0 ? "!" : " and was destroyed!";
-            string combatMessage = ownerName + "'s shield absorbed " + damageNegated + " damage" + messagedEnd;
+            string combatMessage = ownerName + "'s shield absorbed " + negatedDamage.projectileStrengthLoss + " damage" + messagedEnd;
             combatLogMessageEvent.Raise(this, new CombatLogEventParameters(combatMessage));
-            return damageNegated;
+            return negatedDamage.projectileStrengthLoss;
         }
 
         public bool ShieldPreventsAllDamage(Projectile projectile)
@@ -49,5 +66,37 @@ namespace Assets.Combat
         {
             return ownerName + "'s shield of strength " + strength + ". Expires in " + turnsRemaining + " turns.";
         }
+
+        public void UpdateVisuals()
+        {
+            
+            switch (element)
+            {
+                case (Element.Fire):
+                    spriteRenderer.color = fireColor;
+                    break;
+                case (Element.Frost):
+                    spriteRenderer.color = frostColor;
+                    break;
+            }
+        }
+
+        public static NegatedDamage GetNegatedDamage(int shieldStrength, int projectileStrength, Element shieldElement, Element projectileElement)
+        {
+            NegatedDamage negatedDamage = new NegatedDamage();
+            float shieldDamageMultiplier = SpellEffect.GetElementDamageMultiplier(shieldElement, projectileElement);
+            if (shieldStrength < projectileStrength * shieldDamageMultiplier)
+            {
+                negatedDamage.shieldStrengthLoss = shieldStrength;
+                negatedDamage.projectileStrengthLoss = (int)(shieldStrength / shieldDamageMultiplier);
+            }
+            else
+            {
+                negatedDamage.projectileStrengthLoss = projectileStrength;
+                negatedDamage.shieldStrengthLoss = (int)(projectileStrength * shieldDamageMultiplier);
+            }
+            return negatedDamage;
+        }
+
     }
 }

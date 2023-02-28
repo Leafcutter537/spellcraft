@@ -1,3 +1,4 @@
+using Assets.Combat;
 using Assets.EventSystem;
 using Assets.Inventory.Runes;
 using Assets.Inventory.Spells;
@@ -11,6 +12,9 @@ public class SpellInfoDisplay : InfoDisplay
     [SerializeField] private TextMeshProUGUI manaCostText;
     [Header("Event References")]
     [SerializeField] private EnterTooltipEvent enterTooltipEvent;
+    [Header("Stat References")]
+    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private CharacterInstance characterInstance;
 
     private void OnEnable()
     {
@@ -28,7 +32,13 @@ public class SpellInfoDisplay : InfoDisplay
     }
     public void DisplaySpellInfo(Spell spell)
     {
-        descriptionText.text = spell.GetDescription();
+        if (characterInstance != null)
+            descriptionText.text = spell.GetDescription(characterInstance.GetStatBundle());
+        else if (playerStats != null)
+            descriptionText.text = spell.GetDescription(playerStats.GetStatBundle());
+        else
+            descriptionText.text = spell.GetDescription();
+
         manaCostText.text = "Mana Cost: " + spell.manaCost;
     }
     public override void ClearInfo()

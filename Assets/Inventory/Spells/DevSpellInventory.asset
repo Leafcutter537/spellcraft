@@ -14,28 +14,90 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstSpellList:
   - scrollData:
+      cost:
+        quantity: 0
+        currencyType: 0
+      scrollName: 
       numPerLevel: 010000000200000001000000
       connections: 000000000100000001000000020000000200000003000000
     runeData:
     - rank: 1
-      quality: 30
+      quality: 2
       runeType: 0
       category: 0
-      secondaryCategory: 0
+      requiredPrimary: 0
+      currencyType: 0
     - rank: 1
-      quality: 30
+      quality: 2
       runeType: 1
       category: 2
-      secondaryCategory: 0
+      requiredPrimary: 0
+      currencyType: 0
     - rank: 1
-      quality: 30
+      quality: 2
       runeType: 1
       category: 2
-      secondaryCategory: 0
+      requiredPrimary: 0
+      currencyType: 0
     - rank: 1
-      quality: 30
+      quality: 2
       runeType: 1
       category: 2
-      secondaryCategory: 0
+      requiredPrimary: 0
+      currencyType: 0
     spellName: Bolt
+  - scrollData:
+      cost:
+        quantity: 0
+        currencyType: 0
+      scrollName: 
+      numPerLevel: 010000000100000001000000
+      connections: 00000000010000000100000002000000
+    runeData:
+    - rank: 1
+      quality: 2
+      runeType: 1
+      category: 2
+      requiredPrimary: 0
+      currencyType: 0
+    - rank: 1
+      quality: 2
+      runeType: 2
+      category: 0
+      requiredPrimary: 0
+      currencyType: 0
+    - rank: 1
+      quality: 2
+      runeType: 1
+      category: 2
+      requiredPrimary: 0
+      currencyType: 0
+    spellName: Shield
+  - scrollData:
+      cost:
+        quantity: 0
+        currencyType: 0
+      scrollName: 
+      numPerLevel: 010000000100000001000000
+      connections: 00000000010000000100000002000000
+    runeData:
+    - rank: 1
+      quality: 2
+      runeType: 1
+      category: 2
+      requiredPrimary: 0
+      currencyType: 0
+    - rank: 1
+      quality: 2
+      runeType: 0
+      category: 0
+      requiredPrimary: 0
+      currencyType: 0
+    - rank: 1
+      quality: 2
+      runeType: 5
+      category: 2
+      requiredPrimary: 0
+      currencyType: 0
+    spellName: Fireball
   secondSpellList: []

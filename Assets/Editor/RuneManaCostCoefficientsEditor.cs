@@ -15,7 +15,7 @@ public class RuneManaCostDatabaseEditor : Editor
     }
     public override void OnInspectorGUI()
     {
-        EditorGUILayout.LabelField("Formula is : (a) * ((b^(rank-1))* (1 + (c*quality / 100))");
+        EditorGUILayout.LabelField("Formula is : (a) * ((b^(rank-1))* (1 + (c*quality / 20))");
         serializedObject.Update();
         int numRuneTypes = Enum.GetNames(typeof(RuneType)).Length;
         runeManaCostCoefficients.arraySize = numRuneTypes;

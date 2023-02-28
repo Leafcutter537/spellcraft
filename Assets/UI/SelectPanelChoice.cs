@@ -22,7 +22,7 @@ public class SelectPanelChoice : MonoBehaviour, IPointerEnterHandler, IPointerCl
     [SerializeField] protected EnterTooltipEvent enterTooltipEvent;
     [SerializeField] protected ExitTooltipEvent exitTooltipEvent;
     [Header("Information Display")]
-    [SerializeField] private Image icon;
+    [SerializeField] protected Image icon;
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] protected TextMeshProUGUI descriptionText;
     [SerializeField] private InfoDisplay infoDisplay;
@@ -44,7 +44,7 @@ public class SelectPanelChoice : MonoBehaviour, IPointerEnterHandler, IPointerCl
     private Sprite originalSprite;
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (selectPanel != null)
         {
@@ -223,7 +223,10 @@ public class SelectPanelChoice : MonoBehaviour, IPointerEnterHandler, IPointerCl
 
     public void SetDefaultSprite(Sprite sprite)
     {
-        defaultSprite = sprite;
+        if (defaultSprite == null)
+        {
+            defaultSprite = sprite;
+        }
     }
 
     protected void UpdateIcon()

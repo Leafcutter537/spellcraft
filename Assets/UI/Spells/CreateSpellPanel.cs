@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Assets.Inventory.Spells;
 using TMPro;
+using Assets.Currency;
 
 public class CreateSpellPanel : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class CreateSpellPanel : MonoBehaviour
     [SerializeField] private Button cancelButton;
     [SerializeField] private TextMeshProUGUI nameSpellTitle;
     [SerializeField] private TMP_InputField nameInputField;
+    [SerializeField] private GameObject scrollDisplayMask;
     [SerializeField] private InventoryController inventoryController;
     [SerializeField] private SpellPreview spellPreview;
     [SerializeField] private SpellCreatedEvent spellCreatedEvent;
@@ -40,6 +42,7 @@ public class CreateSpellPanel : MonoBehaviour
         inventoryController.spells.Add(spell);
         spellCreatedEvent.Raise(this, null);
         inventoryController.RemoveHeldRunesFromInventory();
+        inventoryController.SubtractCurrencyQuantity(spell.spellData.scrollData.cost);
         SetSpellNamesActive(false);
     }
     private string GetDefaultName()
@@ -56,6 +59,7 @@ public class CreateSpellPanel : MonoBehaviour
     private void SetSpellNamesActive(bool isActive)
     {
         createSpellButton.gameObject.SetActive(!isActive);
+        scrollDisplayMask.SetActive(isActive);
         confirmButton.gameObject.SetActive(isActive);
         cancelButton.gameObject.SetActive(isActive);
         nameInputField.gameObject.SetActive(isActive);

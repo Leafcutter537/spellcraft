@@ -1,4 +1,5 @@
 using UnityEngine;
+using Assets.Combat;
 using UnityEngine.SceneManagement;
 
 public class EnemyInteractablePanel : MonoBehaviour

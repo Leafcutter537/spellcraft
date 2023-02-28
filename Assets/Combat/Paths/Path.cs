@@ -115,6 +115,10 @@ namespace Assets.Combat
                     {
                         tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("You can only have one projectile traveling on a path at a time!"));
                     }
+                    else if (spell.targetType == TargetType.Shield & playerShield != null)
+                    {
+                        tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("You can only have one shield on a path at a time!"));
+                    }
                     else
                     {
                         pathSelectEvent.Raise(this, null);
@@ -180,13 +184,13 @@ namespace Assets.Combat
             }
             ghostEffects = new List<GameObject>();
         }
-        public void CreateProjectile(CreateProjectile createProjectile, bool isPlayerOwned)
+        public void CreateProjectile(CreateProjectile createProjectile, int projectilePower, bool isPlayerOwned)
         {
             Vector3 projectilePosition = GetCoordinatesOnEllipse(projectilePath[0]);
             if (!isPlayerOwned)
                 projectilePosition.x *= -1;
             Projectile projectile = Instantiate(pathController.projectilePrefab, projectilePosition, Quaternion.identity).GetComponent<Projectile>();
-            projectile.strength = createProjectile.strength;
+            projectile.strength = createProjectile.strength + projectilePower;
             projectile.element = createProjectile.element;
             projectile.turnsToArrive = turnsToArrive;
             projectile.target = isPlayerOwned ? pathController.enemyInstance : pathController.playerInstance;
@@ -198,16 +202,16 @@ namespace Assets.Combat
             else
                 enemyProjectile = projectile;
         }
-        public void CreateShield(CreateShield createShield, bool isPlayerOwned)
+        public void CreateShield(CreateShield createShield, int shieldPower, bool isPlayerOwned)
         {
             Vector3 shieldPosition = GetCoordinatesOnEllipse(shieldPoint);
             if (!isPlayerOwned)
                 shieldPosition.x *= -1;
             Shield shield = Instantiate(pathController.shieldPrefab, shieldPosition, Quaternion.identity).GetComponent<Shield>();
             float angle = GetShieldRotation();
-            if (!isPlayerOwned) angle *= -1;
+            if (!isPlayerOwned) angle = (angle * -1) + 180;
             shield.transform.Rotate(new Vector3(0, 0, angle));
-            shield.strength = createShield.strength;
+            shield.strength = createShield.strength + shieldPower;
             shield.element = createShield.element;
             shield.turnsRemaining = createShield.duration;
             shield.pathName = pathName;
@@ -227,6 +231,13 @@ namespace Assets.Combat
                 return playerShield.PredictDamageNegated(strength, element);
             else
                 return 0;
+        }
+        public int PredictEnemyShieldEffectiveness(int strength, Element element, int shieldDuration)
+        {
+            if (playerProjectile == null)
+                return 0;
+            else
+                return playerProjectile.PredictEnemyShieldEffectiveness(strength, element, shieldDuration);
         }
         public int GetNegatedDamage(bool isPlayerProjectile, Projectile projectile)
         {

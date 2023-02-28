@@ -98,12 +98,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strength: 0
-  element: 0
   turnsToArrive: 0
   target: {fileID: 0}
   path: {fileID: 0}
   t: 0
   deltaT: 0.05
   speed: 8
+  spriteRenderer: {fileID: 8746586451945652214}
+  fireColor: {r: 0.9137255, g: 0.26666668, b: 0.0627451, a: 1}
+  frostColor: {r: 0.4, g: 0.8509804, b: 0.98039216, a: 1}
   startCombatAnimationEvent: {fileID: 11400000, guid: b260627e39d08a044a8de786c03221dc, type: 2}
   endCombatAnimationEvent: {fileID: 11400000, guid: 8d2179671cef3ba4cbf82ace5abc0861, type: 2}

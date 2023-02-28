@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Inventory.Runes
 {
-    [CreateAssetMenu(fileName = nameof(RuneSpriteDatabase), menuName = "ScriptableObjects/RuneSpriteDatabase")]
+    [CreateAssetMenu(fileName = nameof(RuneSpriteDatabase), menuName = "ScriptableObjects/Runes/RuneSpriteDatabase")]
     public class RuneSpriteDatabase : ScriptableObject
     {
         [SerializeField] private List<Sprite> symbolSprites;

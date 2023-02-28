@@ -41,9 +41,11 @@ namespace Assets.Combat
             switch (spells[spellIndex].targetType)
             {
                 case TargetType.Projectile:
-                    return AttemptCastProjectileSpell(spells[spellIndex]);
+                    return AttemptCastPathSpell(spells[spellIndex]);
                 case TargetType.Heal:
                     return AttemptCastHealSpell(spells[spellIndex]);
+                case TargetType.Shield:
+                    return AttemptCastPathSpell(spells[spellIndex]);
             }
             return false;
         }
@@ -58,32 +60,32 @@ namespace Assets.Combat
                 return true;
             }
         }
-        private bool AttemptCastProjectileSpell(Spell spell)
+        private bool AttemptCastPathSpell(Spell spell)
         {
             if (enemyInstance.currentMP < spell.manaCost)
             {
                 return false;
             }
-            List<PathDamagePrediction> pathDamagePredictions = new List<PathDamagePrediction>();
+            List<PathEffectivenessPrediction> pathEffectivenessPredictions = new List<PathEffectivenessPrediction>();
             for (int i = 0; i < pathController.paths.Count; i++)
             {
-                int predictedDamage = PredictSpellDamage(spell, pathController.paths[i]);
-                predictedDamage = predictedDamage * pathController.paths.Count + pathPriority[i];
-                pathDamagePredictions.Add(new PathDamagePrediction(pathController.paths[i], predictedDamage));
+                int predictedEffectiveness = PredictSpellEffectiveness(spell, pathController.paths[i]);
+                predictedEffectiveness = predictedEffectiveness * pathController.paths.Count + pathPriority[i];
+                pathEffectivenessPredictions.Add(new PathEffectivenessPrediction(pathController.paths[i], predictedEffectiveness));
             }
-            int maxDamage = 0;
+            int maxStrength = -1;
             int maxIndex = 0;
-            for (int i = 0; i < pathDamagePredictions.Count; i++)
+            for (int i = 0; i < pathEffectivenessPredictions.Count; i++)
             {
-                if (pathDamagePredictions[i].predictedDamage > maxDamage)
+                if (pathEffectivenessPredictions[i].predictedEffectiveness > maxStrength)
                 {
-                    maxDamage = pathDamagePredictions[i].predictedDamage;
+                    maxStrength = pathEffectivenessPredictions[i].predictedEffectiveness;
                     maxIndex = i;
                 }
             }
-            if (maxDamage > 0)
+            if (maxStrength >= 0)
             {
-                enemyInstance.CastSpell(pathDamagePredictions[maxIndex].path, spell, false);
+                enemyInstance.CastSpell(pathEffectivenessPredictions[maxIndex].path, spell, false);
                 return true;
             }
             else
@@ -91,25 +93,51 @@ namespace Assets.Combat
                 return false;
             }
         }
-        private int PredictSpellDamage(Spell spell, Path path)
+
+        private int PredictSpellEffectiveness(Spell spell, Path path)
         {
-            if (path.enemyProjectile != null)
+            if (path.enemyProjectile != null & spell.targetType == TargetType.Projectile)
             {
                 return -1;
             }
-            int damageSum = 0;
+            if (path.enemyShield != null & spell.targetType == TargetType.Shield)
+            {
+                return -1;
+            }
+            int strengthSum = 0;
             foreach (SpellEffect spellEffect in spell.spellEffects)
             {
                 if (spellEffect is CreateProjectile createProjectile)
                 {
                     Path projectilePath = pathController.GetAdjacentPath(path, createProjectile.path);
+                    if (projectilePath == null)
+                        continue;
                     if (projectilePath.enemyProjectile == null)
                     {
-                        damageSum += createProjectile.strength - projectilePath.PredictPlayerShieldNegation(createProjectile.strength, createProjectile.element);
+                        strengthSum += PredictProjectileEffectiveness(createProjectile, path);
+                    }
+                }
+                if (spellEffect is CreateShield createShield)
+                {
+                    Path projectilePath = pathController.GetAdjacentPath(path, createShield.path);
+                    if (projectilePath == null)
+                        continue;
+                    if (projectilePath.enemyShield == null)
+                    {
+                        strengthSum += PredictShieldEffectiveness(createShield, path);
                     }
                 }
             }
-            return damageSum;
+            return strengthSum;
         }
+        private int PredictProjectileEffectiveness(CreateProjectile createProjectile, Path path)
+        {
+            return createProjectile.strength - path.PredictPlayerShieldNegation(createProjectile.strength, createProjectile.element);
+        }
+        private int PredictShieldEffectiveness(CreateShield createShield, Path path)
+        {
+            return path.PredictEnemyShieldEffectiveness(createShield.strength, createShield.element, createShield.duration);
+        }
+
     }
 }

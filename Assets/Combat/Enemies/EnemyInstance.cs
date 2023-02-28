@@ -21,6 +21,7 @@ namespace Assets.Combat
             maxHP = enemyStats.maxHP;
             maxMP = enemyStats.maxMP;
             enemyID = enemyStats.enemyID;
+            baseStats = enemyStats.GetStatBundle();
             enemyAI.SetSpells(currentEnemy.enemyStats.spells);
             statPanel.ShowStatInfo();
         }

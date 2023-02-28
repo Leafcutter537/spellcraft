@@ -12,6 +12,10 @@ GameObject:
   - component: {fileID: 1135015497752086916}
   - component: {fileID: 1135015497752086917}
   - component: {fileID: 3964760954997500368}
+  - component: {fileID: -507273405489225982}
+  - component: {fileID: -7582832420329257787}
+  - component: {fileID: 1777955773568590936}
+  - component: {fileID: 1583204823}
   m_Layer: 0
   m_Name: Loader
   m_TagString: Untagged
@@ -77,4 +81,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressTracker: {fileID: 11400000, guid: aa92e6b799cfd78489a9fd69edb34884, type: 2}
+  devProgress: {fileID: 11400000, guid: b68ae2689d4dbe643acb2607286d452d, type: 2}
+--- !u!114 &-507273405489225982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135015497752086918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52308352da61a3a48a583cd9b8e75eb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryController: {fileID: 11400000, guid: ba8c4f93e0524844cb171dddc17884af, type: 2}
+  devEquipment: {fileID: 11400000, guid: e7dff566fbf0c5a4c89f842e9d58f035, type: 2}
+  equipmentStatDatabase: {fileID: 11400000, guid: 3e4ad58fb84b0b546b30999e1fa5b7fc, type: 2}
+--- !u!114 &-7582832420329257787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135015497752086918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d144bff20ea5c647a467029af8b8795, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryController: {fileID: 11400000, guid: ba8c4f93e0524844cb171dddc17884af, type: 2}
+  devCurrency: {fileID: 11400000, guid: 450f908ed13b8134d85d3875e6efa9cc, type: 2}
+--- !u!114 &1777955773568590936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135015497752086918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f86ecb41a46da6649b5fa82fdef8848c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storeStock: {fileID: 11400000, guid: 4153974d95738cb4fbb5dd2aee841989, type: 2}
+  progressTracker: {fileID: 11400000, guid: aa92e6b799cfd78489a9fd69edb34884, type: 2}
+  devProgress: {fileID: 11400000, guid: b68ae2689d4dbe643acb2607286d452d, type: 2}
+--- !u!114 &1583204823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135015497752086918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c526d10e2315e9946a74cd18fd826923, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressTracker: {fileID: 11400000, guid: aa92e6b799cfd78489a9fd69edb34884, type: 2}
+  scrollStock: {fileID: 11400000, guid: 5ae519ff618845e45b9311d0f451c6e7, type: 2}
   devProgress: {fileID: 11400000, guid: b68ae2689d4dbe643acb2607286d452d, type: 2}

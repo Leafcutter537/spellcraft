@@ -16,5 +16,15 @@ MonoBehaviour:
   devRuneInventoryIndex: 0
   loadDevSpellInventory: 1
   devSpellInventoryIndex: 0
+  loadDevEquipmentInventory: 1
+  loadDevCurrencyInventory: 1
   runeGenerator: {fileID: 11400000, guid: 0be3e9fccc85c46408204aaa2d078626, type: 2}
+  equipmentStatDatabase: {fileID: 11400000, guid: 3e4ad58fb84b0b546b30999e1fa5b7fc, type: 2}
+  currencyDatabase: {fileID: 11400000, guid: bccd61c1da5852c4183cedf91beff0be, type: 2}
+  currencyChangedEvent: {fileID: 11400000, guid: 47db706ac4ab44b47b318ad761ee57ff, type: 2}
+  equipmentChangeEvent: {fileID: 11400000, guid: 3af437402b7e4644fa72d595ce2cf98c, type: 2}
+  toolTipWarningEvent: {fileID: 11400000, guid: b230dd949de5e2e438648af6f76a8d3f, type: 2}
+  currencyQuantities: fa0000000000000000000000
   holdRuneEvent: {fileID: 11400000, guid: a9b2ce34d1ca0754b89ba12ff1c77dca, type: 2}
+  maxNumberEquippedSpells: 3
+  equippedEquipmentIndices: 
