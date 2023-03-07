@@ -88,7 +88,7 @@ namespace Assets.Combat
 
         private void OnMouseOver()
         {
-            if (!pathController.enemyDetailsPanel.gameObject.activeInHierarchy & !pathController.turnController.combatIsEnded)
+            if (!pathController.enemyDetailsPanel.gameObject.activeInHierarchy & !pathController.turnController.combatIsEnded & !pathController.tutorialController.isShowingTutorial)
             {
                 isHovering = true;
                 spriteRenderer.color = pathController.hoverColor;

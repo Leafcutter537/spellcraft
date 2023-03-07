@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8188602f01d121449278cb7e74d64ec, type: 3}
+  m_Name: TutorialLineDatabase
+  m_EditorClassIdentifier: 
+  firstCombatStartLines:
+  - text: Welcome to the combat screen! This is where you'll do battle with all sorts
+      of nefarious baddies.
+    panelIndex: 1
+  - text: In the upper left corner you have your own health, and in the upper right
+      you have your enemy's. The first to get their opponent to zero health wins!
+    panelIndex: 1
+  - text: The primary way you'll damage your opponent is by creating projectiles.
+      After closing this dialogue, choose the bolt spell from your spell list on
+      the left side of the screen. Oh, and if you want me to repeat what I've said,
+      click the "replay dialogue" button.
+    panelIndex: 1
+  firstCombatSelectSpell:
+  - text: Now that you have your spell selected, you need to cast it along a path
+      - a path being one of those five blob-shaped things in the middle of the screen.
+      After closing this dialogue, choose one of the paths to cast your bolt spell.
+    panelIndex: 0
+  firstCombatSelectPath:
+  - text: Notice how the projectile is still hovering in mid-air. Projectiles take
+      a turn or two to reach their opponent and will land right after their target
+      has a chance to cast their own spells.
+    panelIndex: 0
+  - text: So, when a spell is hurtling towards you, you'll have a chance to cast
+      a shield spell to block it - but more on that later.
+    panelIndex: 0
+  - text: You can cast as many spells as you have mana for during your turn. Why
+      don't you cast a couple more bolt spells for good measure?
+    panelIndex: 0
+  firstCombatCastThirdSpell:
+  - text: Huzzah! I knew I could count on my - that is, your - natural aptitude.
+      Now, after closing this dialogue, click the "end turn" button and watch those
+      spells fly!
+    panelIndex: 1
+  firstCombatStartSecondPlayerTurn:
+  - text: Whizz! Pow! Look at those spells land! I never thought I'd have a chance
+      to witness my prowess from third person.
+    panelIndex: 1
+  - text: I think you understand the basics. I'm going to contemplate my new turnip
+      existence while you finish off this battle.
+    panelIndex: 1
+  secondCombatStartLines:
+  - text: This one might be tricky. If you check the "enemy detail" panel, you can
+      see this demon has the ability to heal - in fact, it's strong enough to be
+      able to heal itself to full each round!
+    panelIndex: 0
+  - text: Here's where paths can work to your advantage. Projectiles along the middle
+      three paths will take one turn to reach their opponents, while projectiles
+      along the highest and lowest will take two.
+    panelIndex: 0
+  - text: Try firing bolt spells along the highest and lowest paths, and then, the
+      next turn, firing them along the middle paths. You'll do enough damage to be
+      able to knock out the enemy all at once!
+    panelIndex: 0
+  createFirstSpell:
+  - text: Aah, the Spellforge! Making spells has always been a favorite pastime of
+      mine, even if it does pollute the air with rune dust that slowly liquefies
+      your lungs. That's why we have healing spells!
+    panelIndex: 1
+  - text: On the left you'll see all of the runes in your inventory. On the right
+      you have the scroll that represents the spell you're about to create.
+    panelIndex: 1
+  - text: Right now, we only have access to one scroll type - the humble slug, with
+      only three rune slots. We'll get more as we make progress that allow us to
+      make more exotic spells.
+    panelIndex: 1
+  - text: In the center here there's a little preview of the spell you're about to
+      create.
+    panelIndex: 0
+  - text: That demon we defeated left us with some of the basic types of rune. A
+      shield rune is a primary rune, so we can only have one in a spell. It'll cause
+      our spell to create a shield when it's cast.
+    panelIndex: 1
+  - text: We can use enhancement runes to make the effects of primary and secondary
+      runes stronger. These enhance the strength of connected runes, the connections
+      being those yellow lines between rune slots.
+    panelIndex: 1
+  - text: Trying creating a shield spell. After closing this dialogue, drag the shield
+      rune into the middle and the enhancement runes onto either side, then press
+      "Create Spell".
+    panelIndex: 1
+  didntUseAllRunes:
+  - text: Hold on! We want this spell to be as strong as it can be, so let's use
+      all of the runes. Drag them over from your inventory on the left to the scroll
+      on the right.
+    panelIndex: 1
+  wrongRuneArrangement:
+  - text: Hold on! We want this spell to be as strong as it can be, so we have to
+      make sure the runes are positioned correclty. The shield rune should be in
+      the middle while the strengthen adjacent runes should be in the top and bottom.
+    panelIndex: 1
+  finishedFirstSpell:
+  - text: Great! Let's head back to the map. Press the "Return" button in the upper
+      left corner after closing this dialogue.
+    panelIndex: 1
+  thirdCombatStartLines:
+  - text: Wow! This guy looks like packs a punch. We'll need that shield spell...
+      but it only lasts one turn, so you should wait until the demon's projectile's
+      in the air to use it.
+    panelIndex: 1
+  thirdCombatStartSecondPlayerTurn:
+  - text: Alright, now! Cast the shield spell along the path of the enemy's projectile,
+      or you're toast!
+    panelIndex: 0

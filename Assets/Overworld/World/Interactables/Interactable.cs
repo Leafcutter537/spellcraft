@@ -9,6 +9,10 @@ public abstract class Interactable : MonoBehaviour
     {
         worldMap.SubscribeInteractable(this);
     }
+    private void OnDestroy()
+    {
+        worldMap.RemoveInteractable(this);
+    }
 
     public bool IsInInteractRange(Vector2Int characterCoordinates)
     {

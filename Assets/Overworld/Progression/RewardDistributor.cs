@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Inventory.Scrolls;
 using Assets.Store;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 
 namespace Assets.Progression
@@ -18,6 +19,8 @@ namespace Assets.Progression
             string returnString = inventoryController.AddRewards(rewardData);
             foreach (ScrollData scrollData in rewardData.scrollUnlocks)
                 scrollStock.AddScroll(scrollData);
+            if (rewardData.quest.Length > 1)
+                QuestLog.SetQuestState(rewardData.quest, QuestState.ReturnToNPC);
             return returnString;
         }
     }

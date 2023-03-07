@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Assets.Inventory.Spells;
 using TMPro;
 using Assets.Currency;
+using Assets.Tutorial;
 
 public class CreateSpellPanel : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class CreateSpellPanel : MonoBehaviour
     [SerializeField] private InventoryController inventoryController;
     [SerializeField] private SpellPreview spellPreview;
     [SerializeField] private SpellCreatedEvent spellCreatedEvent;
+    [SerializeField] private SpellforgeTutorialController tutorialController;
+    [SerializeField] private TooltipWarningEvent toolTipWarningEvent;
 
     public void CreateSpell()
     {
@@ -25,6 +28,11 @@ public class CreateSpellPanel : MonoBehaviour
             return;
         }
         if (spellPreview.previewedSpell.spellEffects.Count == 0)
+        {
+            toolTipWarningEvent.Raise(this, new TooltipWarningEventParameters("You cannot create a spell with no spell effects!"));
+            return;
+        }
+        if (!tutorialController.SpellIsCorrectDuringTutorial())
         {
             return;
         }
@@ -44,6 +52,7 @@ public class CreateSpellPanel : MonoBehaviour
         inventoryController.RemoveHeldRunesFromInventory();
         inventoryController.SubtractCurrencyQuantity(spell.spellData.scrollData.cost);
         SetSpellNamesActive(false);
+        tutorialController.OnSpellCreated();
     }
     private string GetDefaultName()
     {

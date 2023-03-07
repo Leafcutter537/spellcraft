@@ -20,36 +20,57 @@ MonoBehaviour:
     - quantity: 20
       currencyType: 0
     scrollUnlocks: []
+    quest: Defeat First Demon
   - runeRewards:
     - rank: 1
       quality: 15
       runeType: 1
       category: 2
-      secondaryCategory: 4
+      requiredPrimary: 0
       currencyType: 0
     - rank: 1
       quality: 15
       runeType: 1
       category: 2
-      secondaryCategory: 4
+      requiredPrimary: 0
       currencyType: 0
     - rank: 1
       quality: 15
       runeType: 2
       category: 0
-      secondaryCategory: 2
+      requiredPrimary: 0
       currencyType: 0
     equipmentRewards: []
     currencyRewards:
     - quantity: 25
       currencyType: 0
     scrollUnlocks: []
-  - runeRewards: []
+    quest: Defeat Second Demon
+  - runeRewards:
+    - rank: 1
+      quality: 2
+      runeType: 0
+      category: 0
+      requiredPrimary: 0
+      currencyType: 0
+    - rank: 1
+      quality: 2
+      runeType: 1
+      category: 2
+      requiredPrimary: 0
+      currencyType: 0
+    - rank: 1
+      quality: 2
+      runeType: 5
+      category: 0
+      requiredPrimary: 0
+      currencyType: 0
     equipmentRewards: []
     currencyRewards:
     - quantity: 30
       currencyType: 0
     scrollUnlocks: []
+    quest: Defeat Third Demon
   - runeRewards: []
     equipmentRewards:
     - equipmentSet: 0
@@ -60,6 +81,7 @@ MonoBehaviour:
     - quantity: 35
       currencyType: 0
     scrollUnlocks: []
+    quest: 
   - runeRewards: []
     equipmentRewards: []
     currencyRewards:
@@ -72,3 +94,4 @@ MonoBehaviour:
       scrollName: Snake
       numPerLevel: 010000000200000001000000
       connections: 000000000100000001000000020000000200000003000000
+    quest: 

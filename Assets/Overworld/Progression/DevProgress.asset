@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d9cb314f78bff04583b3580485864e7, type: 3}
   m_Name: DevProgress
   m_EditorClassIdentifier: 
-  firstDefeatEnemies: []
-  playerPosition: {x: 19, y: 16}
+  firstDefeatEnemies:
+  - enemyID: 2
+    isDefeated: 1
+  playerPosition: {x: 9, y: 8}

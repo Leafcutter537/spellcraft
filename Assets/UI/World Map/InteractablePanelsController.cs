@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.EventSystem;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,6 +20,10 @@ public class InteractablePanelsController : MonoBehaviour
     [Header("Scrapper")]
     [SerializeField] private ScrapperInteractableEvent scrapperInteractableEvent;
     [SerializeField] private GameObject openScrapperPanel;
+    [Header("Warning")]
+    [SerializeField] private WarningInteractableActiveEvent warningInteractableActiveEvent;
+    [SerializeField] private GameObject warningPanel;
+    [SerializeField] private TextMeshProUGUI warningText;
     [Header("Leave Cell Event")]
     [SerializeField] private LeaveCellEvent leaveCellEvent;
 
@@ -29,6 +34,7 @@ public class InteractablePanelsController : MonoBehaviour
         spellForgeInteractableEvent.AddListener(OnSpellForgeInteractable);
         shopInteractableEvent.AddListener(OnShopInteractable);
         scrapperInteractableEvent.AddListener(OnScrapperInteractable);
+        warningInteractableActiveEvent.AddListener(OnWarningInteractable);
     }
     private void OnDisable()
     {
@@ -37,14 +43,22 @@ public class InteractablePanelsController : MonoBehaviour
         spellForgeInteractableEvent.RemoveListener(OnSpellForgeInteractable);
         shopInteractableEvent.RemoveListener(OnShopInteractable);
         scrapperInteractableEvent.RemoveListener(OnScrapperInteractable);
+        warningInteractableActiveEvent.AddListener(OnWarningInteractable);
     }
-    private void HideAll()
+    public void HideAll()
     {
-        enemyInteractablePanel.gameObject.SetActive(false);
-        enemyDetailsPanel.gameObject.SetActive(false);
-        spellForgePanel.SetActive(false);
-        openShopPanel.SetActive(false);
-        openScrapperPanel.SetActive(false);
+        if (enemyInteractablePanel != null)
+            enemyInteractablePanel.gameObject.SetActive(false);
+        if (enemyDetailsPanel != null)
+            enemyDetailsPanel.gameObject.SetActive(false);
+        if (spellForgePanel != null)
+            spellForgePanel.SetActive(false);
+        if (openShopPanel != null)
+            openShopPanel.SetActive(false);
+        if (openScrapperPanel != null)
+            openScrapperPanel.SetActive(false);
+        if (warningPanel != null)
+            warningPanel.SetActive(false);
     }
     private void OnEnemyInteractableActive(object sender, EventParameters args)
     {
@@ -63,6 +77,12 @@ public class InteractablePanelsController : MonoBehaviour
     private void OnScrapperInteractable(object sender, EventParameters args)
     {
         openScrapperPanel.SetActive(true);
+    }
+    private void OnWarningInteractable(object sender, EventParameters args)
+    {
+        WarningInteractableEventParameters warningArgs = args as WarningInteractableEventParameters;
+        warningPanel.SetActive(true);
+        warningText.text = warningArgs.message;
     }
     private void OnLeaveCell(object sender, EventParameters args)
     {

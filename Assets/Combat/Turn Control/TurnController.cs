@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Combat;
 using Assets.EventSystem;
+using Assets.Tutorial;
 using TMPro;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ public class TurnController : MonoBehaviour
     [SerializeField] private PlayerInstance playerInstance;
     [SerializeField] private EnemyInstance enemyInstance;
     [SerializeField] private PathController pathController;
+    [SerializeField] private CombatTutorialController tutorialController;
     [Header("Turn Flow")]
     [SerializeField] private float timeBetweenActions;
     public bool isPlayerTurn;
@@ -83,6 +85,7 @@ public class TurnController : MonoBehaviour
                     else
                     {
                         isPlayerTurn = true;
+                        tutorialController.OnStartPlayerTurn();
                         UpdateTurnLabel();
                         turnStage = TurnStage.CharacterActing;
                     }

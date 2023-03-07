@@ -21,7 +21,7 @@ public class ScrollDisplay : MonoBehaviour
     [Header("References In Scene")]
     [SerializeField] private SpellPreview spellPreview;
     [Header("Instantiated Game Objects")]
-    private List<RuneSelectPanelChoice> runeSlots;
+    public List<RuneSelectPanelChoice> runeSlots;
     private List<GameObject> connections;
 
     private void Awake()

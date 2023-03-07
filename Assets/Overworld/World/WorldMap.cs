@@ -12,6 +12,8 @@ public class WorldMap : MonoBehaviour
     // Object and interactable info
     private Dictionary<Vector2Int, Obstacle> obstacles;
     private List<Interactable> interactables;
+    [Header("Event References")]
+    [SerializeField] private InteractablePanelsController interactablePanelsController;
 
     private void Awake()
     {
@@ -22,9 +24,18 @@ public class WorldMap : MonoBehaviour
     {
         obstacles.Add(obstacle.cellCoordinates, obstacle);
     }
+    public void RemoveObstacle(Obstacle obstacle)
+    {
+        obstacles.Remove(obstacle.cellCoordinates);
+    }
     public void SubscribeInteractable(Interactable interactable)
     {
         interactables.Add(interactable);
+    }
+    public void RemoveInteractable(Interactable interactable)
+    {
+        interactables.Remove(interactable);
+        interactablePanelsController.HideAll();
     }
     public bool IsCellBlocked(Vector2Int cellCoordinates)
     {

@@ -12,5 +12,8 @@ public class Obstacle : MonoBehaviour
         worldMap.AddObstacle(this);
     }
 
-
+    private void OnDestroy()
+    {
+        worldMap.RemoveObstacle(this);
+    }
 }

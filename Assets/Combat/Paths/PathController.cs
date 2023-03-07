@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Assets.Combat.SpellEffects;
 using Assets.EventSystem;
 using Assets.Inventory.Spells;
+using Assets.Tutorial;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace Assets.Combat
     {
         [Header("Turn Controller")]
         public TurnController turnController;
+        [Header("Tutorial Controller")]
+        public CombatTutorialController tutorialController;
         [Header("Paths")]
         public List<Path> paths;
         private int pathIndex;

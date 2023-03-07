@@ -14,6 +14,7 @@ namespace Assets.Progression
         public OwnedEquipmentData[] equipmentRewards;
         public CurrencyQuantity[] currencyRewards;
         public ScrollData[] scrollUnlocks;
+        public string quest;
     }
 }
 
