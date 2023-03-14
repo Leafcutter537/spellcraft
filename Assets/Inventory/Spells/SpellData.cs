@@ -13,11 +13,13 @@ namespace Assets.Inventory.Spells
         public ScrollData scrollData;
         public List<RuneData> runeData;
         public string spellName;
+        public int iconIndex;
 
-        public SpellData(ScrollData scrollData, List<RuneData> runeData)
+        public SpellData(ScrollData scrollData, List<RuneData> runeData, int iconIndex)
         {
             this.scrollData = scrollData;
             this.runeData = runeData;
+            this.iconIndex = iconIndex;
         }
     }
 

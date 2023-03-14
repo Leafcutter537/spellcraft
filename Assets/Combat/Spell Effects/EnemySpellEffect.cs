@@ -13,12 +13,14 @@ namespace Assets.Combat.SpellEffects
         public int duration;
         public SpellEffectType spellEffectType;
         public Element element;
+        public CombatStat stat;
     }
 
     public enum SpellEffectType
     {
         CreateProjectile,
         CreateShield,
-        Heal
+        Heal,
+        Buff
     }
 }

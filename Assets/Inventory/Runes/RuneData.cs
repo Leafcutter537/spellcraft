@@ -41,6 +41,10 @@ namespace Assets.Inventory.Runes
         {
             return System.Text.RegularExpressions.Regex.Replace(Enum.GetName(typeof(RuneType), runeType), "[A-Z]", " $0").Trim();
         }
+        public string GetRuneCategoryString()
+        {
+            return System.Text.RegularExpressions.Regex.Replace(Enum.GetName(typeof(RuneCategory), category), "[A-Z]", " $0").Trim();
+        }
     }
 
     public enum RuneType
@@ -51,7 +55,14 @@ namespace Assets.Inventory.Runes
         Counterspell,
         Heal,
         FireStrengthenAdjacent,
-        FrostStrengthenAdjacent
+        FrostStrengthenAdjacent,
+        ProjectileOneHigher,
+        ProjectileOneLower,
+        ShieldOneHigher,
+        ShieldOneLower,
+        BuffProjectilePower,
+        BuffShieldPower,
+        BuffHealPower
     }
     public enum RuneCategory
     {

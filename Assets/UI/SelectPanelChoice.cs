@@ -23,6 +23,7 @@ public class SelectPanelChoice : MonoBehaviour, IPointerEnterHandler, IPointerCl
     [SerializeField] protected ExitTooltipEvent exitTooltipEvent;
     [Header("Information Display")]
     [SerializeField] protected Image icon;
+    [SerializeField] protected Image secondaryIcon;
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] protected TextMeshProUGUI descriptionText;
     [SerializeField] private InfoDisplay infoDisplay;
@@ -234,6 +235,10 @@ public class SelectPanelChoice : MonoBehaviour, IPointerEnterHandler, IPointerCl
         if (icon != null & selectChoice != null)
         {
             icon.sprite = selectChoice.icon;
+            if (secondaryIcon != null & selectChoice.secondaryIcon != null)
+            {
+                secondaryIcon.sprite = selectChoice.secondaryIcon;
+            }
         }
     }
 
@@ -268,6 +273,10 @@ public class SelectPanelChoice : MonoBehaviour, IPointerEnterHandler, IPointerCl
         {
             icon.sprite = defaultSprite;
         }
+        if (secondaryIcon != null)
+        {
+            secondaryIcon.sprite = defaultSprite;
+        }    
     }
 
     private void ClearDescription()

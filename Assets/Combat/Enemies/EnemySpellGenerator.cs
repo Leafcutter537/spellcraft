@@ -41,6 +41,8 @@ public class EnemySpellGenerator : ScriptableObject
                 return new CreateShield(enemySpellEffect.path, enemySpellEffect.strength, enemySpellEffect.element, enemySpellEffect.duration);
             case (SpellEffectType.Heal):
                 return new Heal(enemySpellEffect.strength);
+            case (SpellEffectType.Buff):
+                return new ApplyBuff(enemySpellEffect.strength, enemySpellEffect.duration, enemySpellEffect.stat);
             default:
                 throw new ArgumentException("Invalid enemy spell effect type");
             

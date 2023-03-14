@@ -53,10 +53,10 @@ public class RuneSelectPanelChoice : DragPanelChoice
         if (selectChoice == null)
             return;
         SelectChoice recipientSelectChoice = recipient.selectChoice;
+        if (!spellPreview.IsRuneSwapValid(this, recipient))
+            return;
         if (recipient.IsInScroll())
         {
-            if (!spellPreview.IsRuneSwapValid(this, recipient))
-                return;
             recipient.SetChoice(selectChoice);
             if (!IsInScroll())
             {

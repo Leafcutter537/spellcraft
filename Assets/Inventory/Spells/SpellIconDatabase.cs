@@ -8,5 +8,19 @@ namespace Assets.Inventory.Spells
     public class SpellIconDatabase : ScriptableObject
     {
         [SerializeField] private List<Sprite> spellIcons;
+
+        public Sprite GetSpellIcon(int index)
+        {
+            return spellIcons[index];
+        }
+        public List<SelectChoice> GetItemList()
+        {
+            List<SelectChoice> returnList = new List<SelectChoice>();
+            foreach (Sprite sprite in spellIcons)
+            {
+                returnList.Add(new SpellIconSelectChoice(sprite));
+            }
+            return returnList;
+        }
     }
 }

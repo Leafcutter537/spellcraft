@@ -29,6 +29,7 @@ namespace Assets.Combat
             characterName = playerStats.playerName;
             statPanel.ShowStatInfo();
             baseStats = playerStats.GetStatBundle();
+            statusEffects = new List<StatusEffect>();
         }
         private void OnEnable()
         {

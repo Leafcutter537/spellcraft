@@ -9,7 +9,6 @@ namespace Assets.Inventory.Runes
 {
     public class Rune : SelectChoice
     {
-        public Sprite symbolSprite;
         public RuneData runeData;
         public float strength;
         public float manaCost;
@@ -18,7 +17,7 @@ namespace Assets.Inventory.Runes
 
         public Rune(Sprite symbolSprite, Sprite icon, RuneData runeData, float strength, float manaCost, int value, string currencyName, string description)
         {
-            this.symbolSprite = symbolSprite;
+            this.secondaryIcon = symbolSprite;
             this.icon = icon;
             this.strength = strength;
             this.manaCost = manaCost;

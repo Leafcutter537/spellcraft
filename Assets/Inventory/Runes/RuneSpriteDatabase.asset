@@ -13,13 +13,20 @@ MonoBehaviour:
   m_Name: RuneSpriteDatabase
   m_EditorClassIdentifier: 
   symbolSprites:
-  - {fileID: 21300000, guid: e90ed700dfa0e82408e2f641147ee209, type: 3}
+  - {fileID: 21300000, guid: 191f6da03deac0b4cb174c120f4f5edc, type: 3}
   - {fileID: 21300000, guid: 58902fd7961281c49ae5c6d8603bc58a, type: 3}
   - {fileID: 21300000, guid: 1d0eaaa17b36e6f4fa6c34109cbb022c, type: 3}
   - {fileID: 21300000, guid: 58902fd7961281c49ae5c6d8603bc58a, type: 3}
-  - {fileID: 21300000, guid: 58902fd7961281c49ae5c6d8603bc58a, type: 3}
-  - {fileID: 21300000, guid: 58902fd7961281c49ae5c6d8603bc58a, type: 3}
-  - {fileID: 21300000, guid: 58902fd7961281c49ae5c6d8603bc58a, type: 3}
+  - {fileID: 21300000, guid: a8679af3468a019458d273f947230aa2, type: 3}
+  - {fileID: 21300000, guid: e90ed700dfa0e82408e2f641147ee209, type: 3}
+  - {fileID: 21300000, guid: 05f4d7fb29023994fb54ea68ea0262b9, type: 3}
+  - {fileID: 21300000, guid: 19e64cd22df62a947aeba03d115c879d, type: 3}
+  - {fileID: 21300000, guid: 280970ee780e85444ae322908e20c981, type: 3}
+  - {fileID: 21300000, guid: 10791525a231ad940af45842e1f37477, type: 3}
+  - {fileID: 21300000, guid: a23be9d9ce29d204fa4a7b4b9b766f60, type: 3}
+  - {fileID: 21300000, guid: d2081e38e799d924f938b9f6a7c23a1d, type: 3}
+  - {fileID: 21300000, guid: f2e08307a408e5e43a1c31a154f24068, type: 3}
+  - {fileID: 21300000, guid: ee677fa6fae61384589dbe2e6c30bf41, type: 3}
   rankShapeSprites:
   - {fileID: 21300000, guid: 881b7e9a25ebeb44e800049ab8dd8f5f, type: 3}
   - {fileID: 21300000, guid: 9553f445d3f68ac4f8551dbeeec9e85c, type: 3}

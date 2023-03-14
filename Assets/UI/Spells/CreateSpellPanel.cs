@@ -10,8 +10,7 @@ using Assets.Tutorial;
 public class CreateSpellPanel : MonoBehaviour
 {
     [SerializeField] private Button createSpellButton;
-    [SerializeField] private Button confirmButton;
-    [SerializeField] private Button cancelButton;
+    [SerializeField] private GameObject confirmSpellParent;
     [SerializeField] private TextMeshProUGUI nameSpellTitle;
     [SerializeField] private TMP_InputField nameInputField;
     [SerializeField] private GameObject scrollDisplayMask;
@@ -69,10 +68,7 @@ public class CreateSpellPanel : MonoBehaviour
     {
         createSpellButton.gameObject.SetActive(!isActive);
         scrollDisplayMask.SetActive(isActive);
-        confirmButton.gameObject.SetActive(isActive);
-        cancelButton.gameObject.SetActive(isActive);
-        nameInputField.gameObject.SetActive(isActive);
-        nameSpellTitle.gameObject.SetActive(isActive);
+        confirmSpellParent.SetActive(isActive);
     }
 
 }

@@ -11,7 +11,7 @@ public class ScrollDisplay : MonoBehaviour
     [SerializeField] private GameObject runeInScrollDisplayPrefab;
     [SerializeField] private GameObject runeInScrollConnectionPrefab;
     [SerializeField] private float runeDisplayPadding;
-    [SerializeField] private Transform displayCenter;
+    [SerializeField] private RectTransform displayCenter;
     public ScrollData scrollData;
     private float runeDisplayWidth;
     private float runeDisplayHeight;
@@ -64,11 +64,11 @@ public class ScrollDisplay : MonoBehaviour
         LinkSpellPreviewToDisplayedScroll();
         foreach (GameObject connection in connections)
         {
-            connection.transform.SetParent(displayCenter, true);
+            connection.transform.SetParent(displayCenter, false);
         }
         foreach (RuneSelectPanelChoice runeSlot in runeSlots)
         {
-            runeSlot.transform.SetParent(displayCenter, true);
+            runeSlot.transform.SetParent(displayCenter, false);
         }
     }
 
@@ -77,16 +77,18 @@ public class ScrollDisplay : MonoBehaviour
         int numLevels = scrollData.numPerLevel.Length;
         for (int level = 0; level < numLevels; level++)
         {
-            float y = displayCenter.position.y + (level - (numLevels - 1.0f) / 2.0f) * (runeDisplayHeight + runeDisplayPadding);
-            CreateLevelRuneDisplays(scrollData.numPerLevel[level], displayCenter.position.x, y);
+            float y = -displayCenter.rect.height / 2 + (level - (numLevels - 1.0f) / 2.0f) * (runeDisplayHeight + runeDisplayPadding);
+            CreateLevelRuneDisplays(scrollData.numPerLevel[level],  y);
+            // float y = displayCenter.position.y + (level - (numLevels - 1.0f) / 2.0f) * (runeDisplayHeight + runeDisplayPadding);
+            // CreateLevelRuneDisplays(scrollData.numPerLevel[level], displayCenter.position.x, y);
         }
     }
 
-    private void CreateLevelRuneDisplays(int num, float centerx, float centery)
+    private void CreateLevelRuneDisplays(int num, float centery)
     {
         for (int i = 0; i < num; i++)
         {
-            float x = displayCenter.position.x + (i - (num - 1.0f) / 2.0f) * (runeDisplayWidth + runeDisplayPadding);
+            float x = displayCenter.rect.width / 2 + (i - (num - 1.0f) / 2.0f) * (runeDisplayWidth + runeDisplayPadding);
             GameObject runeInScrollDisplay = Instantiate(runeInScrollDisplayPrefab, new Vector2(x, centery), Quaternion.identity);
             RuneSelectPanelChoice runeSlot = runeInScrollDisplay.GetComponent<RuneSelectPanelChoice>();
             runeSlot.spellPreview = spellPreview;
@@ -98,7 +100,9 @@ public class ScrollDisplay : MonoBehaviour
     {
         for (int i = 0; i < scrollData.connections.Length; i += 2)
         {
-            CreateConnectionLine(runeSlots[scrollData.connections[i]].transform.position, runeSlots[scrollData.connections[i + 1]].transform.position);
+            Vector3 displacement = new Vector3(displayCenter.rect.width / 2f, -displayCenter.rect.height / 2, 0);
+            CreateConnectionLine(runeSlots[scrollData.connections[i]].transform.position - displacement,
+                runeSlots[scrollData.connections[i + 1]].transform.position - displacement);
         }
     }
     

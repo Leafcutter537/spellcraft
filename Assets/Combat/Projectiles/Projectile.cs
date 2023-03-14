@@ -45,7 +45,9 @@ namespace Assets.Combat
         {
             if (isMoving)
             {
-                if (Mathf.Abs(t - destinationT) < deltaT)
+                bool isTIncreasing = t > Mathf.PI;
+                if ((isTIncreasing & t > destinationT) |
+                    (!isTIncreasing & t < destinationT))
                 {
                     Arrive();
                 }

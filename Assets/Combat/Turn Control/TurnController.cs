@@ -84,6 +84,14 @@ public class TurnController : MonoBehaviour
                         timeSinceLastAction = 0;
                     else
                     {
+                        turnStage = TurnStage.StatusEffectsAdvancing;
+                    }
+                    break;
+                case (TurnStage.StatusEffectsAdvancing):
+                    if (enemyInstance.AdvanceNextStatusEffect())
+                        timeSinceLastAction = 0;
+                    else
+                    {
                         isPlayerTurn = true;
                         tutorialController.OnStartPlayerTurn();
                         UpdateTurnLabel();
@@ -107,6 +115,14 @@ public class TurnController : MonoBehaviour
                     break;
                 case (TurnStage.ShieldsExpiring):
                     if (pathController.AdvanceNextPlayerShield())
+                        timeSinceLastAction = 0;
+                    else
+                    {
+                        turnStage = TurnStage.StatusEffectsAdvancing;
+                    }
+                    break;
+                case (TurnStage.StatusEffectsAdvancing):
+                    if (playerInstance.AdvanceNextStatusEffect())
                         timeSinceLastAction = 0;
                     else
                     {
@@ -164,6 +180,7 @@ public class TurnController : MonoBehaviour
     {
         CharacterActing,
         ProjectilesMoving,
-        ShieldsExpiring
+        ShieldsExpiring,
+        StatusEffectsAdvancing
     }
 }

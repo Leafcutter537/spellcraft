@@ -12,7 +12,6 @@ namespace Assets.Combat.Enemy
     {
         public string spellName;
         public List<EnemySpellEffect> spellEffects;
-        public bool targetsPath;
         public int manaCost;
         public Sprite icon;
         public TargetType targetType;

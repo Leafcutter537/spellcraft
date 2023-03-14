@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class SelectChoice
 {
     public Sprite icon;
+    public Sprite secondaryIcon;
     public string title;
     public string description;
 

@@ -25,6 +25,8 @@ public class MyLuaFunctions : MonoBehaviour
     {
         foreach (GameObject gameObject in disappearables)
         {
+            if (gameObject == null)
+                continue;
             if (gameObject.name == name)
             {
                 darkenScreenController.OnStartDarkenScreen(gameObject);

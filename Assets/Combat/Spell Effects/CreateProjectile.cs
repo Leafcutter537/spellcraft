@@ -26,7 +26,7 @@ namespace Assets.Combat.SpellEffects
         {
             string pathDescription;
             string direction;
-            switch (path)
+            switch (Math.Abs(path))
             {
                 case 0:
                     pathDescription = " along the chosen path.";

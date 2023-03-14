@@ -18,4 +18,14 @@ public class StatBundle
         this.shieldPower = shieldPower;
         this.healPower = healPower;
     }
+
+    public StatBundle(StatBundle statBundle)
+    {
+        this.maxHP = statBundle.maxHP;
+        this.maxMP = statBundle.maxMP;
+        this.resilience = statBundle.resilience;
+        this.projectilePower = statBundle.projectilePower;
+        this.shieldPower = statBundle.shieldPower;
+        this.healPower = statBundle.healPower;
+    }
 }

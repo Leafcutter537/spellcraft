@@ -16,11 +16,15 @@ namespace Assets.Tutorial
             {
                 SetupDialogue(tutorialLineDatabase.createFirstSpell);
             }
+            else if (QuestLog.IsQuestActive("Create Fire Projectile"))
+            {
+                SetupDialogue(tutorialLineDatabase.createSecondSpell);
+            }
         }
 
         public bool SpellIsCorrectDuringTutorial()
         {
-            if (!QuestLog.IsQuestActive("Create a Shield Spell"))
+            if (!QuestLog.IsQuestActive("Create a Shield Spell") & !QuestLog.IsQuestActive("Create Fire Projectile"))
             {
                 return true;
             }
@@ -31,10 +35,18 @@ namespace Assets.Tutorial
             }
             if (runesUsedInSpell[0] == null | runesUsedInSpell[1] == null | runesUsedInSpell[2] == null)
                 return NotAllRunesUsed();
-            if (runesUsedInSpell[0].runeData.runeType != RuneType.StrengthenAdjacent |
-                runesUsedInSpell[1].runeData.runeType != RuneType.Shield |
-                runesUsedInSpell[2].runeData.runeType != RuneType.StrengthenAdjacent)
-                return WrongRuneArrangement();
+            if (QuestLog.IsQuestActive("Create a Shield Spell"))
+            {
+                if (runesUsedInSpell[0].runeData.runeType != RuneType.StrengthenAdjacent |
+                    runesUsedInSpell[1].runeData.runeType != RuneType.Shield |
+                    runesUsedInSpell[2].runeData.runeType != RuneType.StrengthenAdjacent)
+                    return WrongRuneArrangement();
+            }
+            else 
+            {
+                if (runesUsedInSpell[1].runeData.runeType != RuneType.Projectile)
+                    return WrongRuneArrangementFlame();
+            }
             return true;
         }
 
@@ -50,12 +62,23 @@ namespace Assets.Tutorial
             return false;
         }
 
+        private bool WrongRuneArrangementFlame()
+        {
+            SetupDialogue(tutorialLineDatabase.wrongRuneArrangementFlame);
+            return false;
+        }
+
         public void OnSpellCreated()
         {
             if (QuestLog.IsQuestActive("Create a Shield Spell"))
             {
                 QuestLog.SetQuestState("Create a Shield Spell", QuestState.ReturnToNPC);
                 SetupDialogue(tutorialLineDatabase.finishedFirstSpell);
+            }
+            if (QuestLog.IsQuestActive("Create Fire Projectile"))
+            {
+                QuestLog.SetQuestState("Create Fire Projectile", QuestState.ReturnToNPC);
+                SetupDialogue(tutorialLineDatabase.finishedSecondSpell);
             }
         }
     }

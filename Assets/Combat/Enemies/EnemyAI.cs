@@ -46,10 +46,31 @@ namespace Assets.Combat
                     return AttemptCastHealSpell(spells[spellIndex]);
                 case TargetType.Shield:
                     return AttemptCastPathSpell(spells[spellIndex]);
+                case TargetType.Buff:
+                    return AttemptCastBuffSpell(spells[spellIndex]);
             }
             return false;
         }
 
+        private bool AttemptCastBuffSpell(Spell spell)
+        {
+            foreach (SpellEffect spellEffect in spell.spellEffects)
+            {
+                if (spellEffect is ApplyBuff applyBuff)
+                {
+                    foreach (StatusEffect statusEffect in enemyInstance.statusEffects)
+                    {
+                        if (statusEffect is StatBuff statBuff)
+                        {
+                            if (applyBuff.stat == statBuff.stat)
+                                return false;
+                        }
+                    }
+                }
+            }
+            enemyInstance.CastSpell(null, spell, false);
+            return true;
+        }
         private bool AttemptCastHealSpell(Spell spell)
         {
             if (enemyInstance.currentHP >= enemyInstance.maxHP | enemyInstance.currentMP < spell.manaCost)

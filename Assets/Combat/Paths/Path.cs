@@ -86,7 +86,7 @@ namespace Assets.Combat
             return new Vector2(a * Mathf.Cos(t), b * Mathf.Sin(t));
         }
 
-        private void OnMouseOver()
+        private void OnMouseEnter()
         {
             if (!pathController.enemyDetailsPanel.gameObject.activeInHierarchy & !pathController.turnController.combatIsEnded & !pathController.tutorialController.isShowingTutorial)
             {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Combat.SpellEffects;
 using UnityEngine;
 
 
@@ -24,6 +25,7 @@ namespace Assets.Combat
             baseStats = enemyStats.GetStatBundle();
             enemyAI.SetSpells(currentEnemy.enemyStats.spells);
             statPanel.ShowStatInfo();
+            statusEffects = new List<StatusEffect>();
         }
 
         public void StartTurn()

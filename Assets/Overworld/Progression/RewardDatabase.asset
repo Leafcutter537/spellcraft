@@ -62,7 +62,7 @@ MonoBehaviour:
     - rank: 1
       quality: 2
       runeType: 5
-      category: 0
+      category: 2
       requiredPrimary: 0
       currencyType: 0
     equipmentRewards: []
@@ -81,7 +81,7 @@ MonoBehaviour:
     - quantity: 35
       currencyType: 0
     scrollUnlocks: []
-    quest: 
+    quest: Defeat Fourth Demon
   - runeRewards: []
     equipmentRewards: []
     currencyRewards:

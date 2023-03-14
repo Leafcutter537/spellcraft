@@ -36,6 +36,10 @@ namespace Assets.Tutorial
             {
                 SetupDialogue(tutorialLineDatabase.thirdCombatStartLines);
             }
+            else if (QuestLog.IsQuestActive("Defeat Fourth Demon"))
+            {
+                SetupDialogue(tutorialLineDatabase.fourthCombatStartLines);
+            }
         }
         private void OnEnable()
         {

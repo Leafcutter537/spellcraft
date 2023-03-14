@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Assets.Combat.SpellEffects;
 using Assets.Inventory.Runes;
 using Assets.Inventory.Scrolls;
+using Assets.Combat;
 using UnityEngine;
 
 namespace Assets.Inventory.Spells
@@ -14,7 +15,7 @@ namespace Assets.Inventory.Spells
     public class SpellGenerator : ScriptableObject
     {
         [SerializeField] private RuneGenerator runeGenerator;
-        [SerializeField] private Sprite defaultSpellIcon;
+        [SerializeField] private SpellIconDatabase spellIconDatabase;
         [SerializeField] private TooltipWarningEvent tooltipWarningEvent;
 
         public List<PlayerSpell> CreateSpells(List<SpellData> spellData)
@@ -29,7 +30,7 @@ namespace Assets.Inventory.Spells
         public PlayerSpell CreateSpell(SpellData spellData)
         {
             List<Rune> runes = runeGenerator.CreateRunes(spellData.runeData);
-            RuneSlotModification[] modifications = GetEnhancementModfiications(runes, spellData.scrollData);
+            RuneSlotModification[] modifications = GetEnhancementModifications(runes, spellData.scrollData);
             List<SpellEffect> spellEffects = GetSpellEffects(runes, spellData.scrollData, modifications);
             int manaCost = GetManaCost(runes, spellData.scrollData, modifications);
             TargetType targetType = GetTargetType(spellData);
@@ -38,7 +39,7 @@ namespace Assets.Inventory.Spells
             returnSpell.icon = GetSpellIcon(spellData);
             return returnSpell;
         }
-        private RuneSlotModification[] GetEnhancementModfiications(List<Rune> runes, ScrollData scrollData)
+        private RuneSlotModification[] GetEnhancementModifications(List<Rune> runes, ScrollData scrollData)
         {
             List<int> connections = new List<int>();
             RuneSlotModification[] returnArray = new RuneSlotModification[runes.Count];
@@ -124,11 +125,32 @@ namespace Assets.Inventory.Spells
                         case RuneType.Projectile:
                             returnList.Add(new CreateProjectile(0, spellStrength, modifications[i].elementChange));
                             break;
+                        case RuneType.ProjectileOneHigher:
+                            returnList.Add(new CreateProjectile(1, spellStrength, modifications[i].elementChange));
+                            break;
+                        case RuneType.ProjectileOneLower:
+                            returnList.Add(new CreateProjectile(-1, spellStrength, modifications[i].elementChange));
+                            break;
                         case RuneType.Shield:
                             returnList.Add(new CreateShield(0, spellStrength, modifications[i].elementChange, 1));
                             break;
+                        case RuneType.ShieldOneHigher:
+                            returnList.Add(new CreateShield(1, spellStrength, modifications[i].elementChange, 1));
+                            break;
+                        case RuneType.ShieldOneLower:
+                            returnList.Add(new CreateShield(-1, spellStrength, modifications[i].elementChange, 1));
+                            break;
                         case RuneType.Heal:
                             returnList.Add(new Heal(spellStrength));
+                            break;
+                        case RuneType.BuffProjectilePower:
+                            returnList.Add(new ApplyBuff(spellStrength, 2, CombatStat.ProjectilePower));
+                            break;
+                        case RuneType.BuffShieldPower:
+                            returnList.Add(new ApplyBuff(spellStrength, 2, CombatStat.ShieldPower));
+                            break;
+                        case RuneType.BuffHealPower:
+                            returnList.Add(new ApplyBuff(spellStrength, 2, CombatStat.HealPower));
                             break;
                     }
                 }
@@ -138,7 +160,7 @@ namespace Assets.Inventory.Spells
 
         private Sprite GetSpellIcon(SpellData spellData)
         {
-            return defaultSpellIcon;
+            return spellIconDatabase.GetSpellIcon(spellData.iconIndex);
         }
 
         private TargetType GetTargetType(SpellData spellData)
@@ -164,12 +186,14 @@ namespace Assets.Inventory.Spells
         public bool IsRuneEntryValid(List<RuneData> runeDataList, ScrollData scrollData)
         {
             int primaryCount = 0;
+            RuneType primaryType = RuneType.StrengthenAdjacent;
             foreach (RuneData runeData in runeDataList)
             {
                 if (runeData != null)
                 {
                     if (runeData.category == RuneCategory.Primary)
                     {
+                        primaryType = runeData.runeType;
                         primaryCount++;
                     }
                 }
@@ -179,8 +203,31 @@ namespace Assets.Inventory.Spells
                 tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("Only one primary rune can be in a spell!"));
                 return false;
             }
+            foreach (RuneData runeData in runeDataList)
+            {
+                if (runeData != null)
+                {
+                    switch (runeData.requiredPrimary)
+                    {
+                        case RequiredPrimary.Projectile:
+                            if (primaryType != RuneType.Projectile)
+                            {
+                                tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("A Projectile Rune is required for the " + runeData.GetRuneName() + " Rune!"));
+                                return false;
+                            }
+                            break;
+                        case RequiredPrimary.Shield:
+                            if (primaryType != RuneType.Shield)
+                            {
+                                tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("A Shield Rune is required for the " + runeData.GetRuneName() + " Rune!"));
+                                return false;
+                            }
+                            break;
+                    }
+                }
+            }
             List<Rune> runes = runeGenerator.CreateRunes(runeDataList);
-            RuneSlotModification[] modifications = GetEnhancementModfiications(runes, scrollData);
+            RuneSlotModification[] modifications = GetEnhancementModifications(runes, scrollData);
             if (modifications == null)
             {
                 tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("A slot cannot be modified by more than one element rune!"));

@@ -11,9 +11,11 @@ public class SpellPreview : MonoBehaviour
     [SerializeField] private SpellInfoDisplay spellInfoDisplay;
     [SerializeField] private SpellGenerator spellGenerator;
     [SerializeField] private RuneInScrollChangedEvent runeInScrollChangedEvent;
+    [SerializeField] private SpellIconDisplay spellIconDisplay;
     public PlayerSpell previewedSpell;
     private List<RuneSelectPanelChoice> runeSlots;
     private ScrollData scrollData;
+    [HideInInspector] public int spellIconIndex;
 
     private void OnEnable()
     {
@@ -38,7 +40,7 @@ public class SpellPreview : MonoBehaviour
                 runeData.Add(null);
             }    
         }
-        SpellData spellData = new SpellData(scrollData, runeData);
+        SpellData spellData = new SpellData(scrollData, runeData, spellIconIndex);
         previewedSpell = spellGenerator.CreateSpell(spellData);
         spellInfoDisplay.DisplaySpellInfo(previewedSpell);
     }
@@ -54,23 +56,7 @@ public class SpellPreview : MonoBehaviour
         UpdateSpellPreview();
     }
     
-    public bool IsRuneEntryValid(RuneSelectPanelChoice targetRuneSlot, RuneData newAddition)
-    {
-        List<RuneData> runeData = new List<RuneData>();
-        foreach (RuneSelectPanelChoice runeSlot in runeSlots)
-        {
-            if (runeSlot.selectChoice != null & !ReferenceEquals(runeSlot, targetRuneSlot))
-            {
-                Rune rune = runeSlot.selectChoice as Rune;
-                runeData.Add(rune.runeData);
-            }
-            else if (ReferenceEquals(runeSlot, targetRuneSlot))
-            {
-                runeData.Add(newAddition);
-            }
-        }
-        return spellGenerator.IsRuneEntryValid(runeData, scrollData);
-    }
+
 
     public bool IsRuneSwapValid(RuneSelectPanelChoice slotA, RuneSelectPanelChoice slotB)
     {
@@ -104,5 +90,12 @@ public class SpellPreview : MonoBehaviour
             }
         }
         return spellGenerator.IsRuneEntryValid(runeData, scrollData);
+    }
+
+    public void ChangeSpellIconIndex(int index)
+    {
+        spellIconIndex = index;
+        UpdateSpellPreview();
+        spellIconDisplay.UpdateSpellIcon();
     }
 }

@@ -12,5 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d27020c4c69633849ac0a36ac4b3f955, type: 3}
   m_Name: DevEquipment
   m_EditorClassIdentifier: 
-  ownedEquipmentData: []
-  equippedEquipment: []
+  ownedEquipmentData:
+  - equipmentSet: 0
+    equipmentSlot: 0
+    currentLevel: 1
+    progressToNextLevel: 0
+  equippedEquipment:
+  - equipmentSet: 0
+    equipmentSlot: 0
+    currentLevel: 1
+    progressToNextLevel: 0

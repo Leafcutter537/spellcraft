@@ -17,7 +17,7 @@ public class DarkenScreen : MonoBehaviour
 
     public void DisappearGameObjects()
     {
-        toDisappear.SetActive(false);
+        Destroy(toDisappear);
     }
 
     private void FinishDarkenScreen()

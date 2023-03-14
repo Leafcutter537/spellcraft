@@ -87,6 +87,26 @@ namespace Assets.Combat
             int healPower = GetCombatStat(CombatStat.HealPower);
             return new StatBundle(HP, MP, resilience, projectilePower, shieldPower, healPower);
         }
+
+        public static string GetCombatStatName(CombatStat stat)
+        {
+            switch (stat)
+            {
+                case CombatStat.HP:
+                    return "Health";
+                case CombatStat.MP:
+                    return "Mana";
+                case CombatStat.Resilience:
+                    return "Resilience";
+                case CombatStat.ProjectilePower:
+                    return "Projectile Power";
+                case CombatStat.ShieldPower:
+                    return "Shield Power";
+                case CombatStat.HealPower:
+                    return "Heal Power";
+            }
+            return "INVALID STAT";
+        }
     }
 
     public enum CombatStat

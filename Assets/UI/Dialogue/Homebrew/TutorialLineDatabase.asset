@@ -115,3 +115,32 @@ MonoBehaviour:
   - text: Alright, now! Cast the shield spell along the path of the enemy's projectile,
       or you're toast!
     panelIndex: 0
+  createSecondSpell:
+  - text: Creating a projectile spell is very similar to creating a shield spell.
+      A projectile spell is the primary rune, so here it's best to have it in the
+      center so it can connect to both of the enhancement runes.
+    panelIndex: 1
+  - text: Now, though, one of our enhancement runes will give our projectile the
+      "flame" element! Drag the runes onto the scroll to try it out.
+    panelIndex: 1
+  wrongRuneArrangementFlame:
+  - text: Hold on! We want this spell to be as strong as it can be, so we have to
+      make sure the runes are positioned correclty. The projectile rune should be
+      in the middle while the strengthen adjacent rune and fire strength adjacent
+      rune should be on the edges.
+    panelIndex: 0
+  finishedSecondSpell:
+  - text: Well done! Let's go roast some fiends!
+    panelIndex: 1
+  fourthCombatStartLines:
+  - text: An elemental projectile will do extra damage to a shield of the opposite
+      type. So you'll want to use fire projectiles against ice shields, and ice projectiles
+      against fire shields.
+    panelIndex: 1
+  - text: Conversely, an elemental projectile will do less damage to a shield of
+      the same type. So a fire shield is most effective when defending against fire
+      projectiles.
+    panelIndex: 1
+  - text: 'It looks like this enemy has a really strong ice shield. You should hit
+      him with the fire spell you created! '
+    panelIndex: 1

@@ -156,7 +156,7 @@ namespace Assets.Combat
             {
                 if (effect is CreateProjectile createProjectile)
                 {
-                    int ghostIndex = selectedPathIndex + createProjectile.path;
+                    int ghostIndex = selectedPathIndex - createProjectile.path;
                     if (ghostIndex >= 0 & ghostIndex < paths.Count)
                     {
                         paths[ghostIndex].CreateGhostProjectile(createProjectile);
@@ -164,7 +164,7 @@ namespace Assets.Combat
                 }
                 if (effect is CreateShield createShield)
                 {
-                    int ghostIndex = selectedPathIndex + createShield.path;
+                    int ghostIndex = selectedPathIndex - createShield.path;
                     if (ghostIndex >= 0 & ghostIndex < paths.Count)
                     {
                         paths[ghostIndex].CreateGhostShield(createShield);
@@ -175,7 +175,7 @@ namespace Assets.Combat
         public void CreateProjectile(Path path, CreateProjectile createProjectile, int projectilePower, bool isPlayerOwned)
         {
             int targetIndex = GetPathIndex(path);
-            int thisProjectileIndex = targetIndex + createProjectile.path;
+            int thisProjectileIndex = targetIndex - createProjectile.path;
             if (thisProjectileIndex >= 0 & thisProjectileIndex < paths.Count)
             {
                 paths[thisProjectileIndex].CreateProjectile(createProjectile, projectilePower, isPlayerOwned);
@@ -184,7 +184,7 @@ namespace Assets.Combat
         public void CreateShield(Path path, CreateShield createShield, int shieldPower, bool isPlayerOwned)
         {
             int targetIndex = GetPathIndex(path);
-            int thisShieldIndex = targetIndex + createShield.path;
+            int thisShieldIndex = targetIndex - createShield.path;
             if (thisShieldIndex >= 0 & thisShieldIndex < paths.Count)
             {
                 paths[thisShieldIndex].CreateShield(createShield, shieldPower, isPlayerOwned);
