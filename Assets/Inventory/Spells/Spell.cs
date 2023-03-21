@@ -9,11 +9,15 @@ namespace Assets.Inventory.Spells
     {
         public List<SpellEffect> spellEffects;
         public int manaCost;
+        public int chargeTime;
+        public int cooldown;
         public TargetType targetType;
-        public Spell(List<SpellEffect> spellEffects, int manaCost, TargetType targetType)
+        public Spell(List<SpellEffect> spellEffects, int manaCost, int chargeTime, int cooldown, TargetType targetType)
         {
             this.spellEffects = spellEffects;
             this.manaCost = manaCost;
+            this.chargeTime = chargeTime;
+            this.cooldown = cooldown;
             this.targetType = targetType;
         }
         public override string GetDescription()

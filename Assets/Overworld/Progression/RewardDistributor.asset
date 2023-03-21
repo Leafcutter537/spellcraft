@@ -15,3 +15,5 @@ MonoBehaviour:
   inventoryController: {fileID: 11400000, guid: ba8c4f93e0524844cb171dddc17884af, type: 2}
   storeStock: {fileID: 11400000, guid: 4153974d95738cb4fbb5dd2aee841989, type: 2}
   scrollStock: {fileID: 11400000, guid: 5ae519ff618845e45b9311d0f451c6e7, type: 2}
+  rewardDatabase: {fileID: 11400000, guid: 38c0e09ed4a430948aae2e08cc04b8a4, type: 2}
+  progressTracker: {fileID: 11400000, guid: aa92e6b799cfd78489a9fd69edb34884, type: 2}

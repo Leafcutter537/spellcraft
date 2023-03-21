@@ -15,32 +15,38 @@ MonoBehaviour:
   firstRuneList:
   - rank: 1
     quality: 2
-    runeType: 2
+    runeType: 0
     category: 0
     requiredPrimary: 0
     currencyType: 0
   - rank: 1
     quality: 2
-    runeType: 9
+    runeType: 14
     category: 1
-    requiredPrimary: 2
+    requiredPrimary: 1
     currencyType: 0
   - rank: 1
     quality: 2
-    runeType: 10
+    runeType: 14
     category: 1
-    requiredPrimary: 2
+    requiredPrimary: 1
     currencyType: 0
   - rank: 1
     quality: 2
-    runeType: 4
-    category: 1
+    runeType: 1
+    category: 2
     requiredPrimary: 0
     currencyType: 0
   - rank: 1
     quality: 2
-    runeType: 13
-    category: 1
+    runeType: 17
+    category: 2
+    requiredPrimary: 0
+    currencyType: 0
+  - rank: 1
+    quality: 2
+    runeType: 19
+    category: 2
     requiredPrimary: 0
     currencyType: 0
   secondRuneList: []

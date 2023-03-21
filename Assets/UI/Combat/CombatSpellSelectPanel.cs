@@ -22,6 +22,12 @@ public class CombatSpellSelectPanel : SelectPanel
     protected override void GetInventory()
     {
         itemList = inventoryController.GetEquippedSpellList();
+        List<Spell> spellList = new List<Spell>();
+        foreach (SelectChoice selectChoice in itemList)
+        {
+            spellList.Add(selectChoice as Spell);
+        }
+        playerInstance.SetStartingCooldowns(spellList);
     }
 
     protected override void SelectUpdate()
@@ -30,7 +36,17 @@ public class CombatSpellSelectPanel : SelectPanel
         {
             Deselect();
         }
-        else if (playerInstance.HasSufficientMana(GetSelected() as Spell))
+        if (!playerInstance.HasSufficientMana(GetSelected() as Spell))
+        {
+            tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("Insufficient Mana!"));
+            Deselect();
+        }
+        else if (playerInstance.GetSpellCooldown(GetIndex()) > 0)
+        {
+            tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("That spell is on cooldown!"));
+            Deselect();
+        }
+        else
         {
             for (int i = 0; i < selectPanelChoices.Count; i++)
             {
@@ -42,11 +58,6 @@ public class CombatSpellSelectPanel : SelectPanel
             startSpellPreviewEvent.Raise(this, null);
             rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, shrunkHeight);
             rectTransform.position = new Vector2(rectTransform.position.x, rectTransform.position.y + (defaultHeight - shrunkHeight) / 2);
-        }
-        else 
-        {
-            tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("Insufficient Mana!"));
-            Deselect();
         }
     }
     public void ReturnSpellList()

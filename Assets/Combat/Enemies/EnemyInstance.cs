@@ -15,6 +15,7 @@ namespace Assets.Combat
 
         private void Awake()
         {
+            spellCooldowns = new int[10];
             characterName = currentEnemy.enemyStats.enemyName;
             enemyStats = currentEnemy.enemyStats;
             currentHP = enemyStats.maxHP;
@@ -24,6 +25,7 @@ namespace Assets.Combat
             enemyID = enemyStats.enemyID;
             baseStats = enemyStats.GetStatBundle();
             enemyAI.SetSpells(currentEnemy.enemyStats.spells);
+            SetStartingCooldowns(enemyAI.spells);
             statPanel.ShowStatInfo();
             statusEffects = new List<StatusEffect>();
         }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4199567143634656210}
   - component: {fileID: 4199567143634656209}
   - component: {fileID: 4199567143634656211}
+  - component: {fileID: -6325818918101508703}
   m_Layer: 0
   m_Name: RuneShop
   m_TagString: Untagged
@@ -99,3 +100,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldMap: {fileID: 0}
   cellCoordinates: {x: 17, y: 17}
+--- !u!114 &-6325818918101508703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4199567143634656208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afa1fd594909b4341b13c2ce2959d13c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellCoordinates: {x: 0, y: 0}
+  interactRange: 1
+  worldMap: {fileID: 0}
+  interactPanel: {fileID: 0}

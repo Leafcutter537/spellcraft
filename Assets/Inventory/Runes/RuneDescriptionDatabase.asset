@@ -29,3 +29,14 @@ MonoBehaviour:
   - Increases projectile power by [STRENGTH]. Lasts two turns.
   - Increases shield power by [STRENGTH]. Lasts two turns.
   - Increases heal power by [STRENGTH]. Lasts two turns.
+  - Modifies a projectile to reduce the target's projectile power by [STRENGTH].
+    Lasts two turns.
+  - Modifies a projectile to reduce the target's shield power by [STRENGTH]. Lasts
+    two turns.
+  - Modifies a projectile to reduce the target's heal power by [STRENGTH]. Lasts
+    two turns.
+  - Multiplies the mana cost of connected primary and secondary runes by [MANACOSTMULTIPLIER].
+  - Increases the strength of ALL primary and secondary runes in this spell by [STRENGTH]%.
+    Also increases the cooldown of the spell by one turn.
+  - Increases the strength of connected primary and secondary runes by [STRENGTH]%.
+    Also increases the charge time of the spell by one turn.

@@ -46,7 +46,10 @@ namespace Assets.Combat.SpellEffects
             string bonusString = "";
             if (bundle != null)
             {
-                bonusString = " (+" + bundle.shieldPower + ")";
+                if (bundle.shieldPower >= 0)
+                    bonusString = " (+" + bundle.shieldPower + ")";
+                else
+                    bonusString = " (" + bundle.shieldPower + ")";
             }
             return "Creates a " + element.ToString() + " shield of strength " + strength + bonusString + pathDescription + " Lasts " + duration + " turns.";
         }

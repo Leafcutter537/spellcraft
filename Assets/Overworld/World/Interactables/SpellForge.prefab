@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3938653322643924270}
   - component: {fileID: 3938653322643924269}
   - component: {fileID: 3938653322643924271}
-  - component: {fileID: 3938653322643924256}
+  - component: {fileID: 5060691369112963801}
   m_Layer: 0
   m_Name: SpellForge
   m_TagString: Untagged
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldMap: {fileID: 0}
   cellCoordinates: {x: 6, y: 7}
---- !u!114 &3938653322643924256
+--- !u!114 &5060691369112963801
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,10 +109,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3938653322643924268}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fa7eba8a9473a44486b530e2514d457, type: 3}
+  m_Script: {fileID: 11500000, guid: afa1fd594909b4341b13c2ce2959d13c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellCoordinates: {x: 6, y: 7}
+  cellCoordinates: {x: 0, y: 0}
   interactRange: 1
   worldMap: {fileID: 0}
-  spellForgeInteractableEvent: {fileID: 11400000, guid: a16ff246e5ec77d4aa3471390bc5d46b, type: 2}
+  interactPanel: {fileID: 0}

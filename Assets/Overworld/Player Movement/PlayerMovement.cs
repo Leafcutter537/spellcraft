@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving;
     public Vector2Int currentLocation;
     private Vector2Int targetLocation;
+    [SerializeField] private bool isInDungeon;
     [Header("Event References")]
     [SerializeField] private LeaveCellEvent leaveCellEvent;
     [Header("Serialized Object References")]
@@ -22,7 +23,8 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         timeSinceMoveInitiated = timeToMove;
-        SetLocation(progressTracker.playerPosition);
+        if (!isInDungeon)
+            SetLocation(progressTracker.playerPosition);
     }
 
     private void Update()
@@ -69,11 +71,12 @@ public class PlayerMovement : MonoBehaviour
             timeSinceMoveInitiated = 0;
             isMoving = true;
             leaveCellEvent.Raise(this, null);
-            progressTracker.playerPosition = targetLocation;
+            if (!isInDungeon)
+                progressTracker.playerPosition = targetLocation;
         }
     }
 
-    private void SetLocation(Vector2Int newLocation)
+    public void SetLocation(Vector2Int newLocation)
     {
         transform.position = new Vector3(newLocation.x, newLocation.y);
         currentLocation = newLocation;

@@ -61,7 +61,7 @@ public class TooltipDisplay : MonoBehaviour
         }
         else if (selectPanelChoice.selectChoice is Spell spell)
         {
-            DisplaySpellInfo(spell);
+            DisplaySpellInfo(spell, selectPanelChoice);
         }
         else if (selectPanelChoice.selectChoice is EquipmentPiece equipmentPiece)
         {
@@ -131,13 +131,28 @@ public class TooltipDisplay : MonoBehaviour
         DisplayText(rune.GetDescription(), 14, Color.black);
     }
 
-    private void DisplaySpellInfo(Spell spell)
+    private void DisplaySpellInfo(Spell spell, SelectPanelChoice selectPanelChoice)
     {
+        bool isEnemySpell = selectPanelChoice.selectPanel is EnemySpellSelectPanel;
+        if (characterInstance != null & !isEnemySpell)
+        {
+            int spellIndex = selectPanelChoice.selectPanel.GetChoiceIndex(selectPanelChoice);
+            int cooldown = characterInstance.GetSpellCooldown(spellIndex);
+            if (cooldown > 0)
+            {
+                string plural = cooldown > 1 ? "S" : "";
+                DisplayText("ON COOLDOWN: " + cooldown.ToString() + " TURN" + plural + " REMAINING.", 14, new Color(100f / 255, 0, 0));
+            }
+        }
         DisplayText("Mana Cost: " + spell.manaCost.ToString(), 14, new Color(0, 30f / 255, 116f / 255));
+        if (spell.cooldown > 0)
+            DisplayText("Cooldown: " + spell.cooldown.ToString(), 14, new Color(30f / 255, 30f / 255, 0));
+        if (spell.chargeTime > 0)
+            DisplayText("Charge Time: " + spell.chargeTime.ToString(), 14, new Color(30f / 255, 30f / 255, 0));
         string descriptionText = "";
-        if (characterInstance != null)
+        if (characterInstance != null & !isEnemySpell)
             descriptionText = spell.GetDescription(characterInstance.GetStatBundle());
-        else if (playerStats != null)
+        else if (playerStats != null & !isEnemySpell)
             descriptionText = spell.GetDescription(playerStats.GetStatBundle());
         else
             descriptionText = spell.GetDescription();

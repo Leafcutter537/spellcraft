@@ -62,7 +62,13 @@ namespace Assets.Inventory.Runes
         ShieldOneLower,
         BuffProjectilePower,
         BuffShieldPower,
-        BuffHealPower
+        BuffHealPower,
+        DebuffProjectilePower,
+        DebuffShieldPower,
+        DebuffHealPower,
+        ManaCostReduction,
+        CooldownIncrease,
+        ChargeUpIncrease
     }
     public enum RuneCategory
     {

@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class EnemyInteractable : Interactable
 {
-    [SerializeField] private EnemyInteractableActiveEvent enemyInteractableActiveEvent;
     public EnemyStats enemyStats;
-    [SerializeField] private int worldIndex;
     [SerializeField] private ProgressTracker progressTracker;
+    [SerializeField] private EnemyInteractablePanel enemyInteractablePanel;
 
     protected override void Start()
     {
@@ -24,6 +23,7 @@ public class EnemyInteractable : Interactable
     }
     public override void ShowInteractPanel()
     {
-        enemyInteractableActiveEvent.Raise(this, null);
+        enemyInteractablePanel.gameObject.SetActive(true);
+        enemyInteractablePanel.SetEnemyStatInfo(enemyStats);
     }
 }

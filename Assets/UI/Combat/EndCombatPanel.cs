@@ -11,14 +11,9 @@ public class EndCombatPanel : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI mainText;
     [SerializeField] private TextMeshProUGUI detailText;
-    [SerializeField] private RewardDatabase rewardDatabase;
-    [SerializeField] private RewardDistributor distributor;
-    [SerializeField] private EnemyInstance enemyInstance;
 
-    public void ShowVictory()
+    public void ShowVictory(string rewardText)
     {
-        RewardData rewardData = rewardDatabase.GetReward(enemyInstance.enemyID);
-        string rewardText = distributor.DistributeReward(rewardData);
         mainText.text = "Victory!";
         detailText.text = rewardText;
     }

@@ -22,6 +22,7 @@ namespace Assets.Combat
             }
         }
         [HideInInspector] public int turnsToArrive;
+        public List<ProjectileAugmentation> augmentations;
         // Scene References
         [HideInInspector] public CharacterInstance target;
         [HideInInspector] public Path path;
@@ -112,7 +113,12 @@ namespace Assets.Combat
             string direction = target is PlayerInstance ? "Incoming " : "Outgoing ";
             string turnsString = turnsToArrive == 1 ? " turn." : " turns.";
             turnsString = turnsToArrive.ToString() + turnsString;
-            return direction + elementString + " projectile of strength " + strength.ToString() + "; arrives in " + turnsString;
+            string augmentationString = "";
+            foreach (ProjectileAugmentation augmentation in augmentations)
+            {
+                augmentationString += "\n" + augmentation.GetDescription();
+            }
+            return direction + elementString + " projectile of strength " + strength.ToString() + "; arrives in " + turnsString + " " + augmentationString;
         }
 
         public int PredictEnemyShieldEffectiveness(int shieldStrength, Element shieldElement, int shieldDuration)

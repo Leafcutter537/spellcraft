@@ -25,7 +25,7 @@ public class EnemySpellGenerator : ScriptableObject
         {
             spellEffects.Add(CreateSpellEffect(enemySpellEffect));
         }
-        Spell returnSpell = new Spell(spellEffects, enemySpellData.manaCost, enemySpellData.targetType);
+        Spell returnSpell = new Spell(spellEffects, enemySpellData.manaCost, enemySpellData.chargeTime, enemySpellData.cooldown, enemySpellData.targetType) ;
         returnSpell.title = enemySpellData.spellName;
         returnSpell.icon = enemySpellData.icon;
         return returnSpell;
@@ -36,7 +36,8 @@ public class EnemySpellGenerator : ScriptableObject
         switch (enemySpellEffect.spellEffectType)
         {
             case (SpellEffectType.CreateProjectile):
-                return new CreateProjectile(enemySpellEffect.path, enemySpellEffect.strength, enemySpellEffect.element);
+                List<ProjectileAugmentation> projectileAugmentations = CreateProjectileAugmentations(enemySpellEffect.projectileAugmentations);
+                return new CreateProjectile(enemySpellEffect.path, enemySpellEffect.strength, enemySpellEffect.element, projectileAugmentations);
             case (SpellEffectType.CreateShield):
                 return new CreateShield(enemySpellEffect.path, enemySpellEffect.strength, enemySpellEffect.element, enemySpellEffect.duration);
             case (SpellEffectType.Heal):
@@ -48,5 +49,20 @@ public class EnemySpellGenerator : ScriptableObject
             
 
         }
+    }
+
+    private List<ProjectileAugmentation> CreateProjectileAugmentations(List<EnemyProjectileAugmentation> augmentationData)
+    {
+        List<ProjectileAugmentation> returnList = new List<ProjectileAugmentation>();
+        foreach (EnemyProjectileAugmentation augmentation in augmentationData)
+        {
+            switch (augmentation.type)
+            {
+                case ProjectileAugmentationType.ApplyDebuff:
+                    returnList.Add(new ApplyDebuff(augmentation.strength, augmentation.duration, augmentation.stat));
+                    break;
+            }
+        }
+        return returnList;
     }
 }

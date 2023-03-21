@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Assets.Combat.Enemy;
 using Assets.Combat.SpellEffects;
 using Assets.Inventory.Spells;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,7 +11,7 @@ namespace Assets.Combat
 {
     public class EnemyAI : MonoBehaviour
     {
-        private List<Spell> spells;
+        public List<Spell> spells;
         [SerializeField] private EnemySpellGenerator enemySpellGenerator;
         private int spellIndex;
         [SerializeField] private EnemyInstance enemyInstance;
@@ -38,6 +39,10 @@ namespace Assets.Combat
 
         private bool AttemptCastSpell()
         {
+            if (!enemyInstance.CanCastSpell(spells[spellIndex].manaCost, spellIndex))
+            {
+                return false;
+            }
             switch (spells[spellIndex].targetType)
             {
                 case TargetType.Projectile:
@@ -68,25 +73,21 @@ namespace Assets.Combat
                     }
                 }
             }
-            enemyInstance.CastSpell(null, spell, false);
+            enemyInstance.CastSpell(null, spell, false, spellIndex);
             return true;
         }
         private bool AttemptCastHealSpell(Spell spell)
         {
-            if (enemyInstance.currentHP >= enemyInstance.maxHP | enemyInstance.currentMP < spell.manaCost)
+            if (enemyInstance.currentHP >= enemyInstance.maxHP)
                 return false;
             else
             {
-                enemyInstance.CastSpell(null, spell, false);
+                enemyInstance.CastSpell(null, spell, false, spellIndex);
                 return true;
             }
         }
         private bool AttemptCastPathSpell(Spell spell)
         {
-            if (enemyInstance.currentMP < spell.manaCost)
-            {
-                return false;
-            }
             List<PathEffectivenessPrediction> pathEffectivenessPredictions = new List<PathEffectivenessPrediction>();
             for (int i = 0; i < pathController.paths.Count; i++)
             {
@@ -106,7 +107,7 @@ namespace Assets.Combat
             }
             if (maxStrength >= 0)
             {
-                enemyInstance.CastSpell(pathEffectivenessPredictions[maxIndex].path, spell, false);
+                enemyInstance.CastSpell(pathEffectivenessPredictions[maxIndex].path, spell, false, spellIndex);
                 return true;
             }
             else

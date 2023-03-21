@@ -180,4 +180,9 @@ public abstract class SelectPanel : MonoBehaviour
         return inventoryIndex + selectedIndex;
     }
 
+    public int GetChoiceIndex(SelectPanelChoice selectPanelChoice)
+    {
+        return selectPanelChoices.IndexOf(selectPanelChoice);
+    }
+
 }

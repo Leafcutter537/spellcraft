@@ -11,11 +11,13 @@ namespace Assets.Combat.SpellEffects
         public int path;
         public int strength;
         public Element element;
-        public CreateProjectile(int path, int strength, Element element)
+        public List<ProjectileAugmentation> augmentations;
+        public CreateProjectile(int path, int strength, Element element, List<ProjectileAugmentation> augmentations)
         {
             this.path = path;
             this.strength = strength;
             this.element = element;
+            this.augmentations = augmentations;
         }
 
         public override string GetDescription()
@@ -24,6 +26,7 @@ namespace Assets.Combat.SpellEffects
         }
         public override string GetDescription(StatBundle bundle)
         {
+            string returnString = "";
             string pathDescription;
             string direction;
             switch (Math.Abs(path))
@@ -45,9 +48,17 @@ namespace Assets.Combat.SpellEffects
             string bonusString = "";
             if (bundle != null)
             {
-                bonusString = " (+" + bundle.projectilePower + ")";
+                if (bundle.projectilePower >= 0)
+                    bonusString = " (+" + bundle.projectilePower + ")";
+                else
+                    bonusString = " (" + bundle.projectilePower + ")";
             }
-            return "Creates a " + element.ToString() + " projectile of strength " + strength + bonusString + pathDescription;
+            returnString = "Creates a " + element.ToString() + " projectile of strength " + strength + bonusString + pathDescription;
+            foreach (ProjectileAugmentation augmentation in augmentations)
+            {
+                returnString = returnString + "\n" + augmentation.GetDescription();  
+            }
+            return returnString;
         }
     }
 }

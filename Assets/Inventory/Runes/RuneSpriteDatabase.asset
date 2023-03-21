@@ -27,6 +27,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d2081e38e799d924f938b9f6a7c23a1d, type: 3}
   - {fileID: 21300000, guid: f2e08307a408e5e43a1c31a154f24068, type: 3}
   - {fileID: 21300000, guid: ee677fa6fae61384589dbe2e6c30bf41, type: 3}
+  - {fileID: 21300000, guid: b13b7654b411e8049891a71644aa7f5a, type: 3}
+  - {fileID: 21300000, guid: 9beaee1aa8d83ac4d8f4a4991abc56eb, type: 3}
+  - {fileID: 21300000, guid: bd6cb96df908ce7448a305adc665500f, type: 3}
+  - {fileID: 21300000, guid: 403ed122abc95a147a3ac94f18dc71e4, type: 3}
+  - {fileID: 21300000, guid: 0584a2e694d7d0b42be1bf896545bc19, type: 3}
+  - {fileID: 21300000, guid: 5ad5a786afe244d42b24d55352fe9da2, type: 3}
   rankShapeSprites:
   - {fileID: 21300000, guid: 881b7e9a25ebeb44e800049ab8dd8f5f, type: 3}
   - {fileID: 21300000, guid: 9553f445d3f68ac4f8551dbeeec9e85c, type: 3}

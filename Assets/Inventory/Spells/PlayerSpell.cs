@@ -9,7 +9,7 @@ namespace Assets.Inventory.Spells
     {
         public SpellData spellData;
 
-        public PlayerSpell(SpellData spellData, List<SpellEffect> spellEffects, int manaCost, TargetType targetType) : base(spellEffects, manaCost, targetType)
+        public PlayerSpell(SpellData spellData, List<SpellEffect> spellEffects, int manaCost, int chargeTime, int cooldown, TargetType targetType) : base(spellEffects, manaCost, chargeTime, cooldown, targetType)
         {
             this.spellData = spellData;
         }

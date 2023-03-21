@@ -192,6 +192,7 @@ namespace Assets.Combat
             Projectile projectile = Instantiate(pathController.projectilePrefab, projectilePosition, Quaternion.identity).GetComponent<Projectile>();
             projectile.strength = createProjectile.strength + projectilePower;
             projectile.element = createProjectile.element;
+            projectile.augmentations = createProjectile.augmentations;
             projectile.turnsToArrive = turnsToArrive;
             projectile.target = isPlayerOwned ? pathController.enemyInstance : pathController.playerInstance;
             projectile.path = this;

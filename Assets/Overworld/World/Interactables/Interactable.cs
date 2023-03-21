@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public abstract class Interactable : MonoBehaviour
+public class Interactable : MonoBehaviour
 {
     public Vector2Int cellCoordinates;
     [SerializeField] private int interactRange;
     [SerializeField] private WorldMap worldMap;
+    [SerializeField] private GameObject interactPanel;
     protected virtual void Start()
     {
         worldMap.SubscribeInteractable(this);
@@ -29,6 +30,9 @@ public abstract class Interactable : MonoBehaviour
             return false;
         }
     }
-    public abstract void ShowInteractPanel();
+    public virtual void ShowInteractPanel()
+    {
+        interactPanel.SetActive(true);
+    }
 
 }

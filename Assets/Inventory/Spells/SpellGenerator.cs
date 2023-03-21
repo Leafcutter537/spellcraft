@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Assets.Combat.SpellEffects;
 using Assets.Inventory.Runes;
 using Assets.Inventory.Scrolls;
 using Assets.Combat;
 using UnityEngine;
+using System.Globalization;
 
 namespace Assets.Inventory.Spells
 {
@@ -31,14 +33,90 @@ namespace Assets.Inventory.Spells
         {
             List<Rune> runes = runeGenerator.CreateRunes(spellData.runeData);
             RuneSlotModification[] modifications = GetEnhancementModifications(runes, spellData.scrollData);
-            List<SpellEffect> spellEffects = GetSpellEffects(runes, spellData.scrollData, modifications);
+            RuneSlotAugmentation[] augmentations = GetAugmentations(runes, spellData.scrollData, modifications);
+            List<SpellEffect> spellEffects = GetSpellEffects(runes, spellData.scrollData, modifications, augmentations);
+            int cooldown = GetCooldown(runes);
+            int chargeTime = GetChargeTime(runes);
             int manaCost = GetManaCost(runes, spellData.scrollData, modifications);
             TargetType targetType = GetTargetType(spellData);
-            PlayerSpell returnSpell = new PlayerSpell(spellData, spellEffects, manaCost, targetType);
+            PlayerSpell returnSpell = new PlayerSpell(spellData, spellEffects, manaCost, chargeTime, cooldown, targetType);
             returnSpell.title = spellData.spellName;
             returnSpell.icon = GetSpellIcon(spellData);
             return returnSpell;
         }
+        private RuneSlotAugmentation[] GetAugmentations(List<Rune> runes, ScrollData scrollData, RuneSlotModification[] modifications)
+        {
+            RuneSlotAugmentation[] returnArray = new RuneSlotAugmentation[runes.Count];
+            for (int i = 0; i < returnArray.Length; i++)
+            {
+                returnArray[i] = new RuneSlotAugmentation();
+            }
+            for (int i = 0; i < runes.Count; i++)
+            {
+                Rune rune = runes[i];
+                if (rune == null)
+                    continue;
+                RuneType[] augmentationTypeArray = { RuneType.DebuffHealPower, RuneType.DebuffProjectilePower, RuneType.DebuffShieldPower };
+                if (augmentationTypeArray.Contains<RuneType>(rune.runeData.runeType))
+                {
+                    List<int> connections = GetConnections(i, scrollData);
+                    foreach (int connection in connections)
+                    {
+                        AddAugmentation(returnArray[connection], (1 + modifications[i].strengthPercentage / 100f), rune);
+                    }
+                }
+            }
+            return returnArray;
+        }
+        private void AddAugmentation(RuneSlotAugmentation augmentation, float modificationStrength, Rune rune)
+        {
+            int augmentationStrength = (int)Mathf.Round(rune.strength * modificationStrength); 
+            RuneType[] projectileTypeArray = { RuneType.DebuffHealPower, RuneType.DebuffProjectilePower, RuneType.DebuffShieldPower };
+            if (projectileTypeArray.Contains<RuneType>(rune.runeData.runeType))
+            {
+                ProjectileAugmentation projectileAugmentation = FindExistingProjectileAugmentation(augmentation, rune.runeData.runeType);
+                if (projectileAugmentation != null)
+                {
+                    projectileAugmentation.strength += augmentationStrength;
+                }
+                else
+                    switch (rune.runeData.runeType)
+                    {
+                        case (RuneType.DebuffHealPower):
+                            augmentation.projectileAugmentations.Add(new ApplyDebuff(augmentationStrength, 2, CombatStat.HealPower));
+                            break;
+                        case (RuneType.DebuffProjectilePower):
+                            augmentation.projectileAugmentations.Add(new ApplyDebuff(augmentationStrength, 2, CombatStat.ProjectilePower));
+                            break;
+                        case (RuneType.DebuffShieldPower):
+                            augmentation.projectileAugmentations.Add(new ApplyDebuff(augmentationStrength, 2, CombatStat.ShieldPower));
+                            break;
+                    }
+            }
+        }
+        private ProjectileAugmentation FindExistingProjectileAugmentation(RuneSlotAugmentation augmentation, RuneType runeType)
+        {
+            foreach (ProjectileAugmentation projectileAugmentation in augmentation.projectileAugmentations)
+            {
+                if (ProjectileAugmentationMatchesRuneType(projectileAugmentation, runeType))
+                    return projectileAugmentation;
+            }
+            return null;
+        }
+        private bool ProjectileAugmentationMatchesRuneType(ProjectileAugmentation augmentation, RuneType runeType)
+        {
+            if (augmentation is ApplyDebuff applyDebuff)
+            {
+                if (runeType is RuneType.DebuffHealPower & applyDebuff.stat == CombatStat.HealPower)
+                    return true;
+                if (runeType is RuneType.DebuffProjectilePower & applyDebuff.stat == CombatStat.ProjectilePower)
+                    return true;
+                if (runeType is RuneType.DebuffShieldPower & applyDebuff.stat == CombatStat.ShieldPower)
+                    return true;
+            }
+            return false;
+        }
+
         private RuneSlotModification[] GetEnhancementModifications(List<Rune> runes, ScrollData scrollData)
         {
             List<int> connections = new List<int>();
@@ -81,6 +159,19 @@ namespace Assets.Inventory.Spells
                             returnArray[connection].elementChange = Element.Frost;
                         }
                         break;
+                    case RuneType.ManaCostReduction:
+                        connections = GetConnections(i, scrollData);
+                        foreach (int connection in connections)
+                        {
+                            returnArray[connection].manaCostMultiplier *= Rune.GetManaCostMultiplier(rune.strength);
+                        }
+                        break;
+                    case RuneType.CooldownIncrease:
+                        for (int j = 0; j < runes.Count; j++)
+                        {
+                            returnArray[j].strengthPercentage += rune.strength;
+                        }
+                        break;
                 }
             }
             return returnArray;
@@ -112,7 +203,33 @@ namespace Assets.Inventory.Spells
             }
             return (int)Mathf.Round(returnValue);
         }
-        private List<SpellEffect> GetSpellEffects(List<Rune> runes, ScrollData scrollData, RuneSlotModification[] modifications)
+        private int GetCooldown(List<Rune> runes)
+        {
+            int cooldown = 0;
+            foreach (Rune rune in runes)
+            {
+                if (rune != null)
+                {
+                    if (rune.runeData.runeType == RuneType.CooldownIncrease)
+                        cooldown++;
+                }
+            }
+            return cooldown;
+        }
+        private int GetChargeTime(List<Rune> runes)
+        {
+            int chargeTime = 0;
+            foreach (Rune rune in runes)
+            {
+                if (rune != null)
+                {
+                    if (rune.runeData.runeType == RuneType.ChargeUpIncrease)
+                        chargeTime++;
+                }
+            }
+            return chargeTime;
+        }
+        private List<SpellEffect> GetSpellEffects(List<Rune> runes, ScrollData scrollData, RuneSlotModification[] modifications, RuneSlotAugmentation[] augmentations)
         {
             List<SpellEffect> returnList = new List<SpellEffect>();
             for (int i = 0; i < runes.Count; i++)
@@ -123,13 +240,13 @@ namespace Assets.Inventory.Spells
                     switch (runes[i].runeData.runeType)
                     {
                         case RuneType.Projectile:
-                            returnList.Add(new CreateProjectile(0, spellStrength, modifications[i].elementChange));
+                            returnList.Add(new CreateProjectile(0, spellStrength, modifications[i].elementChange, augmentations[i].projectileAugmentations));
                             break;
                         case RuneType.ProjectileOneHigher:
-                            returnList.Add(new CreateProjectile(1, spellStrength, modifications[i].elementChange));
+                            returnList.Add(new CreateProjectile(1, spellStrength, modifications[i].elementChange, augmentations[i].projectileAugmentations));
                             break;
                         case RuneType.ProjectileOneLower:
-                            returnList.Add(new CreateProjectile(-1, spellStrength, modifications[i].elementChange));
+                            returnList.Add(new CreateProjectile(-1, spellStrength, modifications[i].elementChange, augmentations[i].projectileAugmentations));
                             break;
                         case RuneType.Shield:
                             returnList.Add(new CreateShield(0, spellStrength, modifications[i].elementChange, 1));

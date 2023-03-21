@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Combat;
 using Assets.EventSystem;
+using Assets.Progression;
 using Assets.Tutorial;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class TurnController : MonoBehaviour
 {
     [Header("Serialized Object References")]
     [SerializeField] private ProgressTracker progressTracker;
+    [SerializeField] private RewardDistributor distributor;
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI turnLabel;
     [SerializeField] private EndCombatPanel endCombatPanel;
@@ -65,7 +67,7 @@ public class TurnController : MonoBehaviour
                         timeSinceLastAction = 0;
                     else
                     {
-                        enemyInstance.RestoreMana();
+                        enemyInstance.EndTurnActions();
                         turnStage = TurnStage.ProjectilesMoving;
                         pathController.ResetPathIndex();
                     }
@@ -149,7 +151,7 @@ public class TurnController : MonoBehaviour
             turnStage = TurnStage.ProjectilesMoving;
             pathController.ResetPathIndex();
             timeSinceLastAction = 0;
-            playerInstance.RestoreMana();
+            playerInstance.EndTurnActions();
         }
 
     }
@@ -160,8 +162,8 @@ public class TurnController : MonoBehaviour
         endCombatPanel.gameObject.SetActive(true);
         if (isPlayerWinner)
         {
-            progressTracker.AddDefeatedEnemy(enemyInstance.enemyID);
-            endCombatPanel.ShowVictory();
+            string rewardText = distributor.DistributeReward(enemyInstance.enemyID);
+            endCombatPanel.ShowVictory(rewardText);
         }
         else
         {

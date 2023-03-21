@@ -22,6 +22,7 @@ namespace Assets.Combat
 
         private void Awake()
         {
+            spellCooldowns = new int[10];
             maxHP = playerStats.GetCombatStat(CombatStat.HP);
             maxMP = playerStats.GetCombatStat(CombatStat.MP);
             currentHP = maxHP;
@@ -62,7 +63,7 @@ namespace Assets.Combat
         public void CastSpell(Path path)
         {
             Spell spell = combatSpellSelectPanel.GetSelected() as Spell;
-            CastSpell(path, spell, true);
+            CastSpell(path, spell, true, combatSpellSelectPanel.GetIndex());
             combatSpellSelectPanel.ReturnSpellList();
         }
 

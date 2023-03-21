@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Combat;
 using Assets.Inventory.Scrolls;
 using Assets.Store;
 using PixelCrushers.DialogueSystem;
@@ -13,9 +14,21 @@ namespace Assets.Progression
         [SerializeField] private InventoryController inventoryController;
         [SerializeField] private StoreStock storeStock;
         [SerializeField] private ScrollStock scrollStock;
+        [SerializeField] private RewardDatabase rewardDatabase;
+        [SerializeField] private ProgressTracker progressTracker;
+
+        public string DistributeReward(int enemyIndex)
+        {
+            progressTracker.AddDefeatedEnemy(enemyIndex);
+            RewardData rewardData = rewardDatabase.GetReward(enemyIndex);
+            return DistributeReward(rewardData);
+
+        }
 
         public string DistributeReward(RewardData rewardData)
         {
+            if (rewardData == null)
+                return null;
             string returnString = inventoryController.AddRewards(rewardData);
             foreach (ScrollData scrollData in rewardData.scrollUnlocks)
                 scrollStock.AddScroll(scrollData);

@@ -34,12 +34,25 @@ namespace Assets.Inventory.Runes
 
         public override string GetDescription()
         {
-            return description.Replace("[STRENGTH]", GetStringOfRuneValue(strength));
+            string returnString = description.Replace("[STRENGTH]", GetStringOfRuneValue(strength));
+            returnString = returnString.Replace("[MANACOSTMULTIPLIER]", GetManaCostString(strength));
+            return returnString;
         }
 
         public static string GetStringOfRuneValue(float value)
         {
             return String.Format("{0:0.0}", value);
+        }
+
+        public static float GetManaCostMultiplier(float strength)
+        {
+            return (1 / (1 + strength * 0.01f));
+        }
+
+        public static string GetManaCostString(float strength)
+        {
+            float floatValue = GetManaCostMultiplier(strength);
+            return String.Format("{0:0.000}", floatValue);
         }
     }
 }

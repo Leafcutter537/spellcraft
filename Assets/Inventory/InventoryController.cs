@@ -164,7 +164,7 @@ public class InventoryController : ScriptableObject
         foreach (RuneData runeData in rewardData.runeRewards)
         {
             Rune rune = runeGenerator.CreateRune(runeData);
-            returnText += "Received a " + rune.GetTitle() + " rune of quality " + runeData.quality + "!\n\n";
+            returnText += "Received a " + rune.GetTitle() + " of quality " + runeData.quality + "!\n\n";
             runes.Add(rune);
         }
         foreach (OwnedEquipmentData equipmentData in rewardData.equipmentRewards)

@@ -21,7 +21,10 @@ namespace Assets.Combat.SpellEffects
             string bonusString = "";
             if (bundle != null)
             {
-                bonusString = " (+" + bundle.healPower + ")"; 
+                if (bundle.healPower >= 0)
+                    bonusString = " (+" + bundle.healPower + ")";
+                else
+                    bonusString = " (" + bundle.healPower + ")";
             }
             return "Restores " + strength +  bonusString + " health to the caster.";
         }

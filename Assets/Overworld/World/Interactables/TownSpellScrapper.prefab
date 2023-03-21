@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1933112484274505332}
   - component: {fileID: 1933112484274505335}
   - component: {fileID: 1933112484274505333}
-  - component: {fileID: 1933112484274505339}
+  - component: {fileID: -5303149978272908771}
   m_Layer: 0
   m_Name: TownSpellScrapper
   m_TagString: Untagged
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldMap: {fileID: 0}
   cellCoordinates: {x: 21, y: 17}
---- !u!114 &1933112484274505339
+--- !u!114 &-5303149978272908771
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,10 +109,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1933112484274505334}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57d43aae6b6217545987b2cb073b99aa, type: 3}
+  m_Script: {fileID: 11500000, guid: afa1fd594909b4341b13c2ce2959d13c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cellCoordinates: {x: 21, y: 17}
   interactRange: 1
   worldMap: {fileID: 0}
-  scrapperInteractableEvent: {fileID: 11400000, guid: 31437b533be4fe847b4e1089958f1610, type: 2}
+  interactPanel: {fileID: 0}

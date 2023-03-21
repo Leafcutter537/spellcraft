@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Assets.Combat;
 using Assets.EventSystem;
 using Assets.Inventory.Runes;
@@ -7,24 +8,27 @@ using UnityEngine;
 
 public class SpellInfoDisplay : InfoDisplay
 {
-    [Header("Text References")]
-    [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] private TextMeshProUGUI manaCostText;
-    [Header("Event References")]
-    [SerializeField] private EnterTooltipEvent enterTooltipEvent;
-    [Header("Stat References")]
-    [SerializeField] private PlayerStats playerStats;
-    [SerializeField] private CharacterInstance characterInstance;
+    [Header("Prefab References")]
+    [SerializeField] private GameObject tooltipTextPrefab;
+    [Header("UI References")]
+    [SerializeField] private Transform textboxParent;
+    // Instances of created objects
+    private List<GameObject> tooltipTextObjects;
 
-    private void OnEnable()
+    private void Awake()
     {
-        if (enterTooltipEvent != null)
-            enterTooltipEvent.AddListener(OnEnterTooltip);
+        tooltipTextObjects = new List<GameObject>();
     }
-    private void OnDisable()
+
+    private void DisplayText(string text, float size, Color color)
     {
-        if (enterTooltipEvent != null)
-            enterTooltipEvent.RemoveListener(OnEnterTooltip);
+        GameObject tooltipText = Instantiate(tooltipTextPrefab);
+        tooltipText.transform.SetParent(textboxParent, false);
+        tooltipTextObjects.Add(tooltipText);
+        TextMeshProUGUI tmp = tooltipText.GetComponent<TextMeshProUGUI>();
+        tmp.text = text;
+        tmp.fontSize = size;
+        tmp.color = color;
     }
     public override void DisplayInfo(SelectChoice selectChoice)
     {
@@ -32,28 +36,20 @@ public class SpellInfoDisplay : InfoDisplay
     }
     public void DisplaySpellInfo(Spell spell)
     {
-        if (characterInstance != null)
-            descriptionText.text = spell.GetDescription(characterInstance.GetStatBundle());
-        else if (playerStats != null)
-            descriptionText.text = spell.GetDescription(playerStats.GetStatBundle());
-        else
-            descriptionText.text = spell.GetDescription();
-
-        manaCostText.text = "Mana Cost: " + spell.manaCost;
+        ClearInfo();
+        DisplayText("Mana Cost: " + spell.manaCost.ToString(), 14, new Color(0, 30f / 255, 116f / 255));
+        if (spell.cooldown > 0)
+            DisplayText("Cooldown: " + spell.cooldown.ToString(), 14, new Color(30f / 255, 30f / 255, 0));
+        if (spell.chargeTime > 0)
+            DisplayText("Charge Time: " + spell.chargeTime.ToString(), 14, new Color(30f / 255, 30f / 255, 0));
+        string descriptionText = spell.GetDescription();
+        DisplayText(descriptionText, 14, Color.black);
     }
     public override void ClearInfo()
     {
-        descriptionText.text = "";
-        manaCostText.text = "";
+        foreach (GameObject obj in tooltipTextObjects)
+            Destroy(obj);
+        tooltipTextObjects = new List<GameObject>();
     }
-    private void OnEnterTooltip(object sender, EventParameters args)
-    {
-        SelectPanelChoice selectPanelChoice = sender as SelectPanelChoice;
-        if (selectPanelChoice == null)
-            return;
-        if (selectPanelChoice.selectChoice is Spell spell)
-        {
-            DisplaySpellInfo(spell);
-        }
-    }
+
 }

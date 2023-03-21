@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Assets.Combat.SpellEffects;
 using Assets.Inventory.Spells;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Assets.Combat
@@ -32,12 +33,18 @@ namespace Assets.Combat
         private List<StatusEffect> expiredStatusEffect;
         private int statusEffectIndex;
         private bool isLoopingThroughStatusEffects;
+        // Combat Control
+        protected int[] spellCooldowns;
 
         public void ReceiveProjectile(Projectile projectile)
         {
             currentHP = Mathf.Max(0, currentHP - projectile.strength);
             string combatMessage = characterName + " was struck by a projectile for " + projectile.strength + " damage!";
             combatLogMessageEvent.Raise(this, new CombatLogEventParameters(combatMessage));
+            foreach (ProjectileAugmentation projectileAugmentation in projectile.augmentations)
+            {
+                projectileAugmentation.EnactAugmentationEffect(this);
+            }
             statPanel.ShowStatInfo();
             CheckDeath();
         }
@@ -50,7 +57,7 @@ namespace Assets.Combat
             }
         }
 
-        public void CastSpell(Path path, Spell spell, bool isPlayerOwned)
+        public void CastSpell(Path path, Spell spell, bool isPlayerOwned, int spellIndex)
         {
             combatLogMessageEvent.Raise(this, new CombatLogEventParameters(GetCombatLogMessage(spell, path)));
             StatBundle currentStats = GetStatBundle();
@@ -82,6 +89,7 @@ namespace Assets.Combat
                 AttemptApplyBuff(applyBuff);
             }
             currentMP -= spell.manaCost;
+            SetSpellCooldown(spellIndex, spell.cooldown);
             statPanel.ShowStatInfo();
         }
         private void AttemptApplyBuff(ApplyBuff applyBuff)
@@ -106,6 +114,33 @@ namespace Assets.Combat
                 if (statusEffect is StatBuff buff)
                 {
                     if (buff.stat == stat) return buff;
+                }
+            }
+            return null;
+        }
+        public void AttemptApplyDebuff(ApplyDebuff applyDebuff)
+        {
+            StatDebuff existingDebuff = FindExistingDebuff(applyDebuff.stat);
+            if (existingDebuff != null)
+            {
+                if (existingDebuff.debuffStrength >= applyDebuff.strength & existingDebuff.turnsRemaining >= applyDebuff.duration)
+                {
+                    combatLogMessageEvent.Raise(this, new CombatLogEventParameters(characterName + " already had a stronger " + applyDebuff.stat + " debuff!"));
+                    return;
+                }
+                statusEffects.Remove(existingDebuff);
+            }
+            statusEffects.Add(new StatDebuff(applyDebuff.strength, applyDebuff.duration, applyDebuff.stat));
+            combatLogMessageEvent.Raise(this, new CombatLogEventParameters(characterName + "'s " + PlayerStats.GetCombatStatName(applyDebuff.stat) + " decreased!"));
+
+        }
+        public StatDebuff FindExistingDebuff(CombatStat stat)
+        {
+            foreach (StatusEffect statusEffect in statusEffects)
+            {
+                if (statusEffect is StatDebuff debuff)
+                {
+                    if (debuff.stat == stat) return debuff;
                 }
             }
             return null;
@@ -147,12 +182,35 @@ namespace Assets.Combat
                 return characterName + " cast " + spell.GetTitle() + "!";
         }
 
-        public void RestoreMana()
+        public void EndTurnActions()
         {
             currentMP = maxMP;
+            for (int i = 0; i < spellCooldowns.Length; i++)
+            {
+                spellCooldowns[i] = Mathf.Max(0, spellCooldowns[i] - 1);
+            }
             statPanel.ShowStatInfo();
         }
 
+        public void SetSpellCooldown(int spellIndex, int cooldown)
+        {
+            spellCooldowns[spellIndex] = cooldown;
+        }
+        public int GetSpellCooldown(int spellIndex)
+        {
+            return spellCooldowns[spellIndex];
+        }
+        public bool CanCastSpell(int manaCost, int spellIndex)
+        {
+            return (currentMP >= manaCost & spellCooldowns[spellIndex] == 0);
+        }
+        public void SetStartingCooldowns(List<Spell> spellList)
+        {
+            for (int i = 0; i < spellList.Count; i++)
+            {
+                spellCooldowns[i] = spellList[i].chargeTime;
+            }
+        }
         public StatBundle GetStatBundle()
         {
             StatBundle returnBundle = new StatBundle(baseStats);
@@ -179,6 +237,30 @@ namespace Assets.Combat
                             break;
                         case CombatStat.HealPower:
                             returnBundle.healPower += statBuff.buffStrength;
+                            break;
+                    }
+                }
+                if (statusEffect is StatDebuff statDebuff)
+                {
+                    switch (statDebuff.stat)
+                    {
+                        case CombatStat.HP:
+                            returnBundle.maxHP -= statDebuff.debuffStrength;
+                            break;
+                        case CombatStat.MP:
+                            returnBundle.maxMP -= statDebuff.debuffStrength;
+                            break;
+                        case CombatStat.Resilience:
+                            returnBundle.resilience -= statDebuff.debuffStrength;
+                            break;
+                        case CombatStat.ProjectilePower:
+                            returnBundle.projectilePower -= statDebuff.debuffStrength;
+                            break;
+                        case CombatStat.ShieldPower:
+                            returnBundle.shieldPower -= statDebuff.debuffStrength;
+                            break;
+                        case CombatStat.HealPower:
+                            returnBundle.healPower -= statDebuff.debuffStrength;
                             break;
                     }
                 }
