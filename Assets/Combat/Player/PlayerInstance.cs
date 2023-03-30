@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Assets.Combat.SpellEffects;
 using Assets.EventSystem;
 using Assets.Inventory.Spells;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Assets.Combat
@@ -16,9 +17,15 @@ namespace Assets.Combat
         [Header("Spellcasting")]
         [SerializeField] private PathSelectEvent pathSelectEvent;
         private bool isReadyForSpell;
+        private GridSquare spellSquare;
+        private Vector2Int adjacentVector;
+        private int spellDirection;
+        private Spell spellBeingCast;
         [Header("Event References")]
         [SerializeField] private StartSpellPreviewEvent startSpellPreviewEvent;
         [SerializeField] private EndSpellPreviewEvent endSpellPreviewEvent;
+        // Combat Control
+        protected int[] spellCooldowns;
 
         private void Awake()
         {
@@ -34,13 +41,13 @@ namespace Assets.Combat
         }
         private void OnEnable()
         {
-            pathSelectEvent.AddListener(OnPathSelect);
+            pathSelectEvent.AddListener(OnSquareSelect);
             startSpellPreviewEvent.AddListener(OnStartSpellPreview);
             endSpellPreviewEvent.AddListener(OnEndSpellPreview);
         }
         private void OnDisable()
         {
-            pathSelectEvent.RemoveListener(OnPathSelect);
+            pathSelectEvent.RemoveListener(OnSquareSelect);
             startSpellPreviewEvent.RemoveListener(OnStartSpellPreview);
             endSpellPreviewEvent.RemoveListener(OnEndSpellPreview);
         }
@@ -53,24 +60,116 @@ namespace Assets.Combat
         {
             isReadyForSpell = false;
         }
-        private void OnPathSelect(object sender, EventParameters args)
+        private void OnSquareSelect(object sender, EventParameters args)
         {
             if (isReadyForSpell)
             {
-                CastSpell(sender as Path);
+                spellSquare = sender as GridSquare;
+                adjacentVector = new Vector2Int(0, 0);
+                spellDirection = 0;
+                AttemptCastPlayerSpell(spellSquare);
             }
         }
-        public void CastSpell(Path path)
+        public void AttemptCastPlayerSpell(GridSquare path)
         {
-            Spell spell = combatSpellSelectPanel.GetSelected() as Spell;
-            CastSpell(path, spell, true, combatSpellSelectPanel.GetIndex());
+            spellBeingCast = combatSpellSelectPanel.GetSelected() as Spell;
+            if (NeedsAdjacentVector(spellBeingCast))
+            {
+                RequestAdjacentVectorChoice();
+                return;
+            }
+            if (NeedsDirectionVector(spellBeingCast))
+            {
+                RequestDirectionChoice();
+                return;
+            }
+            CastPlayerSpell(path, spellBeingCast, combatSpellSelectPanel.GetIndex(), new Vector2Int(0, 0), 0);
             combatSpellSelectPanel.ReturnSpellList();
         }
+        private bool NeedsAdjacentVector(Spell spell)
+        {
+            return false;
+        }
+        private void RequestAdjacentVectorChoice()
+        {
 
+        }
+        private bool NeedsDirectionVector(Spell spell)
+        {
+            return false;
+        }
+        private void RequestDirectionChoice()
+        {
+
+        }
+        public void CastPlayerSpell(GridSquare square, Spell spell, int spellIndex, Vector2Int adjacentVector, int direction)
+        {
+            combatLogMessageEvent.Raise(this, new CombatLogEventParameters(GetCombatLogMessage(spell)));
+            StatBundle currentStats = GetStatBundle();
+            List<ApplyBuff> applyBuffList = new List<ApplyBuff>();
+            foreach (SpellEffect spellEffect in spell.spellEffects)
+            {
+                if (spellEffect is CreateProjectile createProjectile)
+                {
+                    gridController.CreatePlayerProjectile(square, createProjectile, currentStats.projectilePower, adjacentVector, direction); ;
+                }
+                if (spellEffect is Heal heal)
+                {
+                    int totalHeal = heal.strength + currentStats.healPower;
+                    currentHP = Mathf.Min(maxHP, currentHP + totalHeal);
+                    combatLogMessageEvent.Raise(this, new CombatLogEventParameters(characterName + " healed for " + totalHeal + " HP!"));
+                }
+                if (spellEffect is CreateShield createShield)
+                {
+                    gridController.CreatePlayerShield(square, createShield, currentStats.shieldPower, adjacentVector, direction);
+                }
+                // Buffs are always applied after all other spell effects, as they could affect the others' strength
+                // Here we put them in a list to apply them later
+                if (spellEffect is ApplyBuff applyBuff)
+                {
+                    applyBuffList.Add(applyBuff);
+                }
+            }
+            foreach (ApplyBuff applyBuff in applyBuffList)
+            {
+                AttemptApplyBuff(applyBuff);
+            }
+            currentMP -= spell.manaCost;
+            SetSpellCooldown(spellIndex, spell.cooldown);
+            statPanel.ShowStatInfo();
+        }
+        public void SetSpellCooldown(int spellIndex, int cooldown)
+        {
+            spellCooldowns[spellIndex] = cooldown;
+        }
+        public int GetSpellCooldown(int spellIndex)
+        {
+            return spellCooldowns[spellIndex];
+        }
+        public bool CanCastSpell(int manaCost, int spellIndex)
+        {
+            return (currentMP >= manaCost & spellCooldowns[spellIndex] == 0);
+        }
+        public void SetStartingCooldowns(List<Spell> spellList)
+        {
+            for (int i = 0; i < spellList.Count; i++)
+            {
+                spellCooldowns[i] = spellList[i].chargeTime;
+            }
+        }
 
         public bool HasSufficientMana(Spell spell)
         {
             return spell.manaCost <= currentMP;
+        }
+
+        public override void EndTurnActions()
+        {
+            base.EndTurnActions();
+            for (int i = 0; i < spellCooldowns.Length; i++)
+            {
+                spellCooldowns[i] = Mathf.Max(0, spellCooldowns[i] - 1);
+            }
         }
     }
 }

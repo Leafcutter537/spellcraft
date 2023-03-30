@@ -27,7 +27,6 @@ namespace Assets.Combat
         [SerializeField] private Color fireColor;
         [SerializeField] private Color frostColor;
         // Names
-        [HideInInspector] public string pathName;
         [HideInInspector] public string ownerName;
         public int PredictDamageNegated(int projectileStrength, Element projectileElement)
         {
@@ -41,6 +40,8 @@ namespace Assets.Combat
             string messagedEnd = this.strength > 0 ? "!" : " and was destroyed!";
             string combatMessage = ownerName + "'s shield absorbed " + negatedDamage.projectileStrengthLoss + " damage" + messagedEnd;
             combatLogMessageEvent.Raise(this, new CombatLogEventParameters(combatMessage));
+            if (this.strength <= 0)
+                Destroy(gameObject);
             return negatedDamage.projectileStrengthLoss;
         }
 
@@ -54,7 +55,7 @@ namespace Assets.Combat
             turnsRemaining--;
             if (turnsRemaining <= 0)
             {
-                string combatMessage = ownerName + "'s shield on the " + pathName + "expired!";
+                string combatMessage = ownerName + "'s shield expired!";
                 combatLogMessageEvent.Raise(this, new CombatLogEventParameters(combatMessage));
                 Destroy(gameObject);
                 return true;

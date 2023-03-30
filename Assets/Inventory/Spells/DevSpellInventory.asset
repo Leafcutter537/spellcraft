@@ -124,15 +124,15 @@ MonoBehaviour:
     runeData:
     - rank: 1
       quality: 2
-      runeType: 0
+      runeType: 2
       category: 0
       requiredPrimary: 0
       currencyType: 0
     - rank: 1
       quality: 2
-      runeType: 7
-      category: 1
-      requiredPrimary: 1
+      runeType: 1
+      category: 2
+      requiredPrimary: 0
       currencyType: 0
-    spellName: Twin Bolt
-    iconIndex: 4
+    spellName: Shield
+    iconIndex: 9

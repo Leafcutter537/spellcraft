@@ -18,7 +18,7 @@ public class TurnController : MonoBehaviour
     [Header("Scene References")]
     [SerializeField] private PlayerInstance playerInstance;
     [SerializeField] private EnemyInstance enemyInstance;
-    [SerializeField] private PathController pathController;
+    [SerializeField] private GridController  gridController;
     [SerializeField] private CombatTutorialController tutorialController;
     [Header("Turn Flow")]
     [SerializeField] private float timeBetweenActions;
@@ -69,20 +69,20 @@ public class TurnController : MonoBehaviour
                     {
                         enemyInstance.EndTurnActions();
                         turnStage = TurnStage.ProjectilesMoving;
-                        pathController.ResetPathIndex();
+                        gridController.ResetPathIndex();
                     }
                     break;
                 case (TurnStage.ProjectilesMoving):
-                    if (pathController.AdvanceNextPlayerProjectile())
+                    if (gridController.AdvanceNextPlayerProjectile())
                         timeSinceLastAction = 0;
                     else
                     {
                         turnStage = TurnStage.ShieldsExpiring;
-                        pathController.ResetPathIndex();
+                        gridController.ResetPathIndex();
                     }
                     break;
                 case (TurnStage.ShieldsExpiring):
-                    if (pathController.AdvanceNextEnemyShield())
+                    if (gridController.AdvanceNextEnemyShield())
                         timeSinceLastAction = 0;
                     else
                     {
@@ -107,16 +107,16 @@ public class TurnController : MonoBehaviour
             switch (turnStage)
             {
                 case (TurnStage.ProjectilesMoving):
-                    if (pathController.AdvanceNextEnemyProjectile())
+                    if (gridController.AdvanceNextEnemyProjectile())
                         timeSinceLastAction = 0;
                     else
                     {
                         turnStage = TurnStage.ShieldsExpiring;
-                        pathController.ResetPathIndex();
+                        gridController.ResetPathIndex();
                     }
                     break;
                 case (TurnStage.ShieldsExpiring):
-                    if (pathController.AdvanceNextPlayerShield())
+                    if (gridController.AdvanceNextPlayerShield())
                         timeSinceLastAction = 0;
                     else
                     {
@@ -132,7 +132,6 @@ public class TurnController : MonoBehaviour
                         turnStage = TurnStage.CharacterActing;
                         UpdateTurnLabel();
                         timeSinceLastAction = 0;
-                        enemyInstance.StartTurn();
                     }
                     break;
             }
@@ -149,7 +148,7 @@ public class TurnController : MonoBehaviour
         if (turnStage == TurnStage.CharacterActing & isPlayerTurn)
         {
             turnStage = TurnStage.ProjectilesMoving;
-            pathController.ResetPathIndex();
+            gridController.ResetPathIndex();
             timeSinceLastAction = 0;
             playerInstance.EndTurnActions();
         }

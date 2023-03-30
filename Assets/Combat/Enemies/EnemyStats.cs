@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Assets.Combat.Enemy;
 using UnityEngine;
 
 namespace Assets.Combat
@@ -14,7 +13,10 @@ namespace Assets.Combat
         public int maxHP;
         public int maxMP;
         public int resilience;
-        public List<EnemySpellData> spells;
+        public List<EnemyProjectilePattern> projectilePatterns;
+        public List<EnemyShieldPattern> shieldPatterns;
+        public List<EnemyHealPattern> healPatterns;
+        public List<EnemyBuffPattern> buffPatterns;
 
         public StatBundle GetStatBundle()
         {

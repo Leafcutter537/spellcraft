@@ -172,15 +172,7 @@ namespace Assets.Combat
                 }
             }
         }
-        public void CreateProjectile(Path path, CreateProjectile createProjectile, int projectilePower, bool isPlayerOwned)
-        {
-            int targetIndex = GetPathIndex(path);
-            int thisProjectileIndex = targetIndex - createProjectile.path;
-            if (thisProjectileIndex >= 0 & thisProjectileIndex < paths.Count)
-            {
-                paths[thisProjectileIndex].CreateProjectile(createProjectile, projectilePower, isPlayerOwned);
-            }
-        }
+
         public void CreateShield(Path path, CreateShield createShield, int shieldPower, bool isPlayerOwned)
         {
             int targetIndex = GetPathIndex(path);

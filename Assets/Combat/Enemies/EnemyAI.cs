@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Assets.Combat.Enemy;
 using Assets.Combat.SpellEffects;
 using Assets.Inventory.Spells;
 using UnityEditor.Experimental.GraphView;
@@ -11,155 +10,160 @@ namespace Assets.Combat
 {
     public class EnemyAI : MonoBehaviour
     {
-        public List<Spell> spells;
+        private List<EnemyProjectilePattern> projectilePatterns;
+        private List<EnemyShieldPattern> shieldPatterns;
+        private List<EnemyHealPattern> healPatterns;
+        private List<EnemyBuffPattern> buffPatterns;
+        private List<EnemySpellPattern> allPatterns;
         [SerializeField] private EnemySpellGenerator enemySpellGenerator;
         private int spellIndex;
+        private SpellcastingStage spellcastingStage;
+        private int numSpellCast;
         [SerializeField] private EnemyInstance enemyInstance;
         [SerializeField] private PathController pathController;
         [SerializeField] private int[] pathPriority;
 
-        public void ResetSpellIndex()
+
+        public void SetPatterns(List<EnemyProjectilePattern> projectilePatterns, List<EnemyShieldPattern> shieldPatterns,
+            List<EnemyHealPattern> healPatterns, List<EnemyBuffPattern> buffPatterns)
         {
-            spellIndex = 0;
-        }
-        public void SetSpells(List<EnemySpellData> enemySpellData)
-        {
-            spells = enemySpellGenerator.CreateSpellList(enemySpellData);
+            this.projectilePatterns = projectilePatterns;
+            this.shieldPatterns = shieldPatterns;
+            this.healPatterns = healPatterns;
+            this.buffPatterns = buffPatterns;
+
+            allPatterns = new List<EnemySpellPattern>();
+
+            foreach (EnemyProjectilePattern projectilePattern in projectilePatterns)
+                allPatterns.Add(projectilePattern);
+            foreach (EnemyShieldPattern shieldPattern in shieldPatterns)
+                allPatterns.Add(shieldPattern);
+            foreach (EnemyHealPattern healPattern in healPatterns)
+                allPatterns.Add(healPattern);
+            foreach (EnemyBuffPattern buffPattern in buffPatterns)
+                allPatterns.Add(buffPattern);
+
+            foreach (EnemySpellPattern spell in allPatterns)
+                spell.InitiateBattle();
         }
 
         public bool PerformNextSpell()
         {
-            while (spellIndex < spells.Count)
-                if (AttemptCastSpell())
+            while (spellcastingStage == SpellcastingStage.Buff)
+            {
+                if (buffPatterns.Count == 0)
+                {
+                    NextStage();
+                }
+                else if (AdvanceThroughSpells(buffPatterns[spellIndex], buffPatterns.Count))
                     return true;
+            }
+            while (spellcastingStage == SpellcastingStage.Heal)
+            {
+                if (healPatterns.Count == 0)
+                {
+                    NextStage();
+                }
+                else if (AdvanceThroughSpells(healPatterns[spellIndex], healPatterns.Count))
+                    return true;
+            }
+            while (spellcastingStage == SpellcastingStage.Shield)
+            {
+                if (shieldPatterns.Count == 0)
+                {
+                    NextStage();
+                }
+                else if (AdvanceThroughSpells(shieldPatterns[spellIndex], shieldPatterns.Count))
+                    return true;
+            }
+            while (spellcastingStage == SpellcastingStage.Projectile)
+            {
+                if (projectilePatterns.Count == 0)
+                {
+                    NextStage();
+                }
+                else if (AdvanceThroughSpells(projectilePatterns[spellIndex], projectilePatterns.Count))
+                    return true;
+            }
+            return false;
+        }
+
+        private bool AdvanceThroughSpells(EnemySpellPattern spellToCast, int spellCount)
+        {
+            if (spellToCast.IsOffCooldown())
+            {
+                if (enemyInstance.CastSpell(spellToCast))
+                {
+                    numSpellCast++;
+                    if (spellToCast.maxNumberCasts <= numSpellCast)
+                        spellIndex++;
+                    if (spellIndex >= spellCount | spellToCast.preventsOthersWhenCast)
+                    {
+                        NextStage();
+                    }
+                    return true;
+                }
                 else
+                {
                     spellIndex++;
-            return false;
-        }
-
-        private bool AttemptCastSpell()
-        {
-            if (!enemyInstance.CanCastSpell(spells[spellIndex].manaCost, spellIndex))
-            {
-                return false;
-            }
-            switch (spells[spellIndex].targetType)
-            {
-                case TargetType.Projectile:
-                    return AttemptCastPathSpell(spells[spellIndex]);
-                case TargetType.Heal:
-                    return AttemptCastHealSpell(spells[spellIndex]);
-                case TargetType.Shield:
-                    return AttemptCastPathSpell(spells[spellIndex]);
-                case TargetType.Buff:
-                    return AttemptCastBuffSpell(spells[spellIndex]);
-            }
-            return false;
-        }
-
-        private bool AttemptCastBuffSpell(Spell spell)
-        {
-            foreach (SpellEffect spellEffect in spell.spellEffects)
-            {
-                if (spellEffect is ApplyBuff applyBuff)
-                {
-                    foreach (StatusEffect statusEffect in enemyInstance.statusEffects)
+                    if (spellIndex >= spellCount)
                     {
-                        if (statusEffect is StatBuff statBuff)
-                        {
-                            if (applyBuff.stat == statBuff.stat)
-                                return false;
-                        }
+                        NextStage();
                     }
+                    return false;
                 }
-            }
-            enemyInstance.CastSpell(null, spell, false, spellIndex);
-            return true;
-        }
-        private bool AttemptCastHealSpell(Spell spell)
-        {
-            if (enemyInstance.currentHP >= enemyInstance.maxHP)
-                return false;
-            else
-            {
-                enemyInstance.CastSpell(null, spell, false, spellIndex);
-                return true;
-            }
-        }
-        private bool AttemptCastPathSpell(Spell spell)
-        {
-            List<PathEffectivenessPrediction> pathEffectivenessPredictions = new List<PathEffectivenessPrediction>();
-            for (int i = 0; i < pathController.paths.Count; i++)
-            {
-                int predictedEffectiveness = PredictSpellEffectiveness(spell, pathController.paths[i]);
-                predictedEffectiveness = predictedEffectiveness * pathController.paths.Count + pathPriority[i];
-                pathEffectivenessPredictions.Add(new PathEffectivenessPrediction(pathController.paths[i], predictedEffectiveness));
-            }
-            int maxStrength = -1;
-            int maxIndex = 0;
-            for (int i = 0; i < pathEffectivenessPredictions.Count; i++)
-            {
-                if (pathEffectivenessPredictions[i].predictedEffectiveness > maxStrength)
-                {
-                    maxStrength = pathEffectivenessPredictions[i].predictedEffectiveness;
-                    maxIndex = i;
-                }
-            }
-            if (maxStrength >= 0)
-            {
-                enemyInstance.CastSpell(pathEffectivenessPredictions[maxIndex].path, spell, false, spellIndex);
-                return true;
             }
             else
             {
+                spellIndex++;
+                if (spellIndex >= spellCount)
+                {
+                    NextStage();
+                }
                 return false;
             }
         }
 
-        private int PredictSpellEffectiveness(Spell spell, Path path)
+        private void NextStage()
         {
-            if (path.enemyProjectile != null & spell.targetType == TargetType.Projectile)
+            spellIndex = 0;
+            numSpellCast = 0;
+            switch (spellcastingStage)
             {
-                return -1;
+                case (SpellcastingStage.Buff):
+                    spellcastingStage = SpellcastingStage.Heal;
+                    break;
+                case (SpellcastingStage.Heal):
+                    spellcastingStage = SpellcastingStage.Shield;
+                    break;
+                case (SpellcastingStage.Shield):
+                    spellcastingStage = SpellcastingStage.Projectile;
+                    break;
+                case (SpellcastingStage.Projectile):
+                    spellcastingStage = SpellcastingStage.Finished;
+                    break;
             }
-            if (path.enemyShield != null & spell.targetType == TargetType.Shield)
-            {
-                return -1;
-            }
-            int strengthSum = 0;
-            foreach (SpellEffect spellEffect in spell.spellEffects)
-            {
-                if (spellEffect is CreateProjectile createProjectile)
-                {
-                    Path projectilePath = pathController.GetAdjacentPath(path, createProjectile.path);
-                    if (projectilePath == null)
-                        continue;
-                    if (projectilePath.enemyProjectile == null)
-                    {
-                        strengthSum += PredictProjectileEffectiveness(createProjectile, path);
-                    }
-                }
-                if (spellEffect is CreateShield createShield)
-                {
-                    Path projectilePath = pathController.GetAdjacentPath(path, createShield.path);
-                    if (projectilePath == null)
-                        continue;
-                    if (projectilePath.enemyShield == null)
-                    {
-                        strengthSum += PredictShieldEffectiveness(createShield, path);
-                    }
-                }
-            }
-            return strengthSum;
         }
-        private int PredictProjectileEffectiveness(CreateProjectile createProjectile, Path path)
+
+        public void ResetSpellcasting()
         {
-            return createProjectile.strength - path.PredictPlayerShieldNegation(createProjectile.strength, createProjectile.element);
+            spellIndex = 0;
+            spellcastingStage = SpellcastingStage.Buff;
+            foreach (EnemySpellPattern spellPattern in allPatterns)
+            {
+                spellPattern.DecrementCooldown();
+            }
         }
-        private int PredictShieldEffectiveness(CreateShield createShield, Path path)
+
+        private enum SpellcastingStage
         {
-            return path.PredictEnemyShieldEffectiveness(createShield.strength, createShield.element, createShield.duration);
+            Buff,
+            Heal,
+            Shield,
+            Projectile,
+            Finished
         }
+
 
     }
 }

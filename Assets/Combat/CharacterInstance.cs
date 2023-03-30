@@ -9,10 +9,10 @@ namespace Assets.Combat
     public abstract class CharacterInstance : MonoBehaviour
     {
         [Header("Controllers")]
-        [SerializeField] private PathController pathController;
+        [SerializeField] protected GridController gridController;
         [SerializeField] private TurnController turnController;
         [Header("Combat Log")]
-        [SerializeField] private CombatLogMessageEvent combatLogMessageEvent;
+        [SerializeField] protected CombatLogMessageEvent combatLogMessageEvent;
         [Header("Stat Panel")]
         [SerializeField] protected StatPanel statPanel;
         [HideInInspector] public string characterName;
@@ -33,8 +33,6 @@ namespace Assets.Combat
         private List<StatusEffect> expiredStatusEffect;
         private int statusEffectIndex;
         private bool isLoopingThroughStatusEffects;
-        // Combat Control
-        protected int[] spellCooldowns;
 
         public void ReceiveProjectile(Projectile projectile)
         {
@@ -57,42 +55,8 @@ namespace Assets.Combat
             }
         }
 
-        public void CastSpell(Path path, Spell spell, bool isPlayerOwned, int spellIndex)
-        {
-            combatLogMessageEvent.Raise(this, new CombatLogEventParameters(GetCombatLogMessage(spell, path)));
-            StatBundle currentStats = GetStatBundle();
-            List<ApplyBuff> applyBuffList = new List<ApplyBuff>();
-            foreach (SpellEffect spellEffect in spell.spellEffects)
-            {
-                if (spellEffect is CreateProjectile createProjectile)
-                {
-                    pathController.CreateProjectile(path, createProjectile, currentStats.projectilePower, isPlayerOwned); ;
-                }
-                if (spellEffect is Heal heal)
-                {
-                    int totalHeal = heal.strength + currentStats.healPower;
-                    currentHP = Mathf.Min(maxHP, currentHP + totalHeal);
-                    combatLogMessageEvent.Raise(this, new CombatLogEventParameters(characterName + " healed for " + totalHeal + " HP!"));
-                }
-                if (spellEffect is CreateShield createShield)
-                {
-                    pathController.CreateShield(path, createShield, currentStats.projectilePower, isPlayerOwned);
-                }
-                // Buffs are always applied after all other spell effects, as they could affect the others' strength
-                if (spellEffect is ApplyBuff applyBuff)
-                {
-                    applyBuffList.Add(applyBuff);
-                }
-            }
-            foreach (ApplyBuff applyBuff in applyBuffList)
-            {
-                AttemptApplyBuff(applyBuff);
-            }
-            currentMP -= spell.manaCost;
-            SetSpellCooldown(spellIndex, spell.cooldown);
-            statPanel.ShowStatInfo();
-        }
-        private void AttemptApplyBuff(ApplyBuff applyBuff)
+
+        protected void AttemptApplyBuff(ApplyBuff applyBuff)
         {
             StatBuff existingBuff = FindExistingBuff(applyBuff.stat);
             if (existingBuff != null)
@@ -174,43 +138,18 @@ namespace Assets.Combat
             isLoopingThroughStatusEffects = false;
             return false;
         }
-        protected string GetCombatLogMessage(Spell spell, Path path)
+        protected string GetCombatLogMessage(Spell spell)
         {
-            if (path != null)
-                return characterName + " cast " + spell.GetTitle() + " along the " + path.pathName + "!";
-            else
-                return characterName + " cast " + spell.GetTitle() + "!";
+            return characterName + " cast " + spell.GetTitle() + "!";
         }
 
-        public void EndTurnActions()
+        public virtual void EndTurnActions()
         {
             currentMP = maxMP;
-            for (int i = 0; i < spellCooldowns.Length; i++)
-            {
-                spellCooldowns[i] = Mathf.Max(0, spellCooldowns[i] - 1);
-            }
             statPanel.ShowStatInfo();
         }
 
-        public void SetSpellCooldown(int spellIndex, int cooldown)
-        {
-            spellCooldowns[spellIndex] = cooldown;
-        }
-        public int GetSpellCooldown(int spellIndex)
-        {
-            return spellCooldowns[spellIndex];
-        }
-        public bool CanCastSpell(int manaCost, int spellIndex)
-        {
-            return (currentMP >= manaCost & spellCooldowns[spellIndex] == 0);
-        }
-        public void SetStartingCooldowns(List<Spell> spellList)
-        {
-            for (int i = 0; i < spellList.Count; i++)
-            {
-                spellCooldowns[i] = spellList[i].chargeTime;
-            }
-        }
+
         public StatBundle GetStatBundle()
         {
             StatBundle returnBundle = new StatBundle(baseStats);
@@ -270,7 +209,7 @@ namespace Assets.Combat
 
         private void OnMouseEnter()
         {
-            if (!pathController.enemyDetailsPanel.gameObject.activeInHierarchy & !pathController.turnController.combatIsEnded & !pathController.tutorialController.isShowingTutorial)
+            if (!gridController.enemyDetailsPanel.gameObject.activeInHierarchy & !gridController.turnController.combatIsEnded & !gridController.tutorialController.isShowingTutorial)
             {
                 spriteRenderer.color = hoverColor;
                 enterTooltipEvent.Raise(this, null);

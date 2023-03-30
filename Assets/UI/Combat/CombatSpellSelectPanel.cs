@@ -36,7 +36,7 @@ public class CombatSpellSelectPanel : SelectPanel
         {
             Deselect();
         }
-        if (!playerInstance.HasSufficientMana(GetSelected() as Spell))
+        else if (!playerInstance.HasSufficientMana(GetSelected() as Spell))
         {
             tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("Insufficient Mana!"));
             Deselect();

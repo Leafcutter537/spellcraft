@@ -35,14 +35,14 @@ public class TooltipDisplay : MonoBehaviour
     {
         enterTooltipEvent.AddListener(OnEnterTooltip);
         exitTooltipEvent.AddListener(OnExitTooltip);
-        mouseEnterPathEvent.AddListener(OnMouseEnterPath);
+        mouseEnterPathEvent.AddListener(OnMouseEnterSquare);
         mouseExitPathEvent.AddListener(OnMouseExitPath);
     }
     private void OnDisable()
     {
         enterTooltipEvent.RemoveListener(OnEnterTooltip);
         exitTooltipEvent.RemoveListener(OnExitTooltip);
-        mouseEnterPathEvent.RemoveListener(OnMouseEnterPath);
+        mouseEnterPathEvent.RemoveListener(OnMouseEnterSquare);
         mouseExitPathEvent.RemoveListener(OnMouseExitPath);
     }
     private void OnEnterTooltip(object sender, EventParameters args)
@@ -75,25 +75,24 @@ public class TooltipDisplay : MonoBehaviour
         tooltipTextObjects = new List<GameObject>();
     }
 
-    private void OnMouseEnterPath(object sender, EventParameters args)
+    private void OnMouseEnterSquare(object sender, EventParameters args)
     {
-        Path path = sender as Path;
-        DisplayText(path.pathName, 18, Color.black);
-        if (path.playerProjectile != null)
+        GridSquare grid = sender as GridSquare;
+        if (grid.playerProjectile != null)
         {
-            DisplayText(path.playerProjectile.GetProjectileDescription(), 14, Color.black);
+            DisplayText(grid.playerProjectile.GetProjectileDescription(), 14, Color.black);
         }
-        if (path.enemyProjectile != null)
+        if (grid.enemyProjectile != null)
         {
-            DisplayText(path.enemyProjectile.GetProjectileDescription(), 14, Color.black);
+            DisplayText(grid.enemyProjectile.GetProjectileDescription(), 14, Color.black);
         }
-        if (path.playerShield != null)
+        if (grid.shield != null)
         {
-            DisplayText(path.playerShield.GetShieldDescription(), 14, Color.black);
+            DisplayText(grid.shield.GetShieldDescription(), 14, Color.black);
         }
-        if (path.enemyShield != null)
+        if (tooltipTextObjects.Count == 0)
         {
-            DisplayText(path.enemyShield.GetShieldDescription(), 14, Color.black);
+            DisplayText("Empty", 14, Color.black);
         }
     }
     private void OnMouseExitPath(object sender, EventParameters args)
@@ -133,11 +132,10 @@ public class TooltipDisplay : MonoBehaviour
 
     private void DisplaySpellInfo(Spell spell, SelectPanelChoice selectPanelChoice)
     {
-        bool isEnemySpell = selectPanelChoice.selectPanel is EnemySpellSelectPanel;
-        if (characterInstance != null & !isEnemySpell)
+        if (characterInstance != null)
         {
             int spellIndex = selectPanelChoice.selectPanel.GetChoiceIndex(selectPanelChoice);
-            int cooldown = characterInstance.GetSpellCooldown(spellIndex);
+            int cooldown = (characterInstance as PlayerInstance).GetSpellCooldown(spellIndex);
             if (cooldown > 0)
             {
                 string plural = cooldown > 1 ? "S" : "";
@@ -150,9 +148,9 @@ public class TooltipDisplay : MonoBehaviour
         if (spell.chargeTime > 0)
             DisplayText("Charge Time: " + spell.chargeTime.ToString(), 14, new Color(30f / 255, 30f / 255, 0));
         string descriptionText = "";
-        if (characterInstance != null & !isEnemySpell)
+        if (characterInstance != null)
             descriptionText = spell.GetDescription(characterInstance.GetStatBundle());
-        else if (playerStats != null & !isEnemySpell)
+        else if (playerStats != null)
             descriptionText = spell.GetDescription(playerStats.GetStatBundle());
         else
             descriptionText = spell.GetDescription();

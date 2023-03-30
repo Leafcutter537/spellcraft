@@ -23,7 +23,7 @@ namespace Assets.Combat
         [SerializeField] private ExitTooltipEvent exitTooltipEvent;
         [SerializeField] private PathSelectEvent pathSelectEvent;
         [SerializeField] private TooltipWarningEvent tooltipWarningEvent;
-        [Header("Path Controller")]
+        [Header("Grid Controller")]
         [SerializeField] private PathController pathController;
         [Header("Ellipse")]
         [SerializeField] private float ellipseHeight;
@@ -184,25 +184,7 @@ namespace Assets.Combat
             }
             ghostEffects = new List<GameObject>();
         }
-        public void CreateProjectile(CreateProjectile createProjectile, int projectilePower, bool isPlayerOwned)
-        {
-            Vector3 projectilePosition = GetCoordinatesOnEllipse(projectilePath[0]);
-            if (!isPlayerOwned)
-                projectilePosition.x *= -1;
-            Projectile projectile = Instantiate(pathController.projectilePrefab, projectilePosition, Quaternion.identity).GetComponent<Projectile>();
-            projectile.strength = createProjectile.strength + projectilePower;
-            projectile.element = createProjectile.element;
-            projectile.augmentations = createProjectile.augmentations;
-            projectile.turnsToArrive = turnsToArrive;
-            projectile.target = isPlayerOwned ? pathController.enemyInstance : pathController.playerInstance;
-            projectile.path = this;
-            projectile.t = projectilePath[0];
-            projectile.MovementAnimation();
-            if (isPlayerOwned)
-                playerProjectile = projectile;
-            else
-                enemyProjectile = projectile;
-        }
+
         public void CreateShield(CreateShield createShield, int shieldPower, bool isPlayerOwned)
         {
             Vector3 shieldPosition = GetCoordinatesOnEllipse(shieldPoint);
@@ -215,7 +197,6 @@ namespace Assets.Combat
             shield.strength = createShield.strength + shieldPower;
             shield.element = createShield.element;
             shield.turnsRemaining = createShield.duration;
-            shield.pathName = pathName;
             shield.ownerName = isPlayerOwned ? pathController.playerInstance.characterName : pathController.enemyInstance.characterName;
             if (isPlayerOwned)
                 playerShield = shield;
