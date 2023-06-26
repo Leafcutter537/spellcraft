@@ -32,5 +32,16 @@ namespace Assets.Store
                 runeStoreStock.Add(new RuneData(rune));
             }
         }
+
+        public string AddStoreStock(RuneData[] runesToAdd, string rewardString)
+        {
+            foreach (RuneData rune in runesToAdd)
+            {
+                runeStoreStock.Add(new RuneData(rune));
+                rewardString += "\n" + rune.GetRuneName() + " has been added to the Rune Store!";
+            }
+            return rewardString;
+        }
+
     }
 }

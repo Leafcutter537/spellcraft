@@ -6,15 +6,28 @@ public class ProgressLoader : MonoBehaviour
 {
     [SerializeField] private ProgressTracker progressTracker;
     [SerializeField] private DevProgress devProgress;
-    private static bool hasLoadedDevProgress;
+    private static bool hasLoadedProgress;
 
     private void Awake()
     {
-        if (progressTracker.loadDevProgress & !hasLoadedDevProgress & Application.isEditor)
+        if (progressTracker.loadDevProgress & !hasLoadedProgress & Application.isEditor)
         {
             LoadDefeatedEnemies(devProgress.firstDefeatEnemies);
             progressTracker.playerPosition = devProgress.playerPosition;
-            hasLoadedDevProgress = true;
+            hasLoadedProgress = true;
+        }
+        else if (!hasLoadedProgress)
+        {
+            if (SaveManager.HasSaveData())
+            {
+                // Load Save
+            }
+            else
+            {
+                progressTracker.defeatedEnemies = new Dictionary<int, bool>();
+                progressTracker.playerPosition = Vector2Int.zero;
+                hasLoadedProgress = true;
+            }
         }
     }
 

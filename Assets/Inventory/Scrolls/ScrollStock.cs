@@ -23,5 +23,15 @@ namespace Assets.Inventory.Scrolls
         {
             scrollStock.Add(scrollData);
         }
+
+        public string AddScrolls(ScrollData[] scrollDataArray, string rewardString)
+        {
+            foreach (ScrollData scroll in scrollDataArray)
+            {
+                rewardString += "\nThe " + scroll.scrollName + " Scroll has been added in the Spellforge!";
+                scrollStock.Add(scroll);
+            }
+            return rewardString;
+        }
     }
 }

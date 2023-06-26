@@ -27,7 +27,7 @@ MonoBehaviour:
     projectilePowerGrowth: 0
     shieldPowerGrowth: 0
     healPowerGrowth: 0
-    maxLevel: 0
+    maxLevel: 5
   - equipmentName: Initiate's Robe
     sprite: {fileID: 21300000, guid: 0756cf0c767f2814b9cfc8ef85a436db, type: 3}
     baseMana: 4
@@ -42,7 +42,7 @@ MonoBehaviour:
     projectilePowerGrowth: 0
     shieldPowerGrowth: 0
     healPowerGrowth: 0
-    maxLevel: 0
+    maxLevel: 5
   - equipmentName: Initiate's Leggings
     sprite: {fileID: 21300000, guid: 39d05c3aa2ade4342a96302dbf531584, type: 3}
     baseMana: 4
@@ -57,7 +57,7 @@ MonoBehaviour:
     projectilePowerGrowth: 1
     shieldPowerGrowth: 0
     healPowerGrowth: 0
-    maxLevel: 0
+    maxLevel: 5
   - equipmentName: Initiate's Boots
     sprite: {fileID: 21300000, guid: db449623731c40d47949fd8e56da7a47, type: 3}
     baseMana: 4
@@ -72,7 +72,7 @@ MonoBehaviour:
     projectilePowerGrowth: 0
     shieldPowerGrowth: 1
     healPowerGrowth: 0
-    maxLevel: 0
+    maxLevel: 5
   - equipmentName: Initiate's Gloves
     sprite: {fileID: 21300000, guid: eed02f6dea1e7ff44a37075d931f3371, type: 3}
     baseMana: 4
@@ -87,7 +87,7 @@ MonoBehaviour:
     projectilePowerGrowth: 0
     shieldPowerGrowth: 0
     healPowerGrowth: 1
-    maxLevel: 0
+    maxLevel: 5
   - equipmentName: Invoker's Hood
     sprite: {fileID: 21300000, guid: 6ed0d9c079a91a74ab1e6254a74be3c9, type: 3}
     baseMana: 0

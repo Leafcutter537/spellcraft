@@ -8,6 +8,7 @@ public class InventoryEquipmentSelectPanel : SelectPanel
 {
     [SerializeField] private InventoryController inventoryController;
     [SerializeField] private EquipmentSetDropdownSelect dropdown;
+    [SerializeField] private EnchantmentController enchantmentController;
 
     protected override void Start()
     {
@@ -24,6 +25,14 @@ public class InventoryEquipmentSelectPanel : SelectPanel
             {
                 itemList[(int)equ.ownedEquipmentData.equipmentSlot] = equ;
             }
+        }
+    }
+
+    protected override void SelectUpdate()
+    {
+        if (enchantmentController != null)
+        {
+            enchantmentController.UpdateEnchantInfo(GetSelected() as EquipmentPiece);
         }
     }
 }

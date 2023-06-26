@@ -11,14 +11,22 @@ public abstract class StatPanel : MonoBehaviour
     [SerializeField] private Image healthFill;
     [SerializeField] private TextMeshProUGUI manaText;
     [SerializeField] private Image manaFill;
+    [SerializeField] private TextMeshProUGUI resilienceText;
 
-    public void ShowStatInfo(string characterName, int currentHP, int maxHP, int currentMP, int maxMP)
+    public void ShowStatInfo(string characterName, int currentHP, int maxHP, int currentMP, int maxMP, int resilience)
     {
         nameText.text = characterName;
         healthText.text = "Health: " + currentHP + " / " + maxHP;
         FillBar(healthFill, currentHP, maxHP);
-        manaText.text = "Mana: " + currentMP + " / " + maxMP;
-        FillBar(manaFill, currentMP, maxMP);
+        if (manaText != null)
+        {
+            manaText.text = "Mana: " + currentMP + " / " + maxMP;
+            FillBar(manaFill, currentMP, maxMP);
+        }
+        if (resilienceText != null)
+        {
+            resilienceText.text = "Resilience: " + resilience;
+        }
     }
 
     public abstract void ShowStatInfo();

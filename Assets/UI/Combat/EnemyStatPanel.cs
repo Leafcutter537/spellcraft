@@ -9,8 +9,9 @@ public class EnemyStatPanel : StatPanel
 
     public override void ShowStatInfo()
     {
+        StatBundle stats = enemyInstance.GetStatBundle();
         ShowStatInfo(enemyInstance.characterName, enemyInstance.currentHP, enemyInstance.maxHP,
-            enemyInstance.currentMP, enemyInstance.maxMP);
+            enemyInstance.currentMP, enemyInstance.maxMP, stats.resilience);
     }
     public void ShowEnemyDetails()
     {

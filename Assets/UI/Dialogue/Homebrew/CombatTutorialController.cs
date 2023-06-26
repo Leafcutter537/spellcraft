@@ -23,22 +23,18 @@ namespace Assets.Tutorial
 
         private void Start()
         {
-            if (QuestLog.IsQuestActive("Defeat First Demon"))
+            if (QuestLog.IsQuestActive("Complete First Trial"))
             {
                 endTurnButton.interactable = false;
                 SetupDialogue(tutorialLineDatabase.firstCombatStartLines) ;
             }
-            else if (QuestLog.IsQuestActive("Defeat Second Demon"))
+            else if (QuestLog.IsQuestActive("Complete Second Trial"))
             {
                 SetupDialogue(tutorialLineDatabase.secondCombatStartLines);
             }
-            else if (QuestLog.IsQuestActive("Defeat Third Demon"))
+            else if (QuestLog.IsQuestActive("Complete Third Trial"))
             {
                 SetupDialogue(tutorialLineDatabase.thirdCombatStartLines);
-            }
-            else if (QuestLog.IsQuestActive("Defeat Fourth Demon"))
-            {
-                SetupDialogue(tutorialLineDatabase.fourthCombatStartLines);
             }
         }
         private void OnEnable()
@@ -54,7 +50,7 @@ namespace Assets.Tutorial
 
         private void OnStartSpellPreview(object sender, EventParameters args)
         {
-            if (!hasShownSpellPreview & QuestLog.IsQuestActive("Defeat First Demon"))
+            if (!hasShownSpellPreview & QuestLog.IsQuestActive("Complete First Trial"))
             {
                 activeLines = tutorialLineDatabase.firstCombatSelectSpell;
                 InitiateDialogue();
@@ -63,12 +59,12 @@ namespace Assets.Tutorial
         }
         private void OnCastSpell(object sender, EventParameters args)
         {
-            if (spellsCastCount == 0 & QuestLog.IsQuestActive("Defeat First Demon"))
+            if (spellsCastCount == 0 & QuestLog.IsQuestActive("Complete First Trial"))
             {
                 activeLines = tutorialLineDatabase.firstCombatSelectPath;
                 InitiateDialogue();
             }
-            if (spellsCastCount == 2 & QuestLog.IsQuestActive("Defeat First Demon"))
+            if (spellsCastCount == 2 & QuestLog.IsQuestActive("Complete First Trial"))
             {
                 activeLines = tutorialLineDatabase.firstCombatCastThirdSpell;
                 endTurnButton.interactable = true;
@@ -79,13 +75,12 @@ namespace Assets.Tutorial
 
         public void OnStartPlayerTurn()
         {
-            if (!hasStartedTurn & QuestLog.IsQuestActive("Defeat First Demon"))
+            if (!hasStartedTurn & QuestLog.IsQuestActive("Complete First Trial"))
             {
-                Debug.Log("First one called");
                 activeLines = tutorialLineDatabase.firstCombatStartSecondPlayerTurn;
                 InitiateDialogue();
             }
-            if (!hasStartedTurn & QuestLog.IsQuestActive("Defeat Third Demon"))
+            if (!hasStartedTurn & QuestLog.IsQuestActive("Complete Third Trial"))
             {
                 activeLines = tutorialLineDatabase.thirdCombatStartSecondPlayerTurn;
                 InitiateDialogue();

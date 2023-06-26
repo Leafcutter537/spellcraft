@@ -10,6 +10,8 @@ public class UnequippedSpellSelectPanel : SelectPanel
     private void OnEnable()
     {
         equipSpellEvent.AddListener(OnEquipSpell);
+        if (selectPanelChoices != null)
+            RefreshInventory();
     }
     private void OnDisable()
     {

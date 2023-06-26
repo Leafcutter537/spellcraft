@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Combat;
 using Assets.Dungeons;
+using Assets.Equipment;
 using Assets.Progression;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class DungeonController : MonoBehaviour
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Vector2Int defeatedEnemyPosition;
     [SerializeField] private ChestInteractable chest;
+    [SerializeField] private InventoryController inventoryController;
     private void Awake()
     {
         if (progressTracker.justDefeatedEnemy & progressTracker.justDefeatedEnemyIndex == -1)
@@ -20,7 +22,7 @@ public class DungeonController : MonoBehaviour
             progressTracker.justDefeatedEnemy = false;
             playerMovement.SetLocation(defeatedEnemyPosition);
             Destroy(enemyInteractable.gameObject);
-            chest.rewardData = GetRandomReward();
+            chest.rewardData = GetRandomRewardReplaceOwnedEquipment();
             loadedDungeon.currentLevel++;
         }
         else
@@ -47,6 +49,16 @@ public class DungeonController : MonoBehaviour
         return currentDungeonLevel.possibleEnemies[numChoices - 1];
     }
 
+    private RewardData GetRandomRewardReplaceOwnedEquipment()
+    {
+        while (true)
+        {
+            RewardData rewardData = GetRandomReward();
+            if (!ContainsOwnedEquipment(rewardData))
+                return rewardData;
+        }
+    }
+
     private RewardData GetRandomReward()
     {
         DungeonLevel currentDungeonLevel = loadedDungeon.loadedDungeonData.dungeonLevels[loadedDungeon.currentLevel];
@@ -67,6 +79,18 @@ public class DungeonController : MonoBehaviour
             i++;
         }
         return rewardList[numChoices - 1];
+    }
+
+    private bool ContainsOwnedEquipment(RewardData rewardData)
+    {
+        foreach (OwnedEquipmentData equipment in rewardData.equipmentRewards)
+        {
+            EquipmentSet equipmentSet = equipment.equipmentSet;
+            EquipmentSlot equipmentSlot = equipment.equipmentSlot;
+            if (inventoryController.GetIndexOfEquipment(equipmentSet, equipmentSlot) != -1)
+                return true;
+        }
+        return false;
     }
 
 }

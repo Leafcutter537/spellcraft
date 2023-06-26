@@ -10,6 +10,7 @@ public class EquipmentSetDropdownSelect : MonoBehaviour
     [SerializeField] private InventoryController inventoryController;
     [SerializeField] private TMP_Dropdown dropdown;
     [SerializeField] private InventoryEquipmentSelectPanel equipmentSelectPanel;
+    [SerializeField] private EnchantmentController enchantmentController;
     private List<EquipmentSet> ownedEquipmentSets;
 
     private void Start()
@@ -22,6 +23,10 @@ public class EquipmentSetDropdownSelect : MonoBehaviour
         }
         dropdown.AddOptions(optionNames);
         dropdown.value = 0;
+        if (enchantmentController != null)
+        {
+            enchantmentController.UpdateCurrencyType();
+        }
         equipmentSelectPanel.RefreshInventory();
     }
 

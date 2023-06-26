@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: DevCurrency
   m_EditorClassIdentifier: 
   currencyQuantities:
-  - quantity: 250
+  - quantity: 180
     currencyType: 0
+  - quantity: 0
+    currencyType: 1

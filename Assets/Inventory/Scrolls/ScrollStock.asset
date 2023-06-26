@@ -14,22 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseScrollStock:
   - cost:
-      quantity: 25
+      quantity: 15
       currencyType: 0
     scrollName: Slug
     numPerLevel: 010000000100000001000000
     connections: 00000000010000000100000002000000
   scrollStock:
   - cost:
-      quantity: 25
+      quantity: 15
       currencyType: 0
     scrollName: Slug
     numPerLevel: 010000000100000001000000
     connections: 00000000010000000100000002000000
-  - cost:
-      quantity: 40
-      currencyType: 0
-    scrollName: Frog
-    numPerLevel: 020000000100000001000000
-    connections: 000000000200000001000000020000000200000003000000
   currentIndex: 0

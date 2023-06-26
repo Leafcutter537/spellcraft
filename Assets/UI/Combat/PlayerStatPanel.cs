@@ -10,6 +10,6 @@ public class PlayerStatPanel : StatPanel
 
     public override void ShowStatInfo()
     {
-        ShowStatInfo(playerInstance.characterName, playerInstance.currentHP, playerInstance.maxHP, playerInstance.currentMP, playerInstance.maxMP);
+        ShowStatInfo(playerInstance.characterName, playerInstance.currentHP, playerInstance.maxHP, playerInstance.currentMP, playerInstance.maxMP, 0);
     }
 }

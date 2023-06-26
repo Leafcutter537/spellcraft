@@ -6,6 +6,7 @@ using Assets.Inventory.Spells;
 using Assets.Tutorial;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static Assets.Combat.EnemyShieldPattern;
 
 namespace Assets.Combat
@@ -24,11 +25,12 @@ namespace Assets.Combat
         [SerializeField] private Vector2Int currentGridCoordinates;
         public int firstEnemySideColumn;
         [Header("Event References")]
-        [SerializeField] private PathSelectEvent pathSelectEvent;
         [SerializeField] private MouseEnterPathEvent mouseEnterPathEvent;
         [SerializeField] private MouseExitPathEvent mouseExitPathEvent;
         [SerializeField] private StartSpellPreviewEvent startSpellPreviewEvent;
         [SerializeField] private EndSpellPreviewEvent endSpellPreviewEvent;
+        [SerializeField] private StartAdjacentVectorPreviewEvent startAdjacentVectorPreviewEvent;
+        [SerializeField] private ChooseAdjacentVectorEvent chooseAdjacentVectorEvent;
         [Header("UI References")]
         public GameObject enemyDetailsPanel;
         [Header("Combat Spell Panel")]
@@ -47,23 +49,74 @@ namespace Assets.Combat
         // Ghost Effects
         private List<SpellEffect> ghostEffects;
         private bool isShowingGhost;
+        private bool isChoosingAdjacentVector;
+        // Point System
+        private float waitBeforeChoiceTime;
+        private PlayerInputActions playerInputActions;
+        private InputAction point;
+        private InputAction click;
+        [SerializeField] new private Camera camera;
+        private GridSquare chosenGridSquare;
+        private Vector2Int previousAdjacentVector;
+        private bool adjacentIsProjectile;
+        private bool mouseWithinRadius;
+        [SerializeField] private float mouseRadius;
         private void Awake()
         {
+            playerInputActions = new PlayerInputActions();
             combatGrid = new GridSquare[gridSize[0],gridSize[1]];
         }
         private void OnEnable()
         {
+            point = playerInputActions.UI.Point;
+            point.Enable();
+            click = playerInputActions.UI.Click;
+            click.Enable();
+            click.performed += OnClick;
             mouseEnterPathEvent.AddListener(OnMouseEnterPath);
             mouseExitPathEvent.AddListener(OnMouseExitPath);
             startSpellPreviewEvent.AddListener(OnStartSpellPreview);
             endSpellPreviewEvent.AddListener(OnEndSpellPreview);
+            startAdjacentVectorPreviewEvent.AddListener(OnStartAdjacentVectorPreviewEvent);
         }
         private void OnDisable()
         {
+            point.Disable();
             mouseEnterPathEvent.RemoveListener(OnMouseEnterPath);
             mouseExitPathEvent.RemoveListener(OnMouseExitPath);
             startSpellPreviewEvent.RemoveListener(OnStartSpellPreview);
             endSpellPreviewEvent.RemoveListener(OnEndSpellPreview);
+            startAdjacentVectorPreviewEvent.RemoveListener(OnStartAdjacentVectorPreviewEvent);
+        }
+        private void Update()
+        {
+            if (isChoosingAdjacentVector)
+            {
+                waitBeforeChoiceTime += Time.deltaTime;
+                Vector2 mousePos = camera.ScreenToWorldPoint(point.ReadValue<Vector2>());
+                Vector2 gridSquarePos = new Vector2(chosenGridSquare.transform.position.x, chosenGridSquare.transform.position.y);
+                Vector2 relativePosition = mousePos - gridSquarePos;
+                if (relativePosition.magnitude > mouseRadius)
+                {
+                    mouseWithinRadius = false;
+                    previousAdjacentVector = Vector2Int.zero;
+                    ClearGhostEffects(false);
+                    return;
+                }
+                Vector2Int adjacentVector = GetAdjacentVector(relativePosition);
+                if (adjacentVector != previousAdjacentVector)
+                {
+                    mouseWithinRadius = true;
+                    ClearGhostEffects(false);
+                    previousAdjacentVector = adjacentVector;
+                    Vector2Int coords = GetGridCoordinates(chosenGridSquare);
+                    Vector2Int ghostCoords = coords + adjacentVector;
+                    if (adjacentIsProjectile)
+                        combatGrid[ghostCoords.x, ghostCoords.y].CreateGhostProjectile(null, false);
+                    else
+                        combatGrid[ghostCoords.x, ghostCoords.y].CreateGhostShield(null, false);
+                }
+            }
         }
         public void OnStartSpellPreview(object sender, EventParameters args)
         {
@@ -74,21 +127,43 @@ namespace Assets.Combat
         public void OnEndSpellPreview(object sender, EventParameters args)
         {
             isShowingGhost = false;
-            ClearGhostEffects();
+            ClearGhostEffects(true);
+            isChoosingAdjacentVector = false;
         }
         private void OnMouseEnterPath(object sender, EventParameters args)
         {
             if (isShowingGhost)
             {
-                ClearGhostEffects();
+                ClearGhostEffects(false);
                 CreateGhostEffects(sender as GridSquare);
             }
         }
         private void OnMouseExitPath(object sender, EventParameters args)
         {
-            ClearGhostEffects();
+            if (!isChoosingAdjacentVector)
+                ClearGhostEffects(false);
         }
-        public void SubscribeGridSquare(GridSquare gridSquare)
+        private void OnStartAdjacentVectorPreviewEvent(object sender, EventParameters args)
+        {
+            AdjacentPreviewEventParameters adjArgs = args as AdjacentPreviewEventParameters;
+            GridSquare square = adjArgs.square;
+            isChoosingAdjacentVector = true;
+            chosenGridSquare = square;
+            adjacentIsProjectile = adjArgs.entityName == "projectile";
+            waitBeforeChoiceTime = 0f;
+            if (adjacentIsProjectile)
+                square.CreateGhostProjectile(null, true);
+            else
+                square.CreateGhostShield(null, true);
+        }
+        private void OnClick(InputAction.CallbackContext context)
+        {
+            if (isChoosingAdjacentVector & waitBeforeChoiceTime > 0.4f & mouseWithinRadius)
+            {
+                chooseAdjacentVectorEvent.Raise(this, new AdjacentChooseEventParameters(previousAdjacentVector, chosenGridSquare));
+            }
+        }
+            public void SubscribeGridSquare(GridSquare gridSquare)
         {
             combatGrid[gridSquare.gridPosition[0], gridSquare.gridPosition[1]] = gridSquare;
         }
@@ -98,21 +173,21 @@ namespace Assets.Combat
             {
                 if (effect is CreateProjectile createProjectile)
                 {
-                    gridSquare.CreateGhostProjectile(createProjectile);
+                    gridSquare.CreateGhostProjectile(createProjectile, false);
                 }
                 if (effect is CreateShield createShield)
                 {
-                    gridSquare.CreateGhostShield(createShield);
+                    gridSquare.CreateGhostShield(createShield, false);
                 }
             }
         }
-        private void ClearGhostEffects()
+        private void ClearGhostEffects(bool clearStickies)
         {
             for (int i = 0; i < gridSize[0]; i++)
             {
                 for (int j = 0; j < gridSize[1]; j++)
                 {
-                    combatGrid[i,j].ClearGhostEffects();
+                    combatGrid[i,j].ClearGhostEffects(clearStickies);
                 }
             }
         }
@@ -192,7 +267,7 @@ namespace Assets.Combat
             {
                 for (int y = 0; y < gridSize.y; y++)
                 {
-                    if (combatGrid[x, y].playerProjectile != null & combatGrid[x + 1, y].shield == null)
+                    if (combatGrid[x, y].playerProjectile != null & combatGrid[x + 1, y].shield == null & combatGrid[x+1,y].playerProjectile == null)
                         squareList.Add(new SquareWithIncomingProjectile(combatGrid[x, y].playerProjectile.strength, combatGrid[x + 1, y]));
                 }
             }
@@ -326,6 +401,51 @@ namespace Assets.Combat
                 currentGridCoordinates.x++;
             }
             return false;
+        }
+
+        public bool SquaresAreHoverable()
+        {
+            if (enemyDetailsPanel.gameObject.activeInHierarchy)
+                return false;
+            if (turnController.combatIsEnded)
+                return false;
+            if (tutorialController.isShowingTutorial)
+                return false;
+            if (isChoosingAdjacentVector)
+                return false;
+            return true;
+        }
+
+        public bool IsEdgeSquare(GridSquare square)
+        {
+            Vector2Int coords = GetGridCoordinates(square);
+            return coords.x == 0 | (coords.x+1) == gridSize.x;
+        }
+
+        private Vector2Int GetAdjacentVector(Vector2 relativePosition)
+        {
+            List<Vector2Int> possibleVectors = new List<Vector2Int>();
+            Vector2Int currentCoords = GetGridCoordinates(chosenGridSquare);
+            if (currentCoords.x > 0)
+                possibleVectors.Add(new Vector2Int(-1, 0));
+            if (currentCoords.y > 0)
+                possibleVectors.Add(new Vector2Int(0, -1));
+            if (currentCoords.x < firstEnemySideColumn - 1)
+                possibleVectors.Add(new Vector2Int(1, 0));
+            if (currentCoords.y < gridSize.y - 1)
+                possibleVectors.Add(new Vector2Int(0, 1));
+            float smallestAngle = 180;
+            Vector2Int chosenVector = possibleVectors[0];
+            for (int i = 0; i < possibleVectors.Count; i++)
+            {
+                float angleBetween = Vector2.Angle(relativePosition, possibleVectors[i]);
+                if (angleBetween < smallestAngle)
+                {
+                    chosenVector = possibleVectors[i];
+                    smallestAngle = angleBetween;
+                }
+            }
+            return chosenVector;
         }
     }
 }

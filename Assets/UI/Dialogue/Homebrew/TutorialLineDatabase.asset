@@ -25,14 +25,16 @@ MonoBehaviour:
       click the "replay dialogue" button.
     panelIndex: 1
   firstCombatSelectSpell:
-  - text: Now that you have your spell selected, you need to cast it along a path
-      - a path being one of those five blob-shaped things in the middle of the screen.
-      After closing this dialogue, choose one of the paths to cast your bolt spell.
+  - text: Now that you have your spell selected, you need to cast it on a square
+      in the combat grid - you know, that thing in the middle of the screen that's
+      sort of, uh, grid-shaped. After closing this dialogue, choose a square on the
+      half of the grid closest to you to cast the bolt spell.
     panelIndex: 0
   firstCombatSelectPath:
-  - text: Notice how the projectile is still hovering in mid-air. Projectiles take
-      a turn or two to reach their opponent and will land right after their target
-      has a chance to cast their own spells.
+  - text: Notice how the projectile is still hovering in mid-air. A projectile moves
+      one space each turn and will hit the target when it reaches the last column
+      in the row. Your projectiles move right after your opponent has cast their
+      spells.
     panelIndex: 0
   - text: So, when a spell is hurtling towards you, you'll have a chance to cast
       a shield spell to block it - but more on that later.
@@ -41,34 +43,31 @@ MonoBehaviour:
       don't you cast a couple more bolt spells for good measure?
     panelIndex: 0
   firstCombatCastThirdSpell:
-  - text: Huzzah! I knew I could count on my - that is, your - natural aptitude.
-      Now, after closing this dialogue, click the "end turn" button and watch those
-      spells fly!
+  - text: Huzzah! I knew I could count on your natural aptitude. Now, after closing
+      this dialogue, click the "end turn" button and watch those spells fly!
     panelIndex: 1
   firstCombatStartSecondPlayerTurn:
-  - text: Whizz! Pow! Look at those spells land! I never thought I'd have a chance
-      to witness my prowess from third person.
+  - text: The spells are closing in! I'm quivering with anticipation...
     panelIndex: 1
-  - text: I think you understand the basics. I'm going to contemplate my new turnip
-      existence while you finish off this battle.
+  - text: I think you understand the basics. I'm going to contemplate my turnip-based
+      existence while you finish off this battle. Just keep casting bolt spells and
+      you'll finish this demon off in no time!
     panelIndex: 1
   secondCombatStartLines:
-  - text: This one might be tricky. If you check the "enemy detail" panel, you can
-      see this demon has the ability to heal - in fact, it's strong enough to be
-      able to heal itself to full each round!
+  - text: This one might be tricky. This demon has the ability to heal - in fact,
+      it's strong enough to be able to heal itself to full each round!
     panelIndex: 0
-  - text: Here's where paths can work to your advantage. Projectiles along the middle
-      three paths will take one turn to reach their opponents, while projectiles
-      along the highest and lowest will take two.
+  - text: 'Here''s where the grid can work to your advantage. Projectiles put in
+      the column farthest from your enemy will take one turn longer to reach them. '
     panelIndex: 0
-  - text: Try firing bolt spells along the highest and lowest paths, and then, the
-      next turn, firing them along the middle paths. You'll do enough damage to be
-      able to knock out the enemy all at once!
+  - text: Try firing bolt spells in the column closest to you, then, the next turn,
+      firing them in the next column down. You'll do enough damage to be able to
+      knock out the enemy all at once!
     panelIndex: 0
   createFirstSpell:
   - text: Aah, the Spellforge! Making spells has always been a favorite pastime of
       mine, even if it does pollute the air with rune dust that slowly liquefies
-      your lungs. That's why we have healing spells!
+      your lungs. But that's why we have healing spells!
     panelIndex: 1
   - text: On the left you'll see all of the runes in your inventory. On the right
       you have the scroll that represents the spell you're about to create.
@@ -107,40 +106,11 @@ MonoBehaviour:
       left corner after closing this dialogue.
     panelIndex: 1
   thirdCombatStartLines:
-  - text: Wow! This guy looks like packs a punch. We'll need that shield spell...
+  - text: Wow! This guy looks like he packs a punch. We'll need that shield spell...
       but it only lasts one turn, so you should wait until the demon's projectile's
       in the air to use it.
     panelIndex: 1
   thirdCombatStartSecondPlayerTurn:
-  - text: Alright, now! Cast the shield spell along the path of the enemy's projectile,
-      or you're toast!
+  - text: Now would be a good time to cast that shield spell! Cast it in front of
+      the enemy projectile that's heading towards you.
     panelIndex: 0
-  createSecondSpell:
-  - text: Creating a projectile spell is very similar to creating a shield spell.
-      A projectile spell is the primary rune, so here it's best to have it in the
-      center so it can connect to both of the enhancement runes.
-    panelIndex: 1
-  - text: Now, though, one of our enhancement runes will give our projectile the
-      "flame" element! Drag the runes onto the scroll to try it out.
-    panelIndex: 1
-  wrongRuneArrangementFlame:
-  - text: Hold on! We want this spell to be as strong as it can be, so we have to
-      make sure the runes are positioned correclty. The projectile rune should be
-      in the middle while the strengthen adjacent rune and fire strength adjacent
-      rune should be on the edges.
-    panelIndex: 0
-  finishedSecondSpell:
-  - text: Well done! Let's go roast some fiends!
-    panelIndex: 1
-  fourthCombatStartLines:
-  - text: An elemental projectile will do extra damage to a shield of the opposite
-      type. So you'll want to use fire projectiles against ice shields, and ice projectiles
-      against fire shields.
-    panelIndex: 1
-  - text: Conversely, an elemental projectile will do less damage to a shield of
-      the same type. So a fire shield is most effective when defending against fire
-      projectiles.
-    panelIndex: 1
-  - text: 'It looks like this enemy has a really strong ice shield. You should hit
-      him with the fire spell you created! '
-    panelIndex: 1

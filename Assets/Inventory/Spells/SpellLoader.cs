@@ -10,10 +10,10 @@ namespace Assets.Inventory.Spells
         [SerializeField] private InventoryController inventoryController;
         [SerializeField] private SpellGenerator spellGenerator;
         [SerializeField] private DevSpellInventory devSpellInventory;
-        private static bool hasLoadedDevInventory;
+        private static bool hasLoadedInventory;
         private void Awake()
         {
-            if (inventoryController.loadDevSpellInventory == true & !hasLoadedDevInventory & Application.isEditor)
+            if (inventoryController.loadDevSpellInventory == true & !hasLoadedInventory & Application.isEditor)
             {
                 switch (inventoryController.devSpellInventoryIndex)
                 {
@@ -30,7 +30,25 @@ namespace Assets.Inventory.Spells
                 {
                     inventoryController.EquipSpell(inventoryController.spells[i]);
                 }
-                hasLoadedDevInventory = true;
+                hasLoadedInventory = true;
+            }
+            else if (!hasLoadedInventory)
+            {
+                if (SaveManager.HasSaveData())
+                {
+                    // Load Save
+                }
+                else
+                {
+                    inventoryController.spells = spellGenerator.CreateSpells(devSpellInventory.startingSpelList); 
+                    inventoryController.equippedSpells = new List<PlayerSpell>();
+                    int maxIndex = Mathf.Min(inventoryController.spells.Count, 3);
+                    for (int i = 0; i < maxIndex; i++)
+                    {
+                        inventoryController.EquipSpell(inventoryController.spells[i]);
+                    }
+                    hasLoadedInventory = true;
+                }
             }
         }
     }

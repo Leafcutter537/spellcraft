@@ -35,6 +35,12 @@ namespace Assets.Combat
         [Header("Movement Event References")]
         [SerializeField] private StartCombatAnimationEvent startCombatAnimationEvent;
         [SerializeField] private EndCombatAnimationEvent endCombatAnimationEvent;
+        [Header("Arrow Indicator")]
+        [SerializeField] private GameObject arrowPrefab;
+        [SerializeField] private float arrowOffset;
+        [SerializeField] private Color playerArrowColor;
+        [SerializeField] private Color enemyArrowColor;
+        private GameObject arrowObject;
 
         private void Update()
         {
@@ -64,6 +70,7 @@ namespace Assets.Combat
                 square.playerProjectile = null;
             else
                 square.enemyProjectile = null;
+            RemoveArrow();
             square = gridController.GetNextSquare(square, IsMovingRight());
             StartMovementAnimation();
             if (square == null)
@@ -78,7 +85,7 @@ namespace Assets.Combat
                 else
                     square.enemyProjectile = this;
                 targetX = square.transform.position.x;
-                return square.shield != null;
+                return square.shield != null | gridController.IsEdgeSquare(square);
             }
         }
         public void StartMovementAnimation()
@@ -96,17 +103,24 @@ namespace Assets.Combat
             }
             else
             {
+                bool shouldCreateArrow = true;
                 if (square.shield != null)
                 {
                     this.strength -= square.shield.NegateDamage(this);
                     if (this.strength <= 0)
+                    {
+                        shouldCreateArrow = false;
                         Destroy(gameObject);
+                    }
                 }
                 if (gridController.GetNextSquare(square, IsMovingRight()) == null & this.strength > 0)
                 {
+                    shouldCreateArrow = false;
                     Advance();
                     return;
                 }
+                if (shouldCreateArrow)
+                    CreateArrow();
             }
             endCombatAnimationEvent.Raise(this, null);
             isMoving = false;
@@ -137,6 +151,24 @@ namespace Assets.Combat
         private bool IsMovingRight()
         {
             return target is EnemyInstance;
+        }
+
+        public void CreateArrow()
+        {
+            bool isMovingRight = IsMovingRight();
+            Destroy(arrowObject);
+            Vector3 offset = new Vector3(0, arrowOffset);
+            offset.y *= isMovingRight ? -1 : 1;
+            arrowObject = Instantiate(arrowPrefab, transform.position + offset, Quaternion.identity);
+            SpriteRenderer spriteRenderer = arrowObject.GetComponent<SpriteRenderer>();
+            if (!isMovingRight)
+                spriteRenderer.flipX = true; 
+            spriteRenderer.color = isMovingRight ? playerArrowColor : enemyArrowColor;
+        }
+
+        public void RemoveArrow()
+        {
+            Destroy(arrowObject);
         }
     }
 }

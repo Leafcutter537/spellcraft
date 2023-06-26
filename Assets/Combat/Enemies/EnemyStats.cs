@@ -11,7 +11,6 @@ namespace Assets.Combat
         public string enemyName;
         public int enemyID;
         public int maxHP;
-        public int maxMP;
         public int resilience;
         public List<EnemyProjectilePattern> projectilePatterns;
         public List<EnemyShieldPattern> shieldPatterns;
@@ -20,7 +19,7 @@ namespace Assets.Combat
 
         public StatBundle GetStatBundle()
         {
-            return new StatBundle(maxHP, maxMP, resilience, 0, 0, 0);
+            return new StatBundle(maxHP, 0, resilience, 0, 0, 0);
         }
     }
 }

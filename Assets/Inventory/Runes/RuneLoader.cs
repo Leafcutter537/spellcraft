@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Assets.Inventory.Runes;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RuneLoader : MonoBehaviour
@@ -6,10 +8,10 @@ public class RuneLoader : MonoBehaviour
     [SerializeField] private InventoryController inventoryController;
     [SerializeField] private RuneGenerator runeGenerator;
     [SerializeField] private DevRuneInventory devRuneInventory;
-    private static bool hasLoadedDevInventory;
+    private static bool hasLoadedInventory;
     private void Awake()
     {
-        if (inventoryController.loadDevRuneInventory == true & !hasLoadedDevInventory & Application.isEditor)
+        if (inventoryController.loadDevRuneInventory == true & !hasLoadedInventory & Application.isEditor)
         {
             switch (inventoryController.devRuneInventoryIndex)
             {
@@ -20,8 +22,21 @@ public class RuneLoader : MonoBehaviour
                     inventoryController.runes = runeGenerator.CreateRunes(devRuneInventory.secondRuneList);
                     break;
             }
-            hasLoadedDevInventory = true;
+            hasLoadedInventory = true;
         }
+        else if (!hasLoadedInventory)
+        {
+            if (SaveManager.HasSaveData())
+            {
+                // Load Save
+            }
+            else
+            {
+                inventoryController.runes = new List<Rune>();
+                hasLoadedInventory = true;
+            }
+        }
+
     }
 
 }

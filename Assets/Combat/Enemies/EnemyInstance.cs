@@ -18,17 +18,15 @@ namespace Assets.Combat
             characterName = currentEnemy.enemyStats.enemyName;
             enemyStats = currentEnemy.enemyStats;
             currentHP = enemyStats.maxHP;
-            currentMP = enemyStats.maxMP;
             maxHP = enemyStats.maxHP;
-            maxMP = enemyStats.maxMP;
             enemyID = enemyStats.enemyID;
             baseStats = enemyStats.GetStatBundle();
             enemyAI.SetPatterns(currentEnemy.enemyStats.projectilePatterns,
                 currentEnemy.enemyStats.shieldPatterns, 
                 currentEnemy.enemyStats.healPatterns,
                 currentEnemy.enemyStats.buffPatterns);
-            statPanel.ShowStatInfo();
             statusEffects = new List<StatusEffect>();
+            statPanel.ShowStatInfo();
         }
 
 
@@ -61,14 +59,14 @@ namespace Assets.Combat
                 spell.shieldPatternType == EnemyShieldPattern.ShieldPatternType.BlockSecondColumn |
                 spell.shieldPatternType == EnemyShieldPattern.ShieldPatternType.BlockBothColumns)
             {
-                fixedTargets = true;
+                fixedTargets = false;
                 targetSquares = gridController.GetSquaresNeedingShield(spell.shieldPatternType);
                 if (targetSquares.Count == 0)
                     return false;
             }
             else
             {
-                fixedTargets = false;
+                fixedTargets = true;
                 foreach (EnemyShieldData shieldData in spell.shieldData)
                 {
                     Vector2Int coords = shieldData.coords;

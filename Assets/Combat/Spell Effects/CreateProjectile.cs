@@ -32,11 +32,10 @@ namespace Assets.Combat.SpellEffects
             switch (Math.Abs(path))
             {
                 case 0:
-                    pathDescription = " along the chosen path.";
+                    pathDescription = " in the chosen square.";
                     break;
                 case 1:
-                    direction = path < 0 ? "below" : "above";
-                    pathDescription = " one path " + direction + " the chosen path.";
+                    pathDescription = " adjacent to the chosen square.";
                     break;
                 case 2:
                     direction = path < 0 ? "below" : "above";

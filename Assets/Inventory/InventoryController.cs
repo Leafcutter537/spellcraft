@@ -30,6 +30,7 @@ public class InventoryController : ScriptableObject
     [SerializeField] private CurrencyChangedEvent currencyChangedEvent;
     [SerializeField] private EquipmentChangeEvent equipmentChangeEvent;
     [SerializeField] private TooltipWarningEvent toolTipWarningEvent;
+    [SerializeField] private EquipSpellEvent equipSpellEvent;
     [Header("Inventory Items")]
     public List<Rune> runes;
     public List<PlayerSpell> spells;
@@ -149,6 +150,7 @@ public class InventoryController : ScriptableObject
     public void UnequipSpell(PlayerSpell spell)
     {
         equippedSpells.Remove(spell);
+        equipSpellEvent.Raise(this, null);
     }
 
     public void RemoveSpell(PlayerSpell spell)
@@ -181,7 +183,7 @@ public class InventoryController : ScriptableObject
         {
             AddCurrencyQuantity(currencyQuantity);
             CurrencyInfo currencyInfo = currencyDatabase.GetCurrencyInfo(currencyQuantity.currencyType);
-            returnText += "Found " + currencyQuantity.quantity + " " + currencyInfo.currencyName + "!";
+            returnText += "Found " + currencyQuantity.quantity + " " + currencyInfo.currencyName + "!\n\n";
         }
         return returnText;
     }

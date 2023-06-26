@@ -18,9 +18,15 @@ MonoBehaviour:
         quantity: 0
         currencyType: 0
       scrollName: 
-      numPerLevel: 0100000001000000
-      connections: 0000000001000000
+      numPerLevel: 010000000100000001000000
+      connections: 00000000010000000100000002000000
     runeData:
+    - rank: 1
+      quality: 200
+      runeType: 1
+      category: 2
+      requiredPrimary: 0
+      currencyType: 0
     - rank: 1
       quality: 2
       runeType: 0
@@ -28,13 +34,13 @@ MonoBehaviour:
       requiredPrimary: 0
       currencyType: 0
     - rank: 1
-      quality: 2
-      runeType: 1
+      quality: 200
+      runeType: 17
       category: 2
       requiredPrimary: 0
       currencyType: 0
-    spellName: Bolt
-    iconIndex: 0
+    spellName: Murder
+    iconIndex: 2
   - scrollData:
       cost:
         quantity: 0
@@ -44,7 +50,7 @@ MonoBehaviour:
       connections: 00000000010000000100000002000000
     runeData:
     - rank: 1
-      quality: 2
+      quality: 200
       runeType: 1
       category: 2
       requiredPrimary: 0
@@ -56,41 +62,13 @@ MonoBehaviour:
       requiredPrimary: 0
       currencyType: 0
     - rank: 1
-      quality: 2
-      runeType: 1
+      quality: 200
+      runeType: 17
       category: 2
       requiredPrimary: 0
       currencyType: 0
-    spellName: Shield
-    iconIndex: 0
-  - scrollData:
-      cost:
-        quantity: 0
-        currencyType: 0
-      scrollName: 
-      numPerLevel: 010000000100000001000000
-      connections: 00000000010000000100000002000000
-    runeData:
-    - rank: 1
-      quality: 2
-      runeType: 1
-      category: 2
-      requiredPrimary: 0
-      currencyType: 0
-    - rank: 1
-      quality: 2
-      runeType: 0
-      category: 0
-      requiredPrimary: 0
-      currencyType: 0
-    - rank: 1
-      quality: 2
-      runeType: 5
-      category: 2
-      requiredPrimary: 0
-      currencyType: 0
-    spellName: Fireball
-    iconIndex: 0
+    spellName: Invincible Shield
+    iconIndex: 8
   secondSpellList:
   - scrollData:
       cost:
@@ -136,3 +114,26 @@ MonoBehaviour:
       currencyType: 0
     spellName: Shield
     iconIndex: 9
+  startingSpelList:
+  - scrollData:
+      cost:
+        quantity: 0
+        currencyType: 0
+      scrollName: 
+      numPerLevel: 0100000001000000
+      connections: 0000000001000000
+    runeData:
+    - rank: 1
+      quality: 2
+      runeType: 0
+      category: 0
+      requiredPrimary: 0
+      currencyType: 0
+    - rank: 1
+      quality: 2
+      runeType: 1
+      category: 2
+      requiredPrimary: 0
+      currencyType: 0
+    spellName: Bolt
+    iconIndex: 0

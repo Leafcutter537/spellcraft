@@ -212,6 +212,8 @@ namespace Assets.Inventory.Spells
                 {
                     if (rune.runeData.runeType == RuneType.CooldownIncrease)
                         cooldown++;
+                    else if (rune.runeData.runeType == RuneType.Heal)
+                        cooldown++;
                 }
             }
             return cooldown;
@@ -242,7 +244,7 @@ namespace Assets.Inventory.Spells
                         case RuneType.Projectile:
                             returnList.Add(new CreateProjectile(0, spellStrength, modifications[i].elementChange, augmentations[i].projectileAugmentations));
                             break;
-                        case RuneType.ProjectileOneHigher:
+                        case RuneType.AdjacentProjectile:
                             returnList.Add(new CreateProjectile(1, spellStrength, modifications[i].elementChange, augmentations[i].projectileAugmentations));
                             break;
                         case RuneType.ProjectileOneLower:
@@ -251,7 +253,7 @@ namespace Assets.Inventory.Spells
                         case RuneType.Shield:
                             returnList.Add(new CreateShield(0, spellStrength, modifications[i].elementChange, 1));
                             break;
-                        case RuneType.ShieldOneHigher:
+                        case RuneType.AdjacentShield:
                             returnList.Add(new CreateShield(1, spellStrength, modifications[i].elementChange, 1));
                             break;
                         case RuneType.ShieldOneLower:

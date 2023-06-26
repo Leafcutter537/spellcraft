@@ -17,14 +17,15 @@ MonoBehaviour:
   - Increases the strength of connected primary and secondary runes by [STRENGTH]%.
   - Creates a shield of strength [STRENGTH] on the chosen path for one turn.
   - Increases the strength of connected primary and secondary runes by [STRENGTH]%.
-  - Restores [STRENGTH] health to the caster.
+  - Restores [STRENGTH] health to the caster. Also increases the cooldown of the
+    spell by one turn.
   - Any connected projectile and shield effects will have the Fire Element. Also,
     increases the strength of connected primary and secondary runes by [STRENGTH]%.
   - Any connected projectile and shield effects will have the Frost Element. Also,
     increases the strength of connected primary and secondary runes by [STRENGTH]%.
-  - Create a projectile of strength [STRENGTH] one path higher than the target path.
+  - Create a projectile of strength [STRENGTH] adjacent to the main projectile.
   - Create a projectile of strength [STRENGTH] one path lower than the target path.
-  - Create a shield of strength [STRENGTH] one path higher than the target path.
+  - Create a shield of strength [STRENGTH] adjacent to the main shield.
   - Create a shield of strength [STRENGTH] one path lower than the target path.
   - Increases projectile power by [STRENGTH]. Lasts two turns.
   - Increases shield power by [STRENGTH]. Lasts two turns.

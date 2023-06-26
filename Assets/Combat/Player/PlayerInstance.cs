@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Assets.Combat.SpellEffects;
 using Assets.EventSystem;
 using Assets.Inventory.Spells;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Assets.Combat
@@ -17,13 +16,16 @@ namespace Assets.Combat
         [Header("Spellcasting")]
         [SerializeField] private PathSelectEvent pathSelectEvent;
         private bool isReadyForSpell;
-        private GridSquare spellSquare;
+        // private GridSquare spellSquare;
         private Vector2Int adjacentVector;
         private int spellDirection;
         private Spell spellBeingCast;
         [Header("Event References")]
         [SerializeField] private StartSpellPreviewEvent startSpellPreviewEvent;
         [SerializeField] private EndSpellPreviewEvent endSpellPreviewEvent;
+        [SerializeField] private StartAdjacentVectorPreviewEvent startAdjacentVectorPreviewEvent;
+        [SerializeField] private ChooseAdjacentVectorEvent chooseAdjacentVectorEvent;
+        [SerializeField] private CastUntargetedSpellEvent castUntargetedSpellEvent;
         // Combat Control
         protected int[] spellCooldowns;
 
@@ -44,12 +46,16 @@ namespace Assets.Combat
             pathSelectEvent.AddListener(OnSquareSelect);
             startSpellPreviewEvent.AddListener(OnStartSpellPreview);
             endSpellPreviewEvent.AddListener(OnEndSpellPreview);
+            chooseAdjacentVectorEvent.AddListener(OnChooseAdjacentVector);
+            castUntargetedSpellEvent.AddListener(OnCastUntargetedSpell);
         }
         private void OnDisable()
         {
             pathSelectEvent.RemoveListener(OnSquareSelect);
             startSpellPreviewEvent.RemoveListener(OnStartSpellPreview);
             endSpellPreviewEvent.RemoveListener(OnEndSpellPreview);
+            chooseAdjacentVectorEvent.RemoveListener(OnChooseAdjacentVector);
+            castUntargetedSpellEvent.RemoveListener(OnCastUntargetedSpell);
         }
 
         public void OnStartSpellPreview(object sender, EventParameters args)
@@ -64,18 +70,31 @@ namespace Assets.Combat
         {
             if (isReadyForSpell)
             {
-                spellSquare = sender as GridSquare;
+                GridSquare spellSquare = sender as GridSquare;
                 adjacentVector = new Vector2Int(0, 0);
                 spellDirection = 0;
                 AttemptCastPlayerSpell(spellSquare);
             }
         }
-        public void AttemptCastPlayerSpell(GridSquare path)
+        private void OnChooseAdjacentVector(object sender, EventParameters args)
+        {
+            AdjacentChooseEventParameters adjacentArgs = args as AdjacentChooseEventParameters;
+            GridSquare spellSquare = adjacentArgs.gridSquare;
+            adjacentVector = adjacentArgs.adjacentVector;
+            AttemptCastPlayerSpell(spellSquare);
+        }
+        private void OnCastUntargetedSpell(object sender, EventParameters args)
         {
             spellBeingCast = combatSpellSelectPanel.GetSelected() as Spell;
-            if (NeedsAdjacentVector(spellBeingCast))
+            CastPlayerSpell(null, spellBeingCast, combatSpellSelectPanel.GetIndex(), Vector2Int.zero, 0);
+        }
+        public void AttemptCastPlayerSpell(GridSquare square)
+        {
+            spellBeingCast = combatSpellSelectPanel.GetSelected() as Spell;
+            string adjacentEntityName = NeedsAdjacentVector(spellBeingCast);
+            if (adjacentEntityName.Length > 0 & adjacentVector == Vector2Int.zero)
             {
-                RequestAdjacentVectorChoice();
+                RequestAdjacentVectorChoice(adjacentEntityName, square);
                 return;
             }
             if (NeedsDirectionVector(spellBeingCast))
@@ -83,16 +102,30 @@ namespace Assets.Combat
                 RequestDirectionChoice();
                 return;
             }
-            CastPlayerSpell(path, spellBeingCast, combatSpellSelectPanel.GetIndex(), new Vector2Int(0, 0), 0);
+            CastPlayerSpell(square, spellBeingCast, combatSpellSelectPanel.GetIndex(), adjacentVector, 0);
             combatSpellSelectPanel.ReturnSpellList();
         }
-        private bool NeedsAdjacentVector(Spell spell)
+        private string NeedsAdjacentVector(Spell spell)
         {
-            return false;
+            if (spell.targetType == TargetType.Projectile)
+            {
+                foreach (SpellEffect spellEffect in spell.spellEffects)
+                    if (spellEffect is CreateProjectile createProjectile)
+                        if (createProjectile.path > 0)
+                            return "projectile";
+            }
+            if (spell.targetType == TargetType.Shield)
+            {
+                foreach (SpellEffect spellEffect in spell.spellEffects)
+                    if (spellEffect is CreateShield createShield)
+                        if (createShield.path > 0)
+                            return "shield";
+            }
+            return "";
         }
-        private void RequestAdjacentVectorChoice()
+        private void RequestAdjacentVectorChoice(string adjacentEntityName, GridSquare square)
         {
-
+            startAdjacentVectorPreviewEvent.Raise(this, new AdjacentPreviewEventParameters(square, adjacentEntityName));
         }
         private bool NeedsDirectionVector(Spell spell)
         {

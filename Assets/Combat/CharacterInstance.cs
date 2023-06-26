@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Assets.Combat.SpellEffects;
 using Assets.Inventory.Spells;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Assets.Combat
@@ -36,8 +35,10 @@ namespace Assets.Combat
 
         public void ReceiveProjectile(Projectile projectile)
         {
-            currentHP = Mathf.Max(0, currentHP - projectile.strength);
-            string combatMessage = characterName + " was struck by a projectile for " + projectile.strength + " damage!";
+            StatBundle stats = GetStatBundle();
+            int projectileDamage = Mathf.Max(0, projectile.strength - stats.resilience);
+            currentHP = Mathf.Max(0, currentHP - projectileDamage);
+            string combatMessage = characterName + " was struck by a projectile for " + projectileDamage + " damage!";
             combatLogMessageEvent.Raise(this, new CombatLogEventParameters(combatMessage));
             foreach (ProjectileAugmentation projectileAugmentation in projectile.augmentations)
             {

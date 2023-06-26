@@ -9,13 +9,25 @@ namespace Assets.Store
         [SerializeField] private StoreStock storeStock;
         [SerializeField] private ProgressTracker progressTracker;
         [SerializeField] private DevProgress devProgress;
-        private static bool hasLoadedDevProgress;
+        private static bool hasLoadedProgress;
         private void Awake()
         {
-            if (progressTracker.loadDevProgress & !hasLoadedDevProgress & Application.isEditor)
+            if (progressTracker.loadDevProgress & !hasLoadedProgress & Application.isEditor)
             {
                 storeStock.CopyBase();
-                hasLoadedDevProgress = true;
+                hasLoadedProgress = true;
+            }
+            else if (!hasLoadedProgress)
+            {
+                if (SaveManager.HasSaveData())
+                {
+                    // Load Save
+                }
+                else
+                {
+                    storeStock.CopyBase();
+                    hasLoadedProgress = true;
+                }
             }
         }
     }

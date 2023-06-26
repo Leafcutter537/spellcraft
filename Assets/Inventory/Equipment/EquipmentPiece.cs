@@ -11,6 +11,7 @@ namespace Assets.Equipment
         public int projectilePower { get; private set; }
         public int shieldPower { get; private set; }
         public int healPower { get; private set; }
+        public int maxLevel { get; private set; }
         public EquipmentPiece(OwnedEquipmentData ownedEquipmentData, EquipmentStatDatabase equipmentStatDatabase)
         {
             this.ownedEquipmentData = new OwnedEquipmentData(ownedEquipmentData);
@@ -18,12 +19,8 @@ namespace Assets.Equipment
             EquipmentStatData equipmentStatData = equipmentStatDatabase.equipmentStatData[index];
             this.title = equipmentStatData.equipmentName;
             this.icon = equipmentStatData.sprite;
-            this.health = equipmentStatData.baseHealth + equipmentStatData.healthGrowth * this.ownedEquipmentData.currentLevel;
-            this.mana = equipmentStatData.baseMana + equipmentStatData.manaGrowth * this.ownedEquipmentData.currentLevel;
-            this.resilience = equipmentStatData.baseResilience + equipmentStatData.resilienceGrowth * this.ownedEquipmentData.currentLevel;
-            this.projectilePower = equipmentStatData.baseProjectilePower + equipmentStatData.projectilePowerGrowth * this.ownedEquipmentData.currentLevel;
-            this.shieldPower = equipmentStatData.baseShieldPower + equipmentStatData.shieldPowerGrowth * this.ownedEquipmentData.currentLevel;
-            this.healPower = equipmentStatData.baseHealPower + equipmentStatData.healPowerGrowth * this.ownedEquipmentData.currentLevel;
+            this.maxLevel = equipmentStatData.maxLevel;
+            SetStats(ownedEquipmentData, equipmentStatData);
         }
 
         public override string GetDescription()
@@ -36,6 +33,16 @@ namespace Assets.Equipment
             if (shieldPower != 0) returnString += "Shield Power: " + shieldPower + "\n";
             if (healPower != 0) returnString += "Healing Power: " + healPower + "\n";
             return returnString;
+        }
+
+        public void SetStats(OwnedEquipmentData ownedEquipmentData, EquipmentStatData equipmentStatData)
+        {
+            this.health = equipmentStatData.baseHealth + equipmentStatData.healthGrowth * this.ownedEquipmentData.currentLevel;
+            this.mana = equipmentStatData.baseMana + equipmentStatData.manaGrowth * this.ownedEquipmentData.currentLevel;
+            this.resilience = equipmentStatData.baseResilience + equipmentStatData.resilienceGrowth * this.ownedEquipmentData.currentLevel;
+            this.projectilePower = equipmentStatData.baseProjectilePower + equipmentStatData.projectilePowerGrowth * this.ownedEquipmentData.currentLevel;
+            this.shieldPower = equipmentStatData.baseShieldPower + equipmentStatData.shieldPowerGrowth * this.ownedEquipmentData.currentLevel;
+            this.healPower = equipmentStatData.baseHealPower + equipmentStatData.healPowerGrowth * this.ownedEquipmentData.currentLevel;
         }
     }
 }

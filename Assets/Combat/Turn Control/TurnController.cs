@@ -20,6 +20,7 @@ public class TurnController : MonoBehaviour
     [SerializeField] private EnemyInstance enemyInstance;
     [SerializeField] private GridController  gridController;
     [SerializeField] private CombatTutorialController tutorialController;
+    [SerializeField] private PostCombatReturnToMap postCombatReturnToMap;
     [Header("Turn Flow")]
     [SerializeField] private float timeBetweenActions;
     public bool isPlayerTurn;
@@ -163,10 +164,12 @@ public class TurnController : MonoBehaviour
         {
             string rewardText = distributor.DistributeReward(enemyInstance.enemyID);
             endCombatPanel.ShowVictory(rewardText);
+            postCombatReturnToMap.playerWon = true;
         }
         else
         {
             endCombatPanel.ShowDefeat();
+            postCombatReturnToMap.playerWon = false;
         }
     }
     private void OnStartCombatAnimation(object sender, EventParameters args)

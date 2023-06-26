@@ -8,5 +8,6 @@ namespace Assets.Inventory.Spells
     {
         public List<SpellData> firstSpellList;
         public List<SpellData> secondSpellList;
+        public List<SpellData> startingSpelList;
     }
 }

@@ -20,9 +20,5 @@ namespace Assets.Tutorial
         public List<TutorialLine> finishedFirstSpell;
         public List<TutorialLine> thirdCombatStartLines;
         public List<TutorialLine> thirdCombatStartSecondPlayerTurn;
-        public List<TutorialLine> createSecondSpell;
-        public List<TutorialLine> wrongRuneArrangementFlame;
-        public List<TutorialLine> finishedSecondSpell;
-        public List<TutorialLine> fourthCombatStartLines;
     }
 }

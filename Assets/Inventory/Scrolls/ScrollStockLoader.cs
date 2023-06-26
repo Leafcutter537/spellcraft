@@ -11,13 +11,25 @@ public class ScrollStockLoader : MonoBehaviour
     [SerializeField] private ScrollStock scrollStock;
     [SerializeField] private DevProgress devProgress;
     [SerializeField] private RewardDatabase rewardDatabase;
-    private static bool hasLoadedDevProgress;
+    private static bool hasLoadedProgress;
     private void Awake()
     {
-        if (progressTracker.loadDevProgress & !hasLoadedDevProgress & Application.isEditor)
+        if (progressTracker.loadDevProgress & !hasLoadedProgress & Application.isEditor)
         {
             scrollStock.CopyBase();
-            hasLoadedDevProgress = true;
+            hasLoadedProgress = true;
+        }
+        else if (!hasLoadedProgress)
+        {
+            if (SaveManager.HasSaveData())
+            {
+                // Load Save
+            }
+            else
+            {
+                scrollStock.CopyBase();
+                hasLoadedProgress = true;
+            }
         }
     }
 }

@@ -14,18 +14,29 @@ public class FollowCursor : MonoBehaviour
     private void Awake()
     {
         canvas = GetComponentInParent<Canvas>();
+        canvasScaler = GetComponentInParent<CanvasScaler>();
     }
 
     void Update()
     {
         if (!isHidden)
         {
-            float xPosition = Input.mousePosition.x + rectTransform.sizeDelta.x / 2;
-            float yPosition = Input.mousePosition.y - rectTransform.sizeDelta.y / 2;
-            xPosition = Mathf.Max(xPosition, rectTransform.sizeDelta.x / 2);
-            yPosition = Mathf.Max(yPosition, rectTransform.sizeDelta.y / 2);
-            xPosition = Mathf.Min(xPosition, canvas.pixelRect.width - rectTransform.sizeDelta.x / 2);
-            yPosition = Mathf.Min(yPosition, canvas.pixelRect.height - rectTransform.sizeDelta.y / 2);
+            Vector3[] corners = new Vector3[4];
+            rectTransform.GetWorldCorners(corners);
+            float halfWidth = (corners[1].x - corners[2].x) / -2;
+            float halfHeight = (corners[1].y - corners[3].y) / 2;
+            float xPosition = Input.mousePosition.x + halfWidth;
+            if (xPosition + halfWidth > canvas.pixelRect.width)
+                xPosition = Input.mousePosition.x - halfWidth;
+            float yPosition = Input.mousePosition.y - halfHeight;
+            if (yPosition - halfHeight < 0)
+                yPosition = yPosition + 2 * halfHeight;
+            /*
+            xPosition = Mathf.Max(xPosition, halfWidth);
+            yPosition = Mathf.Max(yPosition, halfHeight);
+            xPosition = Mathf.Min(xPosition, canvas.pixelRect.width - halfWidth);
+            yPosition = Mathf.Min(yPosition, canvas.pixelRect.height - halfHeight);
+            */
             transform.position = new Vector3(xPosition, yPosition);
         }
         else

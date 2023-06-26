@@ -7,10 +7,10 @@ public class EquipmentLoader : MonoBehaviour
     [SerializeField] private InventoryController inventoryController;
     [SerializeField] private DevEquipment devEquipment;
     [SerializeField] private EquipmentStatDatabase equipmentStatDatabase;
-    private static bool hasLoadedDevInventory;
+    private static bool hasLoadedInventory;
     private void Awake()
     {
-        if (inventoryController.loadDevEquipmentInventory == true & !hasLoadedDevInventory & Application.isEditor)
+        if (inventoryController.loadDevEquipmentInventory == true & !hasLoadedInventory & Application.isEditor)
         {
             inventoryController.ownedEquipment = CreateEquipment(devEquipment.ownedEquipmentData);
             inventoryController.equippedEquipmentIndices = new List<int>();
@@ -20,7 +20,20 @@ public class EquipmentLoader : MonoBehaviour
                 if (equipmentIndex != -1)
                     inventoryController.equippedEquipmentIndices.Add(equipmentIndex);
             }
-            hasLoadedDevInventory = true;
+            hasLoadedInventory = true;
+        }
+        else if (!hasLoadedInventory)
+        {
+            if (SaveManager.HasSaveData())
+            {
+                // Load Save
+            }
+            else
+            {
+                inventoryController.ownedEquipment = new List<EquipmentPiece>();
+                inventoryController.equippedEquipmentIndices = new List<int>();
+                hasLoadedInventory = true;
+            }
         }
     }
 

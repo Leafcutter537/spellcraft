@@ -30,6 +30,7 @@ namespace Assets.Combat
         [HideInInspector] public Shield shield;
         // Ghost Effects
         private List<GameObject> ghostEffects;
+        private GameObject stickyGhostEffect;
         // Input System
         private PlayerInputActions playerInputActions;
         private InputAction click;
@@ -56,7 +57,7 @@ namespace Assets.Combat
         }
         private void OnMouseEnter()
         {
-            if (!gridController.enemyDetailsPanel.gameObject.activeInHierarchy & !gridController.turnController.combatIsEnded & !gridController.tutorialController.isShowingTutorial)
+            if (gridController.SquaresAreHoverable())
             {
                 isHovering = true;
                 spriteRenderer.color = gridController.hoverColor;
@@ -92,6 +93,10 @@ namespace Assets.Combat
                     {
                         tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("You already have a shield in that space!"));
                     }
+                    else if ((spell.targetType == TargetType.Shield) & enemyProjectile != null)
+                    {
+                        tooltipWarningEvent.Raise(this, new TooltipWarningEventParameters("You cannot place a shield on top of an enemy projectile!"));
+                    }
                     else
                     {
                         pathSelectEvent.Raise(this, null);
@@ -100,27 +105,45 @@ namespace Assets.Combat
             }
         }
 
-        public void CreateGhostProjectile(CreateProjectile createProjectile)
+        public void CreateGhostProjectile(CreateProjectile createProjectile, bool isSticky)
         {
-            GameObject newGhostEFfect = Instantiate(gridController.ghostProjectilePrefab, transform.position, Quaternion.identity);
-            ghostEffects.Add(newGhostEFfect);
+            GameObject newGhostEffect = Instantiate(gridController.ghostProjectilePrefab, transform.position, Quaternion.identity);
+            if (isSticky)
+            {
+                Destroy(stickyGhostEffect);
+                stickyGhostEffect = newGhostEffect;
+            }
+            else
+                ghostEffects.Add(newGhostEffect);
         }
-        public void CreateGhostShield(CreateShield createShield)
+        public void CreateGhostShield(CreateShield createShield, bool isSticky)
         {
-            GameObject newGhostEFfect = Instantiate(gridController.ghostShieldPrefab, transform.position, Quaternion.identity);
-            ghostEffects.Add(newGhostEFfect);
+            GameObject newGhostEffect = Instantiate(gridController.ghostShieldPrefab, transform.position, Quaternion.identity);
+            if (isSticky)
+            {
+                Destroy(stickyGhostEffect);
+                stickyGhostEffect = newGhostEffect;
+            }
+            else
+                ghostEffects.Add(newGhostEffect);
         }
 
-        public void ClearGhostEffects()
+        public void ClearGhostEffects(bool removeSticky)
         {
             foreach (GameObject obj in ghostEffects)
             {
                 Destroy(obj);
             }
             ghostEffects = new List<GameObject>();
+            if (removeSticky)
+            {
+                Destroy(stickyGhostEffect);
+            }
         }
         public void CreateProjectile(CreateProjectile createProjectile, int projectilePower, bool isPlayerOwned)
         {
+            if (playerProjectile != null)
+                return;
             Projectile projectile = Instantiate(gridController.projectilePrefab, transform.position, Quaternion.identity).GetComponent<Projectile>();
             projectile.strength = createProjectile.strength + projectilePower;
             projectile.element = createProjectile.element;
@@ -128,6 +151,7 @@ namespace Assets.Combat
             projectile.target = isPlayerOwned ? gridController.enemyInstance : gridController.playerInstance;
             projectile.square = this;
             projectile.gridController = gridController;
+            projectile.CreateArrow();
             if (isPlayerOwned)
                 playerProjectile = projectile;
             else
@@ -142,10 +166,13 @@ namespace Assets.Combat
             projectile.target = gridController.playerInstance;
             projectile.square = this;
             projectile.gridController = gridController;
+            projectile.CreateArrow();
             enemyProjectile = projectile;
         }
         public void CreateShield(CreateShield createShield, int shieldPower, bool isPlayerOwned)
         {
+            if (shield != null)
+                return;
             shield = Instantiate(gridController.shieldPrefab, transform.position, Quaternion.identity).GetComponent<Shield>();
             shield.strength = createShield.strength + shieldPower;
             shield.element = createShield.element;

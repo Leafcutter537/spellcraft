@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Combat;
+using Assets.EventSystem;
 using Assets.Inventory.Spells;
+using TMPro;
 using UnityEngine;
 
 public class CombatSpellSelectPanel : SelectPanel
@@ -15,10 +17,23 @@ public class CombatSpellSelectPanel : SelectPanel
     [Header("Scene References")]
     [SerializeField] private PlayerInstance playerInstance;
     [SerializeField] private TurnController turnController;
+    [Header("UI References")]
+    [SerializeField] private TextMeshProUGUI instructionText;
     [Header("Event References")]
     [SerializeField] private StartSpellPreviewEvent startSpellPreviewEvent;
     [SerializeField] private EndSpellPreviewEvent endSpellPreviewEvent;
     [SerializeField] private TooltipWarningEvent tooltipWarningEvent;
+    [SerializeField] private StartAdjacentVectorPreviewEvent startAdjacentVectorPreviewEvent;
+    [SerializeField] private CastUntargetedSpellEvent castUntargetedSpellEvent;
+
+    private void OnEnable()
+    {
+        startAdjacentVectorPreviewEvent.AddListener(OnStartAdjacentVectorPreviewEvent);
+    }
+    private void OnDisable()
+    {
+        startAdjacentVectorPreviewEvent.RemoveListener(OnStartAdjacentVectorPreviewEvent);
+    }
     protected override void GetInventory()
     {
         itemList = inventoryController.GetEquippedSpellList();
@@ -48,16 +63,25 @@ public class CombatSpellSelectPanel : SelectPanel
         }
         else
         {
-            for (int i = 0; i < selectPanelChoices.Count; i++)
+            Spell spellBeingCast = GetSelected() as Spell;
+            if (spellBeingCast.targetType == TargetType.Projectile | spellBeingCast.targetType == TargetType.Shield)
             {
-                if (i != selectedIndex)
+                for (int i = 0; i < selectPanelChoices.Count; i++)
                 {
-                    selectPanelChoices[i].gameObject.SetActive(false);
+                    if (i != selectedIndex)
+                    {
+                        selectPanelChoices[i].gameObject.SetActive(false);
+                    }
                 }
+                startSpellPreviewEvent.Raise(this, null);
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, shrunkHeight);
+                rectTransform.position = new Vector2(rectTransform.position.x, rectTransform.position.y + (defaultHeight - shrunkHeight) / 2);
             }
-            startSpellPreviewEvent.Raise(this, null);
-            rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, shrunkHeight);
-            rectTransform.position = new Vector2(rectTransform.position.x, rectTransform.position.y + (defaultHeight - shrunkHeight) / 2);
+            else
+            {
+                castUntargetedSpellEvent.Raise(this, null);
+                Deselect();
+            }
         }
     }
     public void ReturnSpellList()
@@ -68,7 +92,14 @@ public class CombatSpellSelectPanel : SelectPanel
         }
         Deselect();
         endSpellPreviewEvent.Raise(this, null);
+        instructionText.text = "Choose a square to cast spell";
         rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, defaultHeight);
         rectTransform.position = new Vector2(rectTransform.position.x, rectTransform.position.y - (defaultHeight - shrunkHeight) / 2);
+    }
+
+    private void OnStartAdjacentVectorPreviewEvent(object sender, EventParameters args)
+    {
+        AdjacentPreviewEventParameters adjacentArgs = args as AdjacentPreviewEventParameters;
+        instructionText.text = "Choose a direction for adjacent " + adjacentArgs.entityName;
     }
 }

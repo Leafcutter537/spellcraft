@@ -30,8 +30,8 @@ namespace Assets.Progression
             if (rewardData == null)
                 return null;
             string returnString = inventoryController.AddRewards(rewardData);
-            foreach (ScrollData scrollData in rewardData.scrollUnlocks)
-                scrollStock.AddScroll(scrollData);
+            returnString = scrollStock.AddScrolls(rewardData.scrollUnlocks, returnString);
+            returnString = storeStock.AddStoreStock(rewardData.runeStockUnlocks, returnString);
             if (rewardData.quest.Length > 1)
                 QuestLog.SetQuestState(rewardData.quest, QuestState.ReturnToNPC);
             return returnString;
